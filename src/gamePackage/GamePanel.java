@@ -9,12 +9,21 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	final static int fps = 60;
+	Timer t;
+	Player p = new Player(100, 500, 20, 60, 100, 5);
+	TreasureMap m = new TreasureMap(400, 100, 10, 10, 10, false);
+	boolean up = false;
+	boolean down = false;
+	boolean right = false;
+	boolean left = false;
 	Font menuFont;
 	Font instructionsFont;
 	final int MENU_STATE = 0;
@@ -37,7 +46,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	GamePanel() {
 		menuFont = new Font("Arial", Font.ITALIC, 50);
 		instructionsFont = new Font("Arial", Font.PLAIN, 35);
-		//currentState = MENU_STATE;
+		t = new Timer(1000 / fps, this);
+		t.start();
+
 	}
 
 	void drawMenuState(Graphics g) {
@@ -48,37 +59,80 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("Journey To The Lost Treasure", JourneyToTheLostTreasure.WIDTH / 7,
 				JourneyToTheLostTreasure.HEIGHT / 4);
 		g.setFont(instructionsFont);
-		g.drawString("Press ENTER to start", JourneyToTheLostTreasure.WIDTH/5,  JourneyToTheLostTreasure.HEIGHT/2);
+		g.drawString("Press ENTER to start", JourneyToTheLostTreasure.WIDTH / 3, JourneyToTheLostTreasure.HEIGHT / 2);
+	}
+
+	void updateForestState() {
+
 	}
 
 	void drawForestState(Graphics g) {
+
 		g.setColor(Color.GREEN);
 		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH, JourneyToTheLostTreasure.HEIGHT);
+		g.setColor(Color.GRAY);
+		p.draw(g);
+		if (m.found == false) {
+			m.draw(g);
+		}
+
 	}
 
 	public void paintComponent(Graphics g) {
 		if (currentState == MENU_STATE) {
 			drawMenuState(g);
-		} if (currentState == FOREST_STATE) {
+		}
+		if (currentState == FOREST_STATE) {
 			drawForestState(g);
 		}
+		repaint();
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
+
 		if (currentState == MENU_STATE) {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-				System.out.println("ENTER was pressed");
 				currentState = FOREST_STATE;
+
 			}
+
+		} else if (currentState == FOREST_STATE) {
+			if (e.getKeyCode() == KeyEvent.VK_W) {
+				up = true;
+
+			} else if (e.getKeyCode() == KeyEvent.VK_A) {
+				left = true;
+
+			} else if (e.getKeyCode() == KeyEvent.VK_S) {
+				down = true;
+
+			} else if (e.getKeyCode() == KeyEvent.VK_D) {
+				right = true;
+
+			}
+
 		}
+		repaint();
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-
+		if (e.getKeyCode() == KeyEvent.VK_W) {
+			up = false;
+		}
+		if (e.getKeyCode() == KeyEvent.VK_S) {
+			down = false;
+		}
+		if (e.getKeyCode() == KeyEvent.VK_D) {
+			right = false;
+		}
+		if (e.getKeyCode() == KeyEvent.VK_A) {
+			left = false;
+		}
+		repaint();
 	}
 
 	@Override
@@ -89,9 +143,22 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+
+		if (up) {
+
+			p.setY(p.getY() - p.getSpeed());
+		}
+		if (right) {
+			p.setX(p.getX() + p.getSpeed());
+		}
+		if (left) {
+			p.setX(p.getX() - p.getSpeed());
+		}
+		if (down) {
+			p.setY(p.getY() + p.getSpeed());
+		}
+
+		repaint();
 	}
 
-	
 }

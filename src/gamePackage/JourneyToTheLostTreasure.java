@@ -1,7 +1,5 @@
 package gamePackage;
 
-import java.awt.Dimension;
-
 import javax.swing.JFrame;
 
 public class JourneyToTheLostTreasure {
@@ -23,13 +21,12 @@ public class JourneyToTheLostTreasure {
 	}
 
 	void setup() {
-		
+
 		f.add(gp);
 		f.addKeyListener(gp);
 		f.setVisible(true);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setSize(WIDTH, HEIGHT);
-		
 
 	}
 }

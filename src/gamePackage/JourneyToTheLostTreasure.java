@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 public class JourneyToTheLostTreasure {
 	static final int HEIGHT = 700;
 	static final int WIDTH = 1000;
+	
 	JFrame f;
 	GamePanel gp;
 
@@ -18,6 +19,7 @@ public class JourneyToTheLostTreasure {
 		f = new JFrame();
 		gp = new GamePanel();
 		setup();
+		
 	}
 
 	void setup() {
@@ -29,4 +31,5 @@ public class JourneyToTheLostTreasure {
 		f.setSize(WIDTH, HEIGHT);
 
 	}
+	
 }

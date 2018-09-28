@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -16,8 +17,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	final static int fps = 60;
 	Timer t;
+	
 	Player p = new Player(100, 500, 20, 60, 100, 5);
 	TreasureMap m = new TreasureMap(400, 100, 10, 10, 10, false);
 	boolean up = false;
@@ -42,6 +45,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	final int BAY2_STATE = 11;
 	final int CREDITS_STATE = 12;
 	int currentState = MENU_STATE;
+	Object_Manager o = new Object_Manager(p, m);
 
 	GamePanel() {
 		menuFont = new Font("Arial", Font.ITALIC, 50);
@@ -63,7 +67,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void updateForestState() {
-
+		o.update();
+		o.checkCollision();
+		repaint();
+		if(m.isFound()) {
+			//move it to the inventory
+			
+		}
+		
 	}
 
 	void drawForestState(Graphics g) {
@@ -75,22 +86,25 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (m.found == false) {
 			m.draw(g);
 		}
+		
 
 	}
 
 	public void paintComponent(Graphics g) {
+		
 		if (currentState == MENU_STATE) {
 			drawMenuState(g);
 		}
 		if (currentState == FOREST_STATE) {
 			drawForestState(g);
+			updateForestState();
 		}
 		repaint();
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
+		
 
 		if (currentState == MENU_STATE) {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {

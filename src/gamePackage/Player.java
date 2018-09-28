@@ -16,7 +16,7 @@ public class Player extends Game_Object {
 
 	void draw(Graphics g) {
 
-		g.fill3DRect(x, y, width, height, true);
+		g.fillRect(x, y, width, height);
 
 	}
 

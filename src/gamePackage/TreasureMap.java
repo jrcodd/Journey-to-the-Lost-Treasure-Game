@@ -37,6 +37,9 @@ public class TreasureMap extends Game_Object {
 	boolean isFound() {
 		return found;
 	}
-	
+	void drawInInv(Graphics g) {
+		g.setColor(Color.yellow);
+		g.fillRect(900, 180, 50, 50);
+	}
 
 }

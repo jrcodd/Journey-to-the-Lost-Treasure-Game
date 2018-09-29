@@ -28,7 +28,7 @@ public class JourneyToTheLostTreasure {
 		f.addKeyListener(gp);
 		f.setVisible(true);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setSize(WIDTH, HEIGHT);
+		f.setSize(WIDTH+18, HEIGHT+47);
 
 	}
 	

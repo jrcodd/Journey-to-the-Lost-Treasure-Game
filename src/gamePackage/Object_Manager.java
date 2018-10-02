@@ -56,7 +56,6 @@ public class Object_Manager {
 	void update() {
 		p.update();
 		sword.update();
-
 		checkCollision();
 
 	}

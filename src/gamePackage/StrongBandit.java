@@ -16,7 +16,7 @@ public class StrongBandit extends Game_Object {
 	}
 
 	void draw(Graphics g) {
-g.setColor(Color.RED);
+		g.setColor(Color.RED);
 		g.fillRect(x, y, width, height);
 
 	}

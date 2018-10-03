@@ -42,10 +42,10 @@ public class Sword extends Game_Object {
 
 	}
 
-	void attack(Graphics g) {
+	void attack1(Graphics g) {
 		width = 40;
 		height = 10;
-		y += 41;
-		GamePanel.isAttacking = false;
+		y += 40;
+		GamePanel.swordDown = false;
 	}
 }

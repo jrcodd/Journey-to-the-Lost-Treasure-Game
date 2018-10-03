@@ -10,17 +10,26 @@ public class Object_Manager {
 	Rectangle shack = new Rectangle(500, 50, 280, 280);
 	OldMan man;
 	Sword sword;
+	StrongBandit b;
 
-	Object_Manager(Player p, TreasureMap m, SpeedyBoots caveBoots, Shack s, OldMan man, Sword sword) {
+	Object_Manager(Player p, TreasureMap m, SpeedyBoots caveBoots, Shack s, OldMan man, Sword sword, StrongBandit b) {
 		this.s = s;
-		this.p = p;
+		this.p = p; 
 		this.m = m;
 		this.caveBoots = caveBoots;
 		this.man = man;
 		this.sword = sword;
+		this.b = b;
 	}
 
+	
+
 	void checkCollision() {
+		if(p.collisionBox.intersects(b.collisionBox)) {
+			if(GamePanel.swordDown) {
+				b.setHealth(b.getHealth()-50);
+			}
+		}
 		if (GamePanel.getState() == 5) {
 			if (p.collisionBox.intersects(man.collisionBox)) {
 

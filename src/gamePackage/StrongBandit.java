@@ -13,6 +13,7 @@ public class StrongBandit extends Game_Object {
 
 	void update() {
 		super.update();
+		
 	}
 
 	void draw(Graphics g) {
@@ -40,5 +41,11 @@ public class StrongBandit extends Game_Object {
 
 	int getSpeed() {
 		return speed;
+	}
+	void setHealth(int newHealth) {
+		health = newHealth;
+	}
+	int getHealth() {
+		return health;
 	}
 }

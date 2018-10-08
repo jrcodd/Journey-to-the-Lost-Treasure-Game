@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Sword extends Game_Object {
-	
+
 	Player p = new Player(100, 500, 20, 60, 100, 5);
 	boolean isFound;
 
@@ -16,7 +16,15 @@ public class Sword extends Game_Object {
 	void draw(Graphics g) {
 		g.setColor(Color.WHITE);
 		g.fillRect(x, y, width, height);
-		
+
+	}
+
+	void setWidth(int newWidth) {
+		width = newWidth;
+	}
+
+	void setHeight(int newHeight) {
+		height = newHeight;
 	}
 
 	int getX() {
@@ -30,7 +38,7 @@ public class Sword extends Game_Object {
 
 	void setX(int newX) {
 		x = newX;
-		
+
 	}
 
 	void setY(int newY) {
@@ -47,5 +55,16 @@ public class Sword extends Game_Object {
 		height = 10;
 		y += 40;
 		GamePanel.swordDown = false;
+		
+		
+	}
+
+	void attack2(Graphics g) {
+		
+		width = 10;
+		height = 40;
+		y -= 40;
+		GamePanel.swordUp=false;
+		
 	}
 }

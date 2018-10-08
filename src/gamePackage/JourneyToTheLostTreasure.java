@@ -1,5 +1,7 @@
 package gamePackage;
 
+
+
 import javax.swing.JFrame;
 
 public class JourneyToTheLostTreasure {

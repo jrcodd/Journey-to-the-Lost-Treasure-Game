@@ -7,6 +7,7 @@ public class HealthPotion extends Game_Object {
 	boolean isFound;
 	boolean isAdded = false;
 	int positionInInv;
+	boolean isDrank;
 
 	HealthPotion(int x, int y, int width, int height, int health, boolean isFound) {
 		super(x, y, width, height, health);
@@ -24,7 +25,7 @@ public class HealthPotion extends Game_Object {
 
 	}
 
-	void drawInInv(Graphics g) {
+	void drawInInv(Graphics g, boolean isEmpty) {
 
 		switch (Object_Manager.inv.size()) {
 		case 1:
@@ -67,8 +68,13 @@ public class HealthPotion extends Game_Object {
 				}
 			}
 		}
-		g.setColor(Color.yellow);
+		if(isEmpty == false) {
+		g.setColor(Color.cyan);
 		g.fillRect(900, positionInInv, 50, 50);
+		}
+		else if(isEmpty == true) {
+			g.drawRect(900, positionInInv, 50, 50);
+		}
 		/*
 		 * if (Object_Manager.inv.isEmpty()) { g.setColor(Color.cyan); g.fillRect(900,
 		 * GamePanel.INVENTORY_SLOT1, 50, 50); if (isAdded == false) {

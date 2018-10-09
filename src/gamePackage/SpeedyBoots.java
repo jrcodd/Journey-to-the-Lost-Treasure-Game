@@ -82,7 +82,7 @@ public class SpeedyBoots extends Game_Object {
 			break;
           
 		}
-		g.setColor(Color.yellow);
+		g.setColor(Color.black);
 		g.fillRect(900, positionInInv, 50, 50);
 		/*
 		 * if (Object_Manager.inv.isEmpty()) { g.setColor(Color.YELLOW); g.fillRect(900,

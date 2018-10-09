@@ -28,7 +28,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Player p = new Player(100, 500, 20, 60, 100, 5);
 	TreasureMap m = new TreasureMap(400, 100, 10, 10, 10, false);
 	Sword sword = new Sword(115, 500, 10, 40, 100, false);
-	StrongBandit b = new StrongBandit(400, 100, 20, 60, 300, 3);
+	StrongBandit b = new StrongBandit(400, 100, 40, 80, 300, 1);
+	WeakBandit b1 = new WeakBandit(250, 100, 20, 60, 100, 2);
+	WeakBandit b2 = new WeakBandit(500, 100, 20, 60, 100, 2);
 	HealthPotion pot = new HealthPotion(500, 468, 10, 10, 30, false);
 	static boolean up = false;
 	static boolean down = false;
@@ -63,7 +65,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	boolean mapOpen;
 	boolean updatedSpeed;
 	static int currentState = MENU_STATE;
-	Object_Manager o = new Object_Manager(p, m, caveBoots, s, man, sword, b, pot);
+	Object_Manager o = new Object_Manager(p, m, caveBoots, s, man, sword, b, pot, b1, b2);
 
 	GamePanel() {
 		inventoryFont = new Font("Arial", Font.PLAIN, 25);
@@ -74,13 +76,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		t.start();
 		try {
 
-			
-
 			MenuImg = ImageIO.read(this.getClass().getResourceAsStream("JourneyMenuImg.png"));
 
 		} catch (IOException e) {
-
-			
 
 			e.printStackTrace();
 
@@ -89,7 +87,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	void drawMenuState(Graphics g) {
 		g.drawImage(GamePanel.MenuImg, 0, 0, JourneyToTheLostTreasure.WIDTH, JourneyToTheLostTreasure.HEIGHT, null);
-		g.setColor(Color.gray);
+		g.setColor(Color.BLACK);
 		g.setFont(menuFont);
 		g.drawString("Journey To The Lost Treasure", JourneyToTheLostTreasure.WIDTH / 7,
 				JourneyToTheLostTreasure.HEIGHT / 4);
@@ -232,10 +230,46 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			currentState = SHACK_STATE;
 			p.setY(50);
 			sword.setY(65);
+
+		} else if (p.collisionBox.y < 0) {
+			if (b.isDead == true) {
+				currentState = PATH2_STATE;
+				p.setY(700);
+				sword.setY(700);
+			} else if (b.isDead == false) {
+				up = false;
+			}
 		}
 		o.update();
 		b.update();
 		o.checkCollision();
+		repaint();
+	}
+
+	void updatePath2State() {
+		if (p.collisionBox.y > JourneyToTheLostTreasure.HEIGHT) {
+
+			currentState = PATH1_STATE;
+			p.setY(50);
+			sword.setY(65);
+		}
+		if (p.collisionBox.x < 0) {
+			left = false;
+		}
+		if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 150) {
+			right = false;
+		}
+		if (p.collisionBox.y < 0) {
+			p.setY(700);
+			sword.setY(700);
+			currentState = BAY_STATE;
+		}
+
+		o.update();
+		o.checkCollision();
+		b1.update();
+		b2.update();
+
 		repaint();
 	}
 
@@ -252,8 +286,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("2", 860, 300);
 		g.drawString("3", 860, 450);
 		g.drawString("4", 860, 600);
-
+		g.setColor(Color.YELLOW);
+		g.drawString(Integer.toString(o.coins), 870, 50);
 		g.setFont(menuFont);
+		g.setColor(Color.white);
 		g.drawString("Forest", JourneyToTheLostTreasure.WIDTH / 3, 50);
 		g.setFont(healthFont);
 
@@ -287,7 +323,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("2", 860, 300);
 		g.drawString("3", 860, 450);
 		g.drawString("4", 860, 600);
+		g.setColor(Color.YELLOW);
+		g.drawString(Integer.toString(o.coins), 870, 50);
 		g.setFont(menuFont);
+		g.setColor(Color.white);
 		g.drawString("Lagoon", JourneyToTheLostTreasure.WIDTH / 3, 50);
 		g.setFont(healthFont);
 		if (pot.isFound == false) {
@@ -310,9 +349,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	void drawCaveState(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH, JourneyToTheLostTreasure.HEIGHT);
+
 		g.setColor(Color.GRAY);
 		p.draw(g);
-
 		g.fillRect(850, 0, 150, 700);
 		g.setFont(inventoryFont);
 		g.setColor(Color.WHITE);
@@ -320,7 +359,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("2", 860, 300);
 		g.drawString("3", 860, 450);
 		g.drawString("4", 860, 600);
+		g.setColor(Color.YELLOW);
+		g.drawString(Integer.toString(o.coins), 870, 50);
 		g.setFont(menuFont);
+		g.setColor(Color.white);
 		g.drawString("Cave", JourneyToTheLostTreasure.WIDTH / 3, 50);
 		g.setFont(healthFont);
 
@@ -356,6 +398,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("2", 860, 300);
 		g.drawString("3", 860, 450);
 		g.drawString("4", 860, 600);
+		g.setColor(Color.YELLOW);
+		g.drawString(Integer.toString(o.coins), 870, 50);
 		g.setFont(menuFont);
 		g.setColor(Color.white);
 		g.drawString("Forest Edge", JourneyToTheLostTreasure.WIDTH / 4, 50);
@@ -372,17 +416,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (sword.isFound) {
 			sword.draw(g);
 		}
-		if (caveBoots.isFound) {
-			caveBoots.drawInInv(g);
 
-		}
-		if (m.isFound) {
-
-			m.drawInInv(g);
-		}
-		if (pot.isFound) {
-			pot.drawInInv(g);
-		}
 	}
 
 	void drawMapState(Graphics g) {
@@ -405,7 +439,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("2", 860, 300);
 		g.drawString("3", 860, 450);
 		g.drawString("4", 860, 600);
+		g.setColor(Color.YELLOW);
+		g.drawString(Integer.toString(o.coins), 870, 50);
 		g.setFont(menuFont);
+		g.setColor(Color.white);
 		g.drawString("Shack", JourneyToTheLostTreasure.WIDTH / 3, 50);
 		g.setFont(healthFont);
 
@@ -425,8 +462,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		repaint();
 	}
 
-	void drawPath1State(Graphics g) {
-		g.setColor(Color.GREEN);
+	void drawPath2State(Graphics g) {
+		g.setColor(Color.green);
 		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH, JourneyToTheLostTreasure.HEIGHT);
 		g.setColor(Color.GRAY);
 		p.draw(g);
@@ -442,7 +479,45 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("2", 860, 300);
 		g.drawString("3", 860, 450);
 		g.drawString("4", 860, 600);
+		g.setColor(Color.YELLOW);
+		g.drawString(Integer.toString(o.coins), 870, 50);
 		g.setFont(menuFont);
+		g.setColor(Color.white);
+		g.drawString("Path", JourneyToTheLostTreasure.WIDTH / 3, 50);
+		g.setFont(healthFont);
+
+		if (p.health < 30) {
+			g.setColor(Color.red);
+		} else if (p.health < 50) {
+			g.setColor(Color.YELLOW);
+		} else if (p.health > 50) {
+			g.setColor(Color.darkGray);
+		}
+		g.drawString(Integer.toString(p.health), p.getX() - 10, p.getY() + 80);
+		if (sword.isFound) {
+			sword.draw(g);
+		}
+
+	}
+
+	void drawPath1State(Graphics g) {
+		g.setColor(Color.GREEN);
+		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH, JourneyToTheLostTreasure.HEIGHT);
+		g.setColor(Color.GRAY);
+		p.draw(g);
+
+		g.setColor(Color.GRAY);
+		g.fillRect(850, 0, 150, 700);
+		g.setFont(inventoryFont);
+		g.setColor(Color.WHITE);
+		g.drawString("1", 860, 150);
+		g.drawString("2", 860, 300);
+		g.drawString("3", 860, 450);
+		g.drawString("4", 860, 600);
+		g.setColor(Color.YELLOW);
+		g.drawString(Integer.toString(o.coins), 870, 50);
+		g.setFont(menuFont);
+		g.setColor(Color.white);
 		g.drawString("Path", JourneyToTheLostTreasure.WIDTH / 3, 50);
 		g.setFont(healthFont);
 
@@ -485,15 +560,29 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		else if (currentState == PATH1_STATE) {
 			updatePath1State();
 			drawPath1State(g);
+			if (b.getHealth() > 0) {
+				b.draw(g);
+			}
 
+		} else if (currentState == PATH2_STATE) {
+			drawPath2State(g);
+			updatePath2State();
+			if (b1.getHealth() > 0) {
+				b1.draw(g);
+				b1.update();
+			}
+			if (b2.getHealth() > 0) {
+				b2.draw(g);
+				b2.update();
+			}
 		}
-		if(m.isFound) {
+		if (m.isFound) {
 			m.drawInInv(g);
 		}
-		if(pot.isFound) {
-			pot.drawInInv(g);
+		if (pot.isFound) {
+			pot.drawInInv(g, pot.isDrank);
 		}
-		if(caveBoots.isFound) {
+		if (caveBoots.isFound) {
 			caveBoots.drawInInv(g);
 		}
 		if (s.inside) {
@@ -510,6 +599,27 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			sword.attack2(g);
 			doneAttacking = false;
 		}
+		if (b.isDead == false) {
+			if (b.left) {
+				b.setX(b.getX() - 1);
+			} else if (b.right) {
+				b.setX(b.getX() + 1);
+			}
+		}
+		if (b1.isDead == false) {
+			if (b1.left) {
+				b1.setX(b.getX() - 1);
+			} else if (b1.right) {
+				b1.setX(b1.getX() + 1);
+			}
+		}
+		if (b2.isDead == false) {
+			if (b2.left) {
+				b2.setX(b2.getX() - 1);
+			} else if (b2.right) {
+				b2.setX(b2.getX() + 1);
+			}
+		}
 
 		repaint();
 	}
@@ -523,19 +633,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 					swordDown = true;
 					swordUp = false;
 					doneAttacking = true;
-				}
-			}
-		}
-		if (caveBoots.isFound()) {
-			if (Object_Manager.inv.contains(caveBoots)) {
-				if (e.getKeyCode() == KeyEvent.VK_2) {
-					if (mapOpen == false) {
-
-						if (updatedSpeed == false) {
-							p.speed += 3;
-							updatedSpeed = true;
-						}
-					}
 				}
 			}
 		}
@@ -566,19 +663,166 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				right = true;
 
 			}
+			if (caveBoots.isFound()) {
+				if (Object_Manager.inv.contains(caveBoots)) {
+					if (caveBoots.positionInInv == INVENTORY_SLOT1) {
+						if (e.getKeyCode() == KeyEvent.VK_1) {
+							if (mapOpen == false) {
 
-			else if (e.getKeyCode() == KeyEvent.VK_1) {
-				if (Object_Manager.inv.contains(m)) {
+								if (updatedSpeed == false) {
+									p.speed += 3;
+									updatedSpeed = true;
+								}
+							}
+						}
+					} else if (caveBoots.positionInInv == INVENTORY_SLOT2) {
+						if (e.getKeyCode() == KeyEvent.VK_2) {
+							if (mapOpen == false) {
 
-					if (m.isFound()) {
-						mapOpen = true;
+								if (updatedSpeed == false) {
+									p.speed += 3;
+									updatedSpeed = true;
+								}
+							}
+						}
+					} else if (caveBoots.positionInInv == INVENTORY_SLOT3) {
+						if (e.getKeyCode() == KeyEvent.VK_3) {
+							if (mapOpen == false) {
 
+								if (updatedSpeed == false) {
+									p.speed += 3;
+									updatedSpeed = true;
+								}
+							}
+						}
+					}
+					if (caveBoots.positionInInv == INVENTORY_SLOT4) {
+						if (e.getKeyCode() == KeyEvent.VK_4) {
+							if (mapOpen == false) {
+
+								if (updatedSpeed == false) {
+									p.speed += 3;
+									updatedSpeed = true;
+								}
+							}
+						}
 					}
 				}
+			}
+			if (m.isFound()) {
+				if (Object_Manager.inv.contains(m)) {
+					if (m.positionInInv == INVENTORY_SLOT1) {
+						if (e.getKeyCode() == KeyEvent.VK_1) {
+							if (mapOpen == false) {
 
+								mapOpen = true;
+							}
+						} else if (m.positionInInv == INVENTORY_SLOT2) {
+							if (e.getKeyCode() == KeyEvent.VK_2) {
+								if (mapOpen == false) {
+
+									mapOpen = true;
+								}
+							}
+						} else if (m.positionInInv == INVENTORY_SLOT3) {
+							if (e.getKeyCode() == KeyEvent.VK_3) {
+								if (mapOpen == false) {
+
+									mapOpen = true;
+								}
+							}
+						} else if (m.positionInInv == INVENTORY_SLOT4) {
+							if (e.getKeyCode() == KeyEvent.VK_4) {
+								if (mapOpen == false) {
+
+									mapOpen = true;
+								}
+							}
+						}
+						if (pot.positionInInv == INVENTORY_SLOT1) {
+							if (e.getKeyCode() == KeyEvent.VK_1) {
+								if (pot.isDrank == false) {
+									if (p.health < 100) {
+										p.health = 100;
+										pot.isDrank = true;
+									}
+								}
+							}
+						}
+						if (pot.positionInInv == INVENTORY_SLOT2) {
+							if (e.getKeyCode() == KeyEvent.VK_2) {
+								if (pot.isDrank == false) {
+									if (p.health < 100) {
+										p.health = 100;
+										pot.isDrank = true;
+									}
+								}
+							}
+						}
+						if (pot.positionInInv == INVENTORY_SLOT3) {
+							if (e.getKeyCode() == KeyEvent.VK_3) {
+								if (pot.isDrank == false) {
+									if (p.health < 100) {
+										p.health = 100;
+										pot.isDrank = true;
+									}
+								}
+							}
+						}
+						if (pot.positionInInv == INVENTORY_SLOT4) {
+							if (e.getKeyCode() == KeyEvent.VK_4) {
+								if (pot.isDrank == false) {
+									if (p.health < 100) {
+										p.health = 100;
+										pot.isDrank = true;
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 		}
+		if (currentState == LAGOON_STATE) {
+			if (pot.isDrank == true) {
+				if (pot.positionInInv == INVENTORY_SLOT1) {
+					if (e.getKeyCode() == KeyEvent.VK_1) {
+						if (pot.isDrank == true) {
 
+							pot.isDrank = false;
+
+						}
+					}
+				}
+				if (pot.positionInInv == INVENTORY_SLOT2) {
+					if (e.getKeyCode() == KeyEvent.VK_2) {
+						if (pot.isDrank == true) {
+
+							pot.isDrank = false;
+
+						}
+					}
+				}
+				if (pot.positionInInv == INVENTORY_SLOT3) {
+					if (e.getKeyCode() == KeyEvent.VK_3) {
+						if (pot.isDrank == true) {
+
+							pot.isDrank = false;
+
+						}
+					}
+				}
+				if (pot.positionInInv == INVENTORY_SLOT4) {
+					if (e.getKeyCode() == KeyEvent.VK_4) {
+						if (pot.isDrank == true) {
+
+							pot.isDrank = false;
+
+						}
+					}
+				}
+			}
+		}
 		repaint();
 
 	}

@@ -4,14 +4,16 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-public class StrongBandit extends Game_Object {
+public class WeakBandit extends Game_Object {
+
 	int speed;
 	Rectangle attackRadius;
 	boolean left;
 	boolean right;
-	 boolean isDead = false;
+	boolean isDead = false;
+	private boolean hasStarted = false;
 
-	StrongBandit(int x, int y, int width, int height, int health, int speed) {
+	WeakBandit(int x, int y, int width, int height, int health, int speed) {
 		super(x, y, width, height, health);
 		this.speed = speed;
 
@@ -22,14 +24,16 @@ public class StrongBandit extends Game_Object {
 		if (health <= 0) {
 			isDead = true;
 		}
-		if (isDead == false) {
-
-		}
+		
 	}
 
 	void draw(Graphics g) {
-		g.setColor(Color.RED);
+		g.setColor(Color.MAGENTA);
 		g.fillRect(x, y, width, height);
+		if (hasStarted == false) {
+			right = true;
+			hasStarted = true;
+		}
 
 	}
 
@@ -60,17 +64,6 @@ public class StrongBandit extends Game_Object {
 
 	int getHealth() {
 		return health;
-	}
-
-	void move() {
-		if (left) {
-			x -= 1;
-
-		}
-		if (right) {
-			x += 1;
-
-		}
 	}
 
 }

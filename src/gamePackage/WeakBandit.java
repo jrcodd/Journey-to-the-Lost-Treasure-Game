@@ -24,7 +24,7 @@ public class WeakBandit extends Game_Object {
 		if (health <= 0) {
 			isDead = true;
 		}
-		
+
 	}
 
 	void draw(Graphics g) {
@@ -34,6 +34,14 @@ public class WeakBandit extends Game_Object {
 			right = true;
 			hasStarted = true;
 		}
+		if (health < 30) {
+			g.setColor(Color.red);
+		} else if (health < 50) {
+			g.setColor(Color.YELLOW);
+		} else if (health > 50) {
+			g.setColor(Color.darkGray);
+		}
+		g.drawString(Integer.toString(health), x - 10, y + 80);
 
 	}
 

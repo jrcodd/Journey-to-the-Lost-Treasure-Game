@@ -467,8 +467,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH, JourneyToTheLostTreasure.HEIGHT);
 		g.setColor(Color.GRAY);
 		p.draw(g);
-		if (b.getHealth() > 0) {
-			b.draw(g);
+		if (b1.getHealth() > 0) {
+			b1.draw(g);
+		}
+		if (b2.getHealth() > 0) {
+			b2.draw(g);
 		}
 
 		g.setColor(Color.GRAY);
@@ -748,8 +751,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 									}
 								}
 							}
-						}
-						if (pot.positionInInv == INVENTORY_SLOT2) {
+						} else if (pot.positionInInv == INVENTORY_SLOT2) {
 							if (e.getKeyCode() == KeyEvent.VK_2) {
 								if (pot.isDrank == false) {
 									if (p.health < 100) {
@@ -758,8 +760,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 									}
 								}
 							}
-						}
-						if (pot.positionInInv == INVENTORY_SLOT3) {
+						} else if (pot.positionInInv == INVENTORY_SLOT3) {
 							if (e.getKeyCode() == KeyEvent.VK_3) {
 								if (pot.isDrank == false) {
 									if (p.health < 100) {
@@ -768,8 +769,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 									}
 								}
 							}
-						}
-						if (pot.positionInInv == INVENTORY_SLOT4) {
+						} else if (pot.positionInInv == INVENTORY_SLOT4) {
 							if (e.getKeyCode() == KeyEvent.VK_4) {
 								if (pot.isDrank == false) {
 									if (p.health < 100) {

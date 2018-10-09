@@ -121,12 +121,12 @@ public class Object_Manager {
 						System.out.println("player health: " + p.health);
 						isDefending1 = true;
 					}
-				}
-				if (p.collisionBox.intersects(b1.collisionBox)) {
+
 					if (GamePanel.swordDown) {
-						b1.setHealth(b.getHealth() - 30);
-						isDefending1 = false;
-						System.out.println("bandit health: " + b1.health);
+							b1.setHealth(b.getHealth() - 30);
+							isDefending1 = false;
+							System.out.println("Weakbandit1 health: " + b1.health);
+						
 					}
 				}
 			}
@@ -137,27 +137,28 @@ public class Object_Manager {
 					coinsAdded1 = true;
 				}
 			}
-
-			if (p.collisionBox.intersects(b2.collisionBox)) {
-				if (isDefending2 == false) {
-					p.health -= 3;
-					System.out.println("player health: " + p.health);
-					isDefending2 = true;
+			if (b2.isDead == false) {
+				if (p.collisionBox.intersects(b2.collisionBox)) {
+					if (isDefending2 == false) {
+						p.health -= 3;
+						System.out.println("player health: " + p.health);
+						isDefending2 = true;
+					}
+				}
+				if (p.collisionBox.intersects(b2.collisionBox)) {
+					if (GamePanel.swordDown) {
+						b2.setHealth(b.getHealth() - 30);
+						isDefending2 = false;
+						System.out.println("Weak bandit2 health: " + b2.health);
+					}
 				}
 			}
-			if (p.collisionBox.intersects(b2.collisionBox)) {
-				if (GamePanel.swordDown) {
-					b2.setHealth(b.getHealth() - 30);
-					isDefending2 = false;
-					System.out.println("Weak bandit2 health: " + b2.health);
+			if (b2.getHealth() <= 0) {
+				b2.isDead = true;
+				if (coinsAdded2 == false) {
+					coins += 25;
+					coinsAdded2 = true;
 				}
-			}
-		}
-		if (b2.getHealth() <= 0) {
-			b2.isDead = true;
-			if (coinsAdded2 == false) {
-				coins += 25;
-				coinsAdded2 = true;
 			}
 		}
 
@@ -201,6 +202,8 @@ public class Object_Manager {
 		p.update();
 		sword.update();
 		b.update();
+		b1.update();
+		b2.update();
 		pot.update();
 		checkCollision();
 

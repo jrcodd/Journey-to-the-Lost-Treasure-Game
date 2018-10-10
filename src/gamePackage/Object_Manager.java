@@ -24,6 +24,8 @@ public class Object_Manager {
 	private boolean coinsAdded2;
 	boolean isDefending2;
 	boolean isDefending1;
+	boolean b1Start;
+	boolean b2Start;
 
 	Object_Manager(Player p, TreasureMap m, SpeedyBoots caveBoots, Shack s, OldMan man, Sword sword, StrongBandit b,
 			HealthPotion pot, WeakBandit b1, WeakBandit b2) {
@@ -49,7 +51,6 @@ public class Object_Manager {
 		}
 		if (GamePanel.getState() == GamePanel.PATH1_STATE) {
 			if (b.isDead == false) {
-
 				if (b.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 150) {
 					System.out.println("hit the wall");
 					isDefending = false;
@@ -91,45 +92,13 @@ public class Object_Manager {
 			}
 		} else if (GamePanel.getState() == GamePanel.PATH2_STATE) {
 
-			if (b1.isDead == false) {
-				if (b1.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 150) {
-					System.out.println("hit the wall");
-					isDefending1 = false;
-					b1.right = false;
-					b1.left = true;
-				} else if (b1.collisionBox.x < 0) {
-					System.out.println("hit the other wall");
-					isDefending1 = false;
-					b1.right = true;
-					b1.left = false;
-				}
-				if (b2.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 150) {
-					System.out.println("hit the wall");
-					isDefending2 = false;
-					b2.right = false;
-					b2.left = true;
-				} else if (b2.collisionBox.x < 0) {
-					System.out.println("hit the other wall");
-					isDefending2 = false;
-					b2.right = true;
-					b2.left = false;
-				}
-
-				if (p.collisionBox.intersects(b1.collisionBox)) {
-					if (isDefending1 == false) {
-						p.health -= 3;
-						System.out.println("player health: " + p.health);
-						isDefending1 = true;
-					}
-
-					if (GamePanel.swordDown) {
-							b1.setHealth(b.getHealth() - 30);
-							isDefending1 = false;
-							System.out.println("Weakbandit1 health: " + b1.health);
-						
-					}
-				}
+			if (!b1.isDead) {
+				processWeakBanditIsAlive(b1);
 			}
+			if (!b2.isDead) {
+				processWeakBanditIsAlive(b2);
+			}
+
 			if (b1.getHealth() <= 0) {
 				b1.isDead = true;
 				if (coinsAdded1 == false) {
@@ -137,22 +106,7 @@ public class Object_Manager {
 					coinsAdded1 = true;
 				}
 			}
-			if (b2.isDead == false) {
-				if (p.collisionBox.intersects(b2.collisionBox)) {
-					if (isDefending2 == false) {
-						p.health -= 3;
-						System.out.println("player health: " + p.health);
-						isDefending2 = true;
-					}
-				}
-				if (p.collisionBox.intersects(b2.collisionBox)) {
-					if (GamePanel.swordDown) {
-						b2.setHealth(b.getHealth() - 30);
-						isDefending2 = false;
-						System.out.println("Weak bandit2 health: " + b2.health);
-					}
-				}
-			}
+			
 			if (b2.getHealth() <= 0) {
 				b2.isDead = true;
 				if (coinsAdded2 == false) {
@@ -161,7 +115,6 @@ public class Object_Manager {
 				}
 			}
 		}
-
 		if (GamePanel.getState() == 5)
 
 		{
@@ -197,6 +150,41 @@ public class Object_Manager {
 		}
 
 	}
+
+	private void processWeakBanditIsAlive(WeakBandit wb) {
+		if(!wb.Start) {
+			wb.right = true;
+		}
+		
+		if (wb.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 150) {
+			System.out.println("hit the wall");
+			isDefending2 = false;
+			wb.right = false;
+			wb.left = true;
+		} else if (wb.collisionBox.x < 0) {
+			System.out.println("hit the other wall");
+			isDefending2 = false;
+			wb.right = true;
+			wb.left = false;
+		}
+		if (p.collisionBox.intersects(wb.collisionBox)) {
+			if (isDefending2 == false) {
+				p.health -= 3;
+				System.out.println("player health: " + p.health);
+				isDefending2 = true;
+			}
+		}
+		if (p.collisionBox.intersects(wb.collisionBox)) {
+			if (GamePanel.swordDown) {
+				wb.setHealth(wb.getHealth() - 30);
+				isDefending2 = false;
+				System.out.println("Weak bandit2 health: " + b2.health);
+				System.out.println("Weak bandit 1 health " + b1.health);
+			}
+		}
+	}
+
+	
 
 	void update() {
 		p.update();

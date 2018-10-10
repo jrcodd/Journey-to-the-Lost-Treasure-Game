@@ -29,7 +29,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	TreasureMap m = new TreasureMap(400, 100, 10, 10, 10, false);
 	Sword sword = new Sword(115, 500, 10, 40, 100, false);
 	StrongBandit b = new StrongBandit(400, 100, 40, 80, 300, 1);
-	WeakBandit b1 = new WeakBandit(250, 100, 20, 60, 100, 2);
+	WeakBandit b1 = new WeakBandit(300, 100, 20, 60, 100, 2);
 	WeakBandit b2 = new WeakBandit(500, 100, 20, 60, 100, 2);
 	HealthPotion pot = new HealthPotion(500, 468, 10, 10, 30, false);
 	static boolean up = false;
@@ -266,9 +266,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 
 		o.update();
-		o.checkCollision();
-		b1.update();
-		b2.update();
+		
+		
 
 		repaint();
 	}
@@ -467,12 +466,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH, JourneyToTheLostTreasure.HEIGHT);
 		g.setColor(Color.GRAY);
 		p.draw(g);
-		if (b1.getHealth() > 0) {
-			b1.draw(g);
-		}
-		if (b2.getHealth() > 0) {
-			b2.draw(g);
-		}
+		
 
 		g.setColor(Color.GRAY);
 		g.fillRect(850, 0, 150, 700);
@@ -572,11 +566,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			updatePath2State();
 			if (b1.getHealth() > 0) {
 				b1.draw(g);
-				b1.update();
+				
 			}
 			if (b2.getHealth() > 0) {
 				b2.draw(g);
-				b2.update();
+				
 			}
 		}
 		if (m.isFound) {
@@ -651,7 +645,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 			}
 
-		} else if (currentState > MENU_STATE) {
+		}  if (currentState > MENU_STATE) {
 			if (e.getKeyCode() == KeyEvent.VK_W) {
 				up = true;
 
@@ -663,6 +657,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				System.out.println("a pressed");
 
 			} else if (e.getKeyCode() == KeyEvent.VK_D) {
+				right = true;
+
+			}
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
+				up = true;
+
+			} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				down = true;
+
+			} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+				left = true;
+				System.out.println("a pressed");
+
+			} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				right = true;
 
 			}
@@ -839,7 +847,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_A) {
 			left = false;
 			System.out.println("a released");
-		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+		}
+		if (e.getKeyCode() == KeyEvent.VK_UP) {
+			up = false;
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			down = false;
+		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			right = false;
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			left = false;
+			System.out.println("a released");
+		}else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			if (sword.isFound) {
 				swordDown = false;
 				swordUp = true;
@@ -866,6 +884,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			sword.setX(sword.getX() + p.getSpeed());
 		}
 		if (left) {
+			System.out.println("should be going left");
 			p.setX(p.getX() - p.getSpeed());
 			sword.setX(sword.getX() - p.getSpeed());
 		}

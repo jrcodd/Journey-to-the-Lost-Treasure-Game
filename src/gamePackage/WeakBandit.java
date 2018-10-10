@@ -11,8 +11,7 @@ public class WeakBandit extends Game_Object {
 	boolean left;
 	boolean right;
 	boolean isDead = false;
-	private boolean hasStarted = false;
-
+	boolean Start = false;
 	WeakBandit(int x, int y, int width, int height, int health, int speed) {
 		super(x, y, width, height, health);
 		this.speed = speed;
@@ -21,19 +20,20 @@ public class WeakBandit extends Game_Object {
 
 	void update() {
 		super.update();
-		if (health <= 0) {
-			isDead = true;
-		}
+		
 
 	}
 
 	void draw(Graphics g) {
 		g.setColor(Color.MAGENTA);
 		g.fillRect(x, y, width, height);
-		if (hasStarted == false) {
-			right = true;
-			hasStarted = true;
-		}
+		
+		drawHealth(g);
+		
+
+	}
+
+	private void drawHealth(Graphics g) {
 		if (health < 30) {
 			g.setColor(Color.red);
 		} else if (health < 50) {
@@ -42,7 +42,6 @@ public class WeakBandit extends Game_Object {
 			g.setColor(Color.darkGray);
 		}
 		g.drawString(Integer.toString(health), x - 10, y + 80);
-
 	}
 
 	int getX() {

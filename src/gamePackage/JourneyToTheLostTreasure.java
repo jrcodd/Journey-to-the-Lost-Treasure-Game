@@ -17,7 +17,7 @@ public class JourneyToTheLostTreasure {
 		// journey.setup();
 	}
 
-	JourneyToTheLostTreasure() {
+	JourneyToTheLostTreasure() {  
 		f = new JFrame();
 		gp = new GamePanel();
 		setup();

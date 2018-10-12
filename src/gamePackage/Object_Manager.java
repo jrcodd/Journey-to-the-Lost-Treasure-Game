@@ -1,15 +1,15 @@
 package gamePackage;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 
 public class Object_Manager {
 	static ArrayList<Game_Object> inv;
 	Shack s;
+	BayShop bayShop;
+	PlayerShip ship;
 	static SpeedyBoots caveBoots;
 	Player p;
 	static TreasureMap m;
-	Rectangle shack = new Rectangle(500, 50, 280, 280);
 	OldMan man;
 	Sword sword;
 	StrongBandit b;
@@ -17,7 +17,7 @@ public class Object_Manager {
 	WeakBandit b2;
 	boolean isDefending;
 	static HealthPotion pot;
-	boolean hasStarted = false;
+	boolean bStart;
 	int coins;
 	boolean coinsAdded;
 	private boolean coinsAdded1;
@@ -27,9 +27,10 @@ public class Object_Manager {
 	boolean b1Start;
 	boolean b2Start;
 
-	Object_Manager(Player p, TreasureMap m, SpeedyBoots caveBoots, Shack s, OldMan man, Sword sword, StrongBandit b,
-			HealthPotion pot, WeakBandit b1, WeakBandit b2) {
+	Object_Manager(Player p, TreasureMap m, SpeedyBoots caveBoots, Shack s, BayShop bayShop, PlayerShip ship,
+			OldMan man, Sword sword, StrongBandit b, HealthPotion pot, WeakBandit b1, WeakBandit b2) {
 		this.s = s;
+		this.bayShop = bayShop;
 		this.p = p;
 		Object_Manager.m = m;
 		Object_Manager.caveBoots = caveBoots;
@@ -43,6 +44,29 @@ public class Object_Manager {
 	}
 
 	void checkCollision() {
+
+		if (GamePanel.currentState == GamePanel.BAY_STATE) {
+			if (p.collisionBox.intersects(bayShop.collisionBox)) {
+				bayShop.inside = true;
+			}
+
+			if (p.collisionBox.intersects(ship.hitBox)) {
+				purchaseShip();
+				LeaveInShip();
+			}
+
+		}
+
+		if (GamePanel.getState() != GamePanel.PATH1_STATE) {
+			b.right = false;
+			b.left = false;
+		}
+		if (GamePanel.getState() != GamePanel.PATH2_STATE) {
+			b1.right = false;
+			b2.right = false;
+			b1.left = false;
+			b1.right = false;
+		}
 		if (GamePanel.getState() == GamePanel.LAGOON_STATE) {
 			if (p.collisionBox.intersects(pot.collisionBox)) {
 				pot.isFound = true;
@@ -50,6 +74,11 @@ public class Object_Manager {
 			}
 		}
 		if (GamePanel.getState() == GamePanel.PATH1_STATE) {
+			if (!bStart) {
+				if (!b.right) {
+					b.right = true;
+				}
+			}
 			if (b.isDead == false) {
 				if (b.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 150) {
 					System.out.println("hit the wall");
@@ -61,11 +90,6 @@ public class Object_Manager {
 					isDefending = false;
 					b.right = true;
 					b.left = false;
-				}
-
-				if (hasStarted == false) {
-					b.right = true;
-					hasStarted = true;
 				}
 
 				if (p.collisionBox.intersects(b.collisionBox)) {
@@ -91,7 +115,16 @@ public class Object_Manager {
 				}
 			}
 		} else if (GamePanel.getState() == GamePanel.PATH2_STATE) {
-
+			if (!b1Start) {
+				if (!b1.right) {
+					b1.right = true;
+				}
+			}
+			if (!b2Start) {
+				if (!b2.right) {
+					b2.right = true;
+				}
+			}
 			if (!b1.isDead) {
 				processWeakBanditIsAlive(b1);
 			}
@@ -106,7 +139,7 @@ public class Object_Manager {
 					coinsAdded1 = true;
 				}
 			}
-			
+
 			if (b2.getHealth() <= 0) {
 				b2.isDead = true;
 				if (coinsAdded2 == false) {
@@ -115,7 +148,7 @@ public class Object_Manager {
 				}
 			}
 		}
-		if (GamePanel.getState() == 5)
+		if (GamePanel.getState() == GamePanel.IN_SHACK_STATE)
 
 		{
 			if (p.collisionBox.intersects(man.collisionBox)) {
@@ -131,20 +164,21 @@ public class Object_Manager {
 				}
 			}
 		}
-		if (GamePanel.getState() == 1) {
+		if (GamePanel.getState() == GamePanel.FOREST_STATE) {
 			if (p.collisionBox.intersects(m.collisionBox)) {
 				m.isFound = true;
 
 			}
 		}
-		if (GamePanel.getState() == 3) {
+		if (GamePanel.getState() == GamePanel.CAVE_STATE) {
 			if (caveBoots.collisionBox.intersects(p.collisionBox)) {
 				caveBoots.isFound = true;
 
 			}
 		}
-		if (GamePanel.getState() == 4) {
-			if (p.collisionBox.intersects(shack)) {
+		if (GamePanel.getState() == GamePanel.SHACK_STATE) {
+			if (p.collisionBox.intersects(s.collisionBox)) {
+				GamePanel.currentState = GamePanel.IN_SHACK_STATE;
 				s.inside = true;
 			}
 		}
@@ -152,10 +186,7 @@ public class Object_Manager {
 	}
 
 	private void processWeakBanditIsAlive(WeakBandit wb) {
-		if(!wb.Start) {
-			wb.right = true;
-		}
-		
+
 		if (wb.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 150) {
 			System.out.println("hit the wall");
 			isDefending2 = false;
@@ -184,7 +215,21 @@ public class Object_Manager {
 		}
 	}
 
-	
+	void purchaseShip() {
+		if (coins >= 100) {
+			if (!ship.isBought) {
+				coins -= 100;
+				ship.isBought = true;
+			}
+		}
+	}
+
+	void LeaveInShip() {
+		if (ship.isBought) {
+			p.setX(ship.getX() + 50);
+			p.setY(ship.getY() + 20);
+		}
+	}
 
 	void update() {
 		p.update();

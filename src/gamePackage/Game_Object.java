@@ -8,7 +8,7 @@ public class Game_Object {
 	int y;
 	int height;
 	int width;
-Rectangle collisionBox;
+    Rectangle collisionBox;
 	Game_Object(int x, int y, int width, int height, int health) {
 		this.x = x;
 		this.y = y;

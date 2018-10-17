@@ -2,6 +2,8 @@ package gamePackage;
 
 import java.util.ArrayList;
 
+
+
 public class Object_Manager {
 	static ArrayList<Game_Object> inv;
 	Shack s;
@@ -39,6 +41,7 @@ public class Object_Manager {
 		this.b = b;
 		this.b1 = b1;
 		this.b2 = b2;
+		this.ship = ship;
 		Object_Manager.pot = pot;
 		inv = new ArrayList<Game_Object>();
 	}
@@ -46,11 +49,14 @@ public class Object_Manager {
 	void checkCollision() {
 
 		if (GamePanel.currentState == GamePanel.BAY_STATE) {
+			if(ship.hitBox.x<=0) {
+				GamePanel.currentState = GamePanel.OCEAN_STATE;
+			}
 			if (p.collisionBox.intersects(bayShop.collisionBox)) {
 				bayShop.inside = true;
 			}
 
-			if (p.collisionBox.intersects(ship.hitBox)) {
+				if (p.collisionBox.intersects(ship.hitBox)) {
 				purchaseShip();
 				LeaveInShip();
 			}
@@ -226,13 +232,17 @@ public class Object_Manager {
 
 	void LeaveInShip() {
 		if (ship.isBought) {
+			GamePanel.playerisSailing = true;
 			p.setX(ship.getX() + 50);
 			p.setY(ship.getY() + 20);
+			sword.setX(ship.getX() + 60);
+			sword.setY(ship.getY() + 25);
 		}
 	}
 
 	void update() {
 		p.update();
+		ship.update();
 		sword.update();
 		b.update();
 		b1.update();

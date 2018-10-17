@@ -1,4 +1,4 @@
-package gamePackage;
+ package gamePackage;
 
 import java.awt.Color;
 import java.awt.Graphics;

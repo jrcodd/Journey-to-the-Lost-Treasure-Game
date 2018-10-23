@@ -1,6 +1,6 @@
 package gamePackage;
 
-import java.awt.Color;
+
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
@@ -19,8 +19,9 @@ public class PlayerShip extends Game_Object {
 	}
 
 	void draw(Graphics g) {
-g.setColor(Color.ORANGE);
-		g.fillRect(x, y, width, height);
+
+
+		g.drawImage(GamePanel.level1Boat, x,y,width, height, null);
 
 	}
 

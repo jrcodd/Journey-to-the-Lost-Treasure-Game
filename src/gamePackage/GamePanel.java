@@ -19,6 +19,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	public static BufferedImage MenuImg;
+	public static BufferedImage level1Boat;
+	public static BufferedImage level2Boat;
+	public static BufferedImage level3Boat;
 	boolean doneAttacking;
 	final static int fps = 60;
 	Timer t;
@@ -79,7 +82,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		t = new Timer(1000 / fps, this);
 		t.start();
 		try {
-
+            level1Boat = ImageIO.read(this.getClass().getResourceAsStream("Ship level 1.png"));
+            level2Boat = ImageIO.read(this.getClass().getResourceAsStream("Ship level 2.png"));
+            level3Boat = ImageIO.read(this.getClass().getResourceAsStream("upgradedShip.png"));
 			MenuImg = ImageIO.read(this.getClass().getResourceAsStream("JourneyMenuImg.png"));
 
 		} catch (IOException e) {

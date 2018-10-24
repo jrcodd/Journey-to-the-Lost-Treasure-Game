@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.reflect.Array;
+
 import javax.imageio.ImageIO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,11 +49,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Font menuFont;
 	Font instructionsFont;
 	Font healthFont;
-
+	final static int mapStates[][] = { { 10, 10, 10, 10, 11 }, { 10, 10, 10, 10, 10 }, { 10, 10, 10, 10, 8 },
+			{ 10, 10, 10, -10, 7 }, { 10, 10, 10, -10, 6 }, { -10, 3, 1, 2, 4 } };
+	static int mapRow = 5;
+	static int mapColomn = 2;
 	final static int INVENTORY_SLOT1 = 200;
 	final static int INVENTORY_SLOT2 = 350;
 	final static int INVENTORY_SLOT3 = 500;
 	final static int INVENTORY_SLOT4 = 650;
+	final static int NO_PLACE = -10;
 	final static int MENU_STATE = 0;
 	final static int FOREST_STATE = 1;
 	final static int LAGOON_STATE = 2;
@@ -82,9 +88,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		t = new Timer(1000 / fps, this);
 		t.start();
 		try {
-            level1Boat = ImageIO.read(this.getClass().getResourceAsStream("Ship level 1.png"));
-            level2Boat = ImageIO.read(this.getClass().getResourceAsStream("Ship level 2.png"));
-            level3Boat = ImageIO.read(this.getClass().getResourceAsStream("upgradedShip.png"));
+			level1Boat = ImageIO.read(this.getClass().getResourceAsStream("Ship level 1.png"));
+			level2Boat = ImageIO.read(this.getClass().getResourceAsStream("Ship level 2.png"));
+			level3Boat = ImageIO.read(this.getClass().getResourceAsStream("upgradedShip.png"));
 			MenuImg = ImageIO.read(this.getClass().getResourceAsStream("JourneyMenuImg.png"));
 
 		} catch (IOException e) {
@@ -115,11 +121,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (p.collisionBox.x < 0) {
 			p.setX(800);
 			sword.setX(815);
-			currentState = CAVE_STATE;
+			if (mapRow > 0) {
+				mapRow -= 1;
+			}
 		} else if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 170) {
 			p.setX(10);
 			sword.setX(25);
-			currentState = LAGOON_STATE;
+			if (mapRow < 6) {
+				mapRow += 1;
+			}
 		}
 		o.update();
 		o.checkCollision();
@@ -139,13 +149,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (p.collisionBox.x < 0) {
 			p.setX(800);
 			sword.setX(815);
-
-			currentState = FOREST_STATE;
-		}
-		if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 150) {
+			if (mapRow > 0) {
+				mapRow -= 1;
+			}
+		} else if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 170) {
 			p.setX(10);
 			sword.setX(25);
-			currentState = SHACK_STATE;
+			if (mapRow < 6) {
+				mapRow += 1;
+			}
 		}
 		o.update();
 		o.checkCollision();
@@ -162,15 +174,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			up = false;
 
 		}
-		if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 150) {
-			p.setX(10);
-			sword.setX(25);
-			currentState = FOREST_STATE;
-		}
 		if (p.collisionBox.x < 0) {
-			currentState = SHACK_STATE;
 			p.setX(800);
 			sword.setX(815);
+			if (mapRow > 0) {
+				mapRow -= 1;
+			}
+		} else if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 170) {
+			p.setX(10);
+			sword.setX(25);
+			if (mapRow < 6) {
+				mapRow += 1;
+			}
 		}
 		o.update();
 		o.checkCollision();
@@ -187,17 +202,22 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (p.collisionBox.x < 0) {
 			p.setX(800);
 			sword.setX(815);
-			currentState = LAGOON_STATE;
-		}
-		if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 150) {
+			if (mapRow > 0) {
+				mapRow -= 1;
+			}
+		} else if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 170) {
 			p.setX(10);
 			sword.setX(25);
-			currentState = CAVE_STATE;
+			if (mapRow < 6) {
+				mapRow += 1;
+			}
 		}
-		if (p.collisionBox.y < 0) {
-			p.setY(700);
-			sword.setY(700);
-			currentState = PATH1_STATE;
+		if (p.collisionBox.x < 0) {
+			p.setX(800);
+			sword.setX(815);
+			if (mapColomn > 0) {
+				mapColomn -= 1;
+			}
 		}
 
 		o.update();
@@ -219,8 +239,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 		if (p.collisionBox.y > JourneyToTheLostTreasure.HEIGHT) {
 			s.inside = false;
+			if (mapColomn > 0) {
+				mapColomn -= 1;
+			}
 
-			currentState = SHACK_STATE;
 			p.setY(350);
 			p.setX(560);
 			sword.setX(575);
@@ -232,19 +254,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void updatePath1State() {
-		if (p.collisionBox.y > JourneyToTheLostTreasure.HEIGHT) {
-
-			currentState = SHACK_STATE;
-			p.setY(50);
-			sword.setY(65);
-
-		} else if (p.collisionBox.y < 0) {
-			if (b.isDead == true) {
-				currentState = PATH2_STATE;
-				p.setY(700);
-				sword.setY(700);
-			} else if (b.isDead == false) {
-				up = false;
+		if (p.collisionBox.y < 0) {
+			p.setY(800);
+			sword.setY(815);
+			if (mapColomn > 0) {
+				mapColomn -= 1;
+			}
+		} else if (p.collisionBox.y > JourneyToTheLostTreasure.WIDTH - 170) {
+			p.setY(10);
+			sword.setY(25);
+			if (mapColomn < 6) {
+				mapColomn += 1;
 			}
 		}
 		o.update();
@@ -254,11 +274,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void updatePath2State() {
-		if (p.collisionBox.y > JourneyToTheLostTreasure.HEIGHT) {
-
-			currentState = PATH1_STATE;
-			p.setY(50);
-			sword.setY(65);
+		if (p.collisionBox.y < 0) {
+			p.setY(800);
+			sword.setY(815);
+			if (mapColomn > 0) {
+				mapColomn -= 1;
+			}
+		} else if (p.collisionBox.y > JourneyToTheLostTreasure.WIDTH - 170) {
+			p.setY(10);
+			sword.setY(25);
+			if (mapColomn < 6) {
+				mapColomn += 1;
+			}
 		}
 
 		if (p.collisionBox.x < 0) {
@@ -267,12 +294,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 150) {
 			right = false;
 		}
-		if (p.collisionBox.y <= 0) {
-			currentState = BAY_STATE;
-			p.setY(600);
-			sword.setY(600);
-
-		}
 
 		o.update();
 
@@ -280,11 +301,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void updateBayState() {
-		if (p.collisionBox.y > JourneyToTheLostTreasure.HEIGHT - 60) {
-			currentState = PATH2_STATE;
-			p.setY(80);
-			sword.setY(80);
-
+		if (p.collisionBox.y > JourneyToTheLostTreasure.WIDTH - 170) {
+			p.setX(10);
+			sword.setX(25);
+			if (mapColomn < 6) {
+				mapColomn += 1;
+			}
 		} else if (p.collisionBox.y < 0) {
 			up = false;
 
@@ -627,98 +649,100 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 		if (currentState == MENU_STATE) {
 			drawMenuState(g);
-		} else if (currentState == FOREST_STATE) {
+		} else if (currentState == END_STATE) {
+		} else {
+			if (mapStates[mapRow][mapColomn] == FOREST_STATE) {
 
-			updateForestState();
-			drawForestState(g);
+				updateForestState();
+				drawForestState(g);
 
-		} else if (currentState == LAGOON_STATE) {
-			updateLagoonState();
-			drawLagoonState(g);
-		} else if (currentState == CAVE_STATE) {
+			} else if (mapStates[mapRow][mapColomn] == LAGOON_STATE) {
+				updateLagoonState();
+				drawLagoonState(g);
+			} else if (mapStates[mapRow][mapColomn] == CAVE_STATE) {
 
-			updateCaveState();
-			drawCaveState(g);
-		} else if (currentState == SHACK_STATE) {
+				updateCaveState();
+				drawCaveState(g);
+			} else if (mapStates[mapRow][mapColomn] == SHACK_STATE) {
 
-			updateShackState();
-			drawShackState(g);
-		}
-
-		else if (currentState == PATH1_STATE) {
-			updatePath1State();
-			drawPath1State(g);
-			if (b.getHealth() > 0) {
-				b.draw(g);
+				updateShackState();
+				drawShackState(g);
 			}
 
-		} else if (currentState == PATH2_STATE) {
-			drawPath2State(g);
-			updatePath2State();
-			if (b1.getHealth() > 0) {
-				b1.draw(g);
+			else if (mapStates[mapRow][mapColomn] == PATH1_STATE) {
+				updatePath1State();
+				drawPath1State(g);
+				if (b.getHealth() > 0) {
+					b.draw(g);
+				}
 
-			}
-			if (b2.getHealth() > 0) {
-				b2.draw(g);
+			} else if (mapStates[mapRow][mapColomn] == PATH2_STATE) {
+				drawPath2State(g);
+				updatePath2State();
+				if (b1.getHealth() > 0) {
+					b1.draw(g);
 
-			}
-		} else if (currentState == BAY_STATE) {
-			drawBayState(g);
-			updateBayState();
-		} else if (currentState == OCEAN_STATE) {
-			drawOceanState(g);
-			updateOceanState();
-		}
-		if (m.isFound) {
-			m.drawInInv(g);
-		}
-		if (pot.isFound) {
-			pot.drawInInv(g, pot.isDrank);
-		}
-		if (caveBoots.isFound) {
-			caveBoots.drawInInv(g);
-		}
-		if (s.inside) {
+				}
+				if (b2.getHealth() > 0) {
+					b2.draw(g);
 
-			updateInShackState();
-			drawInShackState(g);
-		}
-		if (bayShop.inside) {
-			drawInShopState(g);
-			updateInShopState();
-		}
-		if (mapOpen) {
-			drawMapState(g);
-		}
-		if (swordDown) {
-			sword.attack1(g);
-		} else if (swordUp) {
-			sword.attack2(g);
-			doneAttacking = false;
-		}
-		if (b.isDead == false) {
-			if (b.left) {
-				b.setX(b.getX() - 1);
-			} else if (b.right) {
-				b.setX(b.getX() + 1);
+				}
+			} else if (mapStates[mapRow][mapColomn] == BAY_STATE) {
+				drawBayState(g);
+				updateBayState();
+			} else if (mapStates[mapRow][mapColomn] == OCEAN_STATE) {
+				drawOceanState(g);
+				updateOceanState();
 			}
-		}
-		if (b1.isDead == false) {
-			if (b1.left) {
-				b1.setX(b1.getX() - 1);
-			} else if (b1.right) {
-				b1.setX(b1.getX() + 1);
+			if (m.isFound) {
+				m.drawInInv(g);
 			}
-		}
-		if (b2.isDead == false) {
-			if (b2.left) {
-				b2.setX(b2.getX() - 1);
-			} else if (b2.right) {
-				b2.setX(b2.getX() + 1);
+			if (pot.isFound) {
+				pot.drawInInv(g, pot.isDrank);
 			}
-		}
+			if (caveBoots.isFound) {
+				caveBoots.drawInInv(g);
+			}
+			if (s.inside) {
 
+				updateInShackState();
+				drawInShackState(g);
+			}
+			if (bayShop.inside) {
+				drawInShopState(g);
+				updateInShopState();
+			}
+			if (mapOpen) {
+				drawMapState(g);
+			}
+			if (swordDown) {
+				sword.attack1(g);
+			} else if (swordUp) {
+				sword.attack2(g);
+				doneAttacking = false;
+			}
+			if (b.isDead == false) {
+				if (b.left) {
+					b.setX(b.getX() - 1);
+				} else if (b.right) {
+					b.setX(b.getX() + 1);
+				}
+			}
+			if (b1.isDead == false) {
+				if (b1.left) {
+					b1.setX(b1.getX() - 1);
+				} else if (b1.right) {
+					b1.setX(b1.getX() + 1);
+				}
+			}
+			if (b2.isDead == false) {
+				if (b2.left) {
+					b2.setX(b2.getX() - 1);
+				} else if (b2.right) {
+					b2.setX(b2.getX() + 1);
+				}
+			}
+		}
 		repaint();
 	}
 
@@ -733,11 +757,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (p.collisionBox.x < 0) {
 			p.setX(800);
 			sword.setX(815);
-			currentState = CAVE_STATE;
+			if (mapRow > 0) {
+				mapRow -= 1;
+			}
 		} else if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 170) {
 			p.setX(10);
 			sword.setX(25);
-			currentState = LAGOON_STATE;
+			if (mapRow < 6) {
+				mapRow += 1;
+			}
 		}
 		o.update();
 		o.checkCollision();
@@ -783,15 +811,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			right = false;
 		}
 
-		if (p.collisionBox.y > JourneyToTheLostTreasure.HEIGHT) {
-			s.inside = false;
-
-			bayShop.inside = false;
-			currentState = BAY_STATE;
-			p.setY(350);
-			p.setX(560);
-			sword.setX(575);
-			sword.setY(350);
+		else if (p.collisionBox.y > JourneyToTheLostTreasure.HEIGHT) {
+			p.setX(10);
+			sword.setX(25);
+			if (mapRow < 6) {
+				mapRow += 1;
+			}
 		}
 		o.update();
 		o.checkCollision();
@@ -838,9 +863,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_H) {
-			currentState = BAY_STATE;
-		}
+
 		// System.out.println("pressed");
 		if (sword.isFound) {
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
@@ -859,12 +882,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 		if (currentState == MENU_STATE) {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-				currentState = FOREST_STATE;
-
+				mapRow = 2;
+				mapColomn = 4;
+				currentState = mapStates[mapRow][mapColomn];
 			}
 
 		}
-		if (currentState > MENU_STATE) {
+		if (currentState != MENU_STATE && currentState != END_STATE) {
 			if (e.getKeyCode() == KeyEvent.VK_W) {
 				up = true;
 
@@ -1016,7 +1040,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				}
 			}
 
-			if (currentState == LAGOON_STATE) {
+			if (mapStates[mapRow][mapColomn] == LAGOON_STATE) {
 
 				if (pot.positionInInv == INVENTORY_SLOT1) {
 					if (e.getKeyCode() == KeyEvent.VK_1) {
@@ -1137,15 +1161,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 			}
 		}
-		repaint();
+				repaint();
 	}
-
-	void setState(int newState) {
-		currentState = newState;
-	}
-
-	static int getState() {
-		return currentState;
+	void changePos(int newRow, int newColomn) {
+		mapRow = newRow;
+		mapColomn = newColomn;
+		currentState = mapStates[mapRow][mapColomn];
 	}
 
 }

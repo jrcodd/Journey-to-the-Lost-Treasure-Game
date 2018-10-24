@@ -48,9 +48,10 @@ public class Object_Manager {
 
 	void checkCollision() {
 
-		if (GamePanel.currentState == GamePanel.BAY_STATE) {
+		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColomn] == GamePanel.BAY_STATE) {
 			if(ship.hitBox.x<=0) {
-				GamePanel.currentState = GamePanel.OCEAN_STATE;
+				GamePanel.mapRow= 3;
+				GamePanel.mapColomn = 2;
 			}
 			if (p.collisionBox.intersects(bayShop.collisionBox)) {
 				bayShop.inside = true;
@@ -63,23 +64,23 @@ public class Object_Manager {
 
 		}
 
-		if (GamePanel.getState() != GamePanel.PATH1_STATE) {
+		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColomn] != GamePanel.PATH1_STATE) {
 			b.right = false;
 			b.left = false;
 		}
-		if (GamePanel.getState() != GamePanel.PATH2_STATE) {
+		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColomn] != GamePanel.PATH2_STATE) {
 			b1.right = false;
 			b2.right = false;
 			b1.left = false;
 			b1.right = false;
 		}
-		if (GamePanel.getState() == GamePanel.LAGOON_STATE) {
+		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColomn] == GamePanel.LAGOON_STATE) {
 			if (p.collisionBox.intersects(pot.collisionBox)) {
 				pot.isFound = true;
 
 			}
 		}
-		if (GamePanel.getState() == GamePanel.PATH1_STATE) {
+		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColomn] == GamePanel.PATH1_STATE) {
 			if (!bStart) {
 				if (!b.right) {
 					b.right = true;
@@ -120,7 +121,7 @@ public class Object_Manager {
 					coinsAdded = true;
 				}
 			}
-		} else if (GamePanel.getState() == GamePanel.PATH2_STATE) {
+		} else if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColomn] == GamePanel.PATH2_STATE) {
 			if (!b1Start) {
 				if (!b1.right) {
 					b1.right = true;
@@ -154,7 +155,7 @@ public class Object_Manager {
 				}
 			}
 		}
-		if (GamePanel.getState() == GamePanel.IN_SHACK_STATE)
+		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColomn] == GamePanel.IN_SHACK_STATE)
 
 		{
 			if (p.collisionBox.intersects(man.collisionBox)) {
@@ -170,21 +171,21 @@ public class Object_Manager {
 				}
 			}
 		}
-		if (GamePanel.getState() == GamePanel.FOREST_STATE) {
+		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColomn] == GamePanel.FOREST_STATE) {
 			if (p.collisionBox.intersects(m.collisionBox)) {
 				m.isFound = true;
 
 			}
 		}
-		if (GamePanel.getState() == GamePanel.CAVE_STATE) {
+		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColomn] == GamePanel.CAVE_STATE) {
 			if (caveBoots.collisionBox.intersects(p.collisionBox)) {
 				caveBoots.isFound = true;
 
 			}
 		}
-		if (GamePanel.getState() == GamePanel.SHACK_STATE) {
+		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColomn] == GamePanel.SHACK_STATE) {
 			if (p.collisionBox.intersects(s.collisionBox)) {
-				GamePanel.currentState = GamePanel.IN_SHACK_STATE;
+				GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColomn] = GamePanel.IN_SHACK_STATE;
 				s.inside = true;
 			}
 		}

@@ -5,7 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.lang.reflect.Array;
+
 
 import javax.imageio.ImageIO;
 import java.awt.event.ActionEvent;
@@ -49,16 +49,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Font menuFont;
 	Font instructionsFont;
 	Font healthFont;
-	final static int mapStates[][] = { { 10, 10, 10, 10, 11 }, { 10, 10, 10, 10, 10 }, { 10, 10, 10, 10, 8 },
-			{ 10, 10, 10, -10, 7 }, { 10, 10, 10, -10, 6 }, { -10, 3, 1, 2, 4 } };
+	
 	static int mapRow = 5;
-	static int mapColomn = 2;
+	static int mapColumn= 2;
 	final static int INVENTORY_SLOT1 = 200;
 	final static int INVENTORY_SLOT2 = 350;
 	final static int INVENTORY_SLOT3 = 500;
 	final static int INVENTORY_SLOT4 = 650;
 	final static int NO_PLACE = -10;
 	final static int MENU_STATE = 0;
+	final static int GAME_STATE = -1;
+	final static int END_STATE = -2;
 	final static int FOREST_STATE = 1;
 	final static int LAGOON_STATE = 2;
 	final static int CAVE_STATE = 3;
@@ -73,10 +74,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	// ocean2 and bay2 are after treasure is found
 	final static int OCEAN2_STATE = 12;
 	final static int BAY2_STATE = 13;
-	final static int END_STATE = 14;
+	
+	final static int mapStates[][] = {
+			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE,  OCEAN_STATE,   ISLAND_STATE },
+			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE,  OCEAN_STATE,   OCEAN_STATE },
+			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE,  OCEAN_STATE,   BAY_STATE },
+			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE,  NO_PLACE,      PATH2_STATE },
+			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE,  NO_PLACE,      PATH1_STATE },
+			{ NO_PLACE,    CAVE_STATE,  FOREST_STATE, LAGOON_STATE,  SHACK_STATE } };
+
+	
 	boolean mapOpen;
 	boolean updatedSpeed;
-	static int currentState = MENU_STATE;
+	static int currentScene = MENU_STATE;
+	static int currentState = FOREST_STATE;
 	static boolean playerisSailing;
 	Object_Manager o = new Object_Manager(p, m, caveBoots, s, bayShop, ship, man, sword, b, pot, b1, b2);
 
@@ -118,19 +129,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			up = false;
 
 		}
-		if (p.collisionBox.x < 0) {
+		if (p.collisionBox.x < 0 && mapRow -1 != NO_PLACE) {
 			p.setX(800);
 			sword.setX(815);
-			if (mapRow > 0) {
-				mapRow -= 1;
-			}
-		} else if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 170) {
+			changePos(mapRow, mapColumn+1);
+		} else if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 170 && mapRow +1 != NO_PLACE) {
 			p.setX(10);
 			sword.setX(25);
-			if (mapRow < 6) {
-				mapRow += 1;
-			}
-		}
+		    changePos(mapRow, mapColumn-1);
+		    }
 		o.update();
 		o.checkCollision();
 		repaint();
@@ -146,19 +153,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			up = false;
 
 		}
-		if (p.collisionBox.x < 0) {
+		if (p.collisionBox.x < 0 && mapRow -1 != NO_PLACE) {
 			p.setX(800);
 			sword.setX(815);
-			if (mapRow > 0) {
-				mapRow -= 1;
-			}
-		} else if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 170) {
+			changePos(mapRow, mapColumn+1);
+		} else if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 170 && mapRow +1 != NO_PLACE) {
 			p.setX(10);
 			sword.setX(25);
-			if (mapRow < 6) {
-				mapRow += 1;
-			}
-		}
+		    changePos(mapRow, mapColumn-1);
+		    }
 		o.update();
 		o.checkCollision();
 		repaint();
@@ -174,19 +177,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			up = false;
 
 		}
-		if (p.collisionBox.x < 0) {
+		if (p.collisionBox.x < 0 && mapRow -1 != NO_PLACE) {
 			p.setX(800);
 			sword.setX(815);
-			if (mapRow > 0) {
-				mapRow -= 1;
-			}
-		} else if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 170) {
+			changePos(mapRow, mapColumn+1);
+		} else if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 170 && mapRow +1 != NO_PLACE) {
 			p.setX(10);
 			sword.setX(25);
-			if (mapRow < 6) {
-				mapRow += 1;
-			}
-		}
+		    changePos(mapRow, mapColumn-1);
+		    }
 		o.update();
 		o.checkCollision();
 		repaint();
@@ -198,27 +197,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			down = false;
 
 		}
+		if(p.collisionBox.y<0) {
+			p.setY(800);
+			sword.setY(800);
+		}
 
-		if (p.collisionBox.x < 0) {
+		if (p.collisionBox.x < 0 && mapRow -1 != NO_PLACE) {
 			p.setX(800);
 			sword.setX(815);
-			if (mapRow > 0) {
-				mapRow -= 1;
-			}
-		} else if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 170) {
+			changePos(mapRow, mapColumn+1);
+		} else if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 170 && mapRow +1 != NO_PLACE) {
 			p.setX(10);
 			sword.setX(25);
-			if (mapRow < 6) {
-				mapRow += 1;
-			}
-		}
-		if (p.collisionBox.x < 0) {
-			p.setX(800);
-			sword.setX(815);
-			if (mapColomn > 0) {
-				mapColomn -= 1;
-			}
-		}
+		    changePos(mapRow, mapColumn-1);
+		    }
 
 		o.update();
 		o.checkCollision();
@@ -239,10 +231,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 		if (p.collisionBox.y > JourneyToTheLostTreasure.HEIGHT) {
 			s.inside = false;
-			if (mapColomn > 0) {
-				mapColomn -= 1;
-			}
-
+			
 			p.setY(350);
 			p.setX(560);
 			sword.setX(575);
@@ -257,15 +246,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (p.collisionBox.y < 0) {
 			p.setY(800);
 			sword.setY(815);
-			if (mapColomn > 0) {
-				mapColomn -= 1;
-			}
+			changePos(mapRow, mapColumn-1);
 		} else if (p.collisionBox.y > JourneyToTheLostTreasure.WIDTH - 170) {
 			p.setY(10);
 			sword.setY(25);
-			if (mapColomn < 6) {
-				mapColomn += 1;
-			}
+			changePos(mapRow, mapColumn+1);
 		}
 		o.update();
 		b.update();
@@ -277,15 +262,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (p.collisionBox.y < 0) {
 			p.setY(800);
 			sword.setY(815);
-			if (mapColomn > 0) {
-				mapColomn -= 1;
-			}
+			changePos(mapRow, mapColumn-1);
 		} else if (p.collisionBox.y > JourneyToTheLostTreasure.WIDTH - 170) {
 			p.setY(10);
 			sword.setY(25);
-			if (mapColomn < 6) {
-				mapColomn += 1;
-			}
+			changePos(mapRow, mapColumn+1);
 		}
 
 		if (p.collisionBox.x < 0) {
@@ -304,9 +285,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (p.collisionBox.y > JourneyToTheLostTreasure.WIDTH - 170) {
 			p.setX(10);
 			sword.setX(25);
-			if (mapColomn < 6) {
-				mapColomn += 1;
-			}
+			changePos(mapRow, mapColumn+1);
 		} else if (p.collisionBox.y < 0) {
 			up = false;
 
@@ -650,33 +629,34 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (currentState == MENU_STATE) {
 			drawMenuState(g);
 		} else if (currentState == END_STATE) {
-		} else {
-			if (mapStates[mapRow][mapColomn] == FOREST_STATE) {
+		} else if(currentState == GAME_STATE){
+			System.out.println(mapStates[mapRow][mapColumn]);
+			if (mapStates[mapRow][mapColumn] == FOREST_STATE) {
 
 				updateForestState();
 				drawForestState(g);
 
-			} else if (mapStates[mapRow][mapColomn] == LAGOON_STATE) {
+			} else if (mapStates[mapRow][mapColumn] == LAGOON_STATE) {
 				updateLagoonState();
 				drawLagoonState(g);
-			} else if (mapStates[mapRow][mapColomn] == CAVE_STATE) {
+			} else if (mapStates[mapRow][mapColumn] == CAVE_STATE) {
 
 				updateCaveState();
 				drawCaveState(g);
-			} else if (mapStates[mapRow][mapColomn] == SHACK_STATE) {
+			} else if (mapStates[mapRow][mapColumn] == SHACK_STATE) {
 
 				updateShackState();
 				drawShackState(g);
 			}
 
-			else if (mapStates[mapRow][mapColomn] == PATH1_STATE) {
+			else if (mapStates[mapRow][mapColumn] == PATH1_STATE) {
 				updatePath1State();
 				drawPath1State(g);
 				if (b.getHealth() > 0) {
 					b.draw(g);
 				}
 
-			} else if (mapStates[mapRow][mapColomn] == PATH2_STATE) {
+			} else if (mapStates[mapRow][mapColumn] == PATH2_STATE) {
 				drawPath2State(g);
 				updatePath2State();
 				if (b1.getHealth() > 0) {
@@ -687,10 +667,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 					b2.draw(g);
 
 				}
-			} else if (mapStates[mapRow][mapColomn] == BAY_STATE) {
+			} else if (mapStates[mapRow][mapColumn] == BAY_STATE) {
 				drawBayState(g);
 				updateBayState();
-			} else if (mapStates[mapRow][mapColomn] == OCEAN_STATE) {
+			} else if (mapStates[mapRow][mapColumn] == OCEAN_STATE) {
 				drawOceanState(g);
 				updateOceanState();
 			}
@@ -883,12 +863,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (currentState == MENU_STATE) {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 				mapRow = 2;
-				mapColomn = 4;
-				currentState = mapStates[mapRow][mapColomn];
+				mapColumn = 4;
+				currentScreen = GAME_STATE;
 			}
 
 		}
-		if (currentState != MENU_STATE && currentState != END_STATE) {
+		if (currentState == GAME_STATE) {
 			if (e.getKeyCode() == KeyEvent.VK_W) {
 				up = true;
 
@@ -1040,7 +1020,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				}
 			}
 
-			if (mapStates[mapRow][mapColomn] == LAGOON_STATE) {
+			if (mapStates[mapRow][mapColumn] == LAGOON_STATE) {
 
 				if (pot.positionInInv == INVENTORY_SLOT1) {
 					if (e.getKeyCode() == KeyEvent.VK_1) {
@@ -1165,8 +1145,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 	void changePos(int newRow, int newColomn) {
 		mapRow = newRow;
-		mapColomn = newColomn;
-		currentState = mapStates[mapRow][mapColomn];
+		mapColumn = newColomn;
+		currentState = mapStates[mapRow][mapColumn];
 	}
 
 }

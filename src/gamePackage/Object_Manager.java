@@ -20,7 +20,7 @@ public class Object_Manager {
 	boolean isDefending;
 	static HealthPotion pot;
 	boolean bStart;
-	int coins;
+	 int coins;
 	boolean coinsAdded;
 	private boolean coinsAdded1;
 	private boolean coinsAdded2;
@@ -155,8 +155,7 @@ public class Object_Manager {
 				}
 			}
 		}
-		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.IN_SHACK_STATE)
-
+		if (s.inside)
 		{
 			if (p.collisionBox.intersects(man.collisionBox)) {
 
@@ -183,9 +182,9 @@ public class Object_Manager {
 
 			}
 		}
-		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.SHACK_STATE) {
+		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.FOREST_EDGE) {
 			if (p.collisionBox.intersects(s.collisionBox)) {
-				GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] = GamePanel.IN_SHACK_STATE;
+				
 				s.inside = true;
 			}
 		}

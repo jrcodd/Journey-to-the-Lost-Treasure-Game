@@ -30,7 +30,14 @@ public class StrongBandit extends Game_Object {
 	void draw(Graphics g) {
 		g.setColor(Color.RED);
 		g.fillRect(x, y, width, height);
-
+		if (health < 30) {
+			g.setColor(Color.red);
+		} else if (health < 50) {
+			g.setColor(Color.YELLOW);
+		} else if (health > 50) {
+			g.setColor(Color.darkGray);
+		}
+		g.drawString(Integer.toString(health), getX(), getY() + 110);
 	}
 
 	int getX() {

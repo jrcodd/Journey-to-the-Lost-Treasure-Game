@@ -78,6 +78,7 @@ public class HealthPotion extends Game_Object {
 			g.setColor(Color.cyan);
 			g.fillRect(900, positionInInv, 50, 50);
 		} else if (isEmpty == true) {
+			g.setColor(Color.BLACK);
 			g.drawRect(900, positionInInv, 50, 50);
 		}
 

@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 
 public class PlayerShip extends Game_Object {
 	int speed = 5;
+	int level = 1;
     boolean isBought;
     Rectangle hitBox = new Rectangle(x, y, width, height);
 	PlayerShip(int x, int y, int width, int height, int health) {
@@ -20,8 +21,14 @@ public class PlayerShip extends Game_Object {
 
 	void draw(Graphics g) {
 
-
+if(level == 1) {
 		g.drawImage(GamePanel.level1Boat, x,y,width, height, null);
+}else if(level == 2) {
+	g.drawImage(GamePanel.level2Boat, x,y,width, height, null);
+}
+else if(level == 3) {
+	g.drawImage(GamePanel.level3Boat, x,y,width, height, null);
+}
 
 	}
 

@@ -2,8 +2,6 @@ package gamePackage;
 
 import java.util.ArrayList;
 
-
-
 public class Object_Manager {
 	static ArrayList<Game_Object> inv;
 	Shack s;
@@ -20,7 +18,7 @@ public class Object_Manager {
 	boolean isDefending;
 	static HealthPotion pot;
 	boolean bStart;
-	 int coins;
+	int coins;
 	boolean coinsAdded;
 	private boolean coinsAdded1;
 	private boolean coinsAdded2;
@@ -49,15 +47,15 @@ public class Object_Manager {
 	void checkCollision() {
 
 		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.BAY_STATE) {
-			if(ship.hitBox.x<=0) {
-				GamePanel.mapRow= 3;
+			if (ship.hitBox.x <= 0) {
+				GamePanel.mapRow = 3;
 				GamePanel.mapColumn = 2;
 			}
 			if (p.collisionBox.intersects(bayShop.collisionBox)) {
 				bayShop.inside = true;
 			}
 
-				if (p.collisionBox.intersects(ship.hitBox)) {
+			if (p.collisionBox.intersects(ship.hitBox)) {
 				purchaseShip();
 				LeaveInShip();
 			}
@@ -155,8 +153,7 @@ public class Object_Manager {
 				}
 			}
 		}
-		if (s.inside)
-		{
+		if (s.inside) {
 			if (p.collisionBox.intersects(man.collisionBox)) {
 
 				if (man.hasTalked == false) {
@@ -184,11 +181,16 @@ public class Object_Manager {
 		}
 		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.FOREST_EDGE) {
 			if (p.collisionBox.intersects(s.collisionBox)) {
-				
+
 				s.inside = true;
 			}
 		}
-
+		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.OCEAN_STATE) {
+			// move cannon ball
+			if (ship.direction == 0) {
+				GamePanel.cannonballList.get(0).setX(GamePanel.cannonballList.get(0).getX() - 5);
+			}
+		}
 	}
 
 	private void processWeakBanditIsAlive(WeakBandit wb) {
@@ -241,6 +243,7 @@ public class Object_Manager {
 	}
 
 	void update() {
+		//GamePanel.cannonballList.get(0).update();
 		p.update();
 		ship.update();
 		sword.update();

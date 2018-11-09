@@ -5,7 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Random;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import java.awt.event.ActionEvent;
@@ -21,18 +21,43 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	public static BufferedImage MenuImg;
-	public static BufferedImage level1Boat;
-	public static BufferedImage level2Boat;
-	public static BufferedImage level3Boat;
+	public static BufferedImage level1BoatLeft;
+	public static BufferedImage level1BoatLeftUp;
+	public static BufferedImage level1BoatLeftDown;
+	public static BufferedImage level1BoatRight;
+	public static BufferedImage level1BoatRightUp;
+	public static BufferedImage level1BoatRightDown;
+	
+	
+	
+	public static BufferedImage level2BoatLeft;
+	public static BufferedImage level2BoatLeftUp;
+	public static BufferedImage level2BoatLeftDown;
+	public static BufferedImage level2BoatRight;
+	public static BufferedImage level2BoatRightUp;
+	public static BufferedImage level2BoatRightDown;
+	
+	
+	
+	public static BufferedImage level3BoatLeft;
+	public static BufferedImage level3BoatLeftUp;
+	public static BufferedImage level3BoatLeftDown;
+	public static BufferedImage level3BoatRight;
+	public static BufferedImage level3BoatRightUp;
+	public static BufferedImage level3BoatRightDown;
+	
+	
+	public static BufferedImage cannonBallProjectile;
 	public static BufferedImage enemyShip;
 	boolean doneAttacking;
 	final static int fps = 60;
 	Timer t;
+	
 	OldMan man = new OldMan(600, 75, 20, 60, 200);
 	Shack s = new Shack(530, 20, 300, 300, 2000, false);
 	BayShop bayShop = new BayShop(500, 10, 340, 340, 100, false);
-	PlayerShip ship = new PlayerShip(50, 50, 284 / 2, 150 / 2, 500);
-	EnemyShip eShip = new EnemyShip(50, 50, 284 / 2, 150 / 2, 500, 1);
+	PlayerShip ship = new PlayerShip(50, 50, 433/3, 381/3, 500, 2);
+	EnemyShip eShip = new EnemyShip(50, 50,433/3,381/3, 500, 1);
 	SpeedyBoots caveBoots = new SpeedyBoots(230, 600, 10, 20, 50, false);
 	Player p = new Player(100, 500, 20, 60, 100, 8);
 	TreasureMap m = new TreasureMap(400, 100, 10, 10, 10, false);
@@ -41,6 +66,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	WeakBandit b1 = new WeakBandit(300, 100, 20, 60, 100, 2);
 	WeakBandit b2 = new WeakBandit(500, 100, 20, 60, 100, 2);
 	HealthPotion pot = new HealthPotion(500, 468, 10, 10, 30, false);
+	Object_Manager o = new Object_Manager(p, m, caveBoots, s, bayShop, ship, man, sword, b, pot, b1, b2);
 	static boolean up = false;
 	static boolean down = false;
 	static boolean right = false;
@@ -51,13 +77,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Font menuFont;
 	Font instructionsFont;
 	Font healthFont;
-
+   static ArrayList<PlayerCannonBall> cannonballList = new ArrayList<PlayerCannonBall>();
 	static int mapRow = 5;
 	static int mapColumn = 2;
+	
 	final static int INVENTORY_SLOT1 = 200;
 	final static int INVENTORY_SLOT2 = 350;
 	final static int INVENTORY_SLOT3 = 500;
 	final static int INVENTORY_SLOT4 = 650;
+	
+	
 	final static int NO_PLACE = -10;
 	final static int MENU_STATE = 0;
 	final static int GAME_STATE = -1;
@@ -66,17 +95,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	final static int LAGOON_STATE = 2;
 	final static int CAVE_STATE = 3;
 	final static int FOREST_EDGE = 4;
-
 	final static int PATH1_STATE = 6;
 	final static int PATH2_STATE = 7;
 	final static int BAY_STATE = 8;
 	final static int BAY_SHOP_STATE = 9;
 	final static int OCEAN_STATE = 10;
 	final static int ISLAND_STATE = 11;
-	// ocean2 and bay2 are after treasure is found
-	final static int OCEAN2_STATE = 12;
-	final static int BAY2_STATE = 13;
-
 	final static int mapStates[][] = { { OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, ISLAND_STATE },
 			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, OCEAN_STATE },
 			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, BAY_STATE },
@@ -88,8 +112,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	boolean updatedSpeed;
 
 	static int currentState = MENU_STATE;
+	
 	static boolean playerisSailing;
-	Object_Manager o = new Object_Manager(p, m, caveBoots, s, bayShop, ship, man, sword, b, pot, b1, b2);
+	
+	
 
 	GamePanel() {
 		inventoryFont = new Font("Arial", Font.PLAIN, 25);
@@ -99,9 +125,34 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		t = new Timer(1000 / fps, this);
 		t.start();
 		try {
-			level1Boat = ImageIO.read(this.getClass().getResourceAsStream("Ship level 1.png"));
-			level2Boat = ImageIO.read(this.getClass().getResourceAsStream("Ship level 2.png"));
-			level3Boat = ImageIO.read(this.getClass().getResourceAsStream("upgradedShip.png"));
+			level1BoatLeft = ImageIO.read(this.getClass().getResourceAsStream("Level1Boat.Left.png"));
+			level1BoatLeftUp = ImageIO.read(this.getClass().getResourceAsStream("Level1Boat.LeftUp.png"));
+			level1BoatLeftDown = ImageIO.read(this.getClass().getResourceAsStream("Level1Boat.LeftDown.png"));
+			level1BoatRight = ImageIO.read(this.getClass().getResourceAsStream("Level1Boat.Right.png"));
+			level1BoatRightDown = ImageIO.read(this.getClass().getResourceAsStream("Level1Boat.RightDown.png"));
+			level1BoatRightUp = ImageIO.read(this.getClass().getResourceAsStream("Level1Boat.RightUp.png"));
+			
+			
+			
+			
+			level2BoatLeft = ImageIO.read(this.getClass().getResourceAsStream("Level2Boat.Left.png"));
+			level2BoatLeftUp = ImageIO.read(this.getClass().getResourceAsStream("Level2Boat.LeftUp.png"));
+			level2BoatLeftDown = ImageIO.read(this.getClass().getResourceAsStream("Level2Boat.LeftDown.png"));
+			level2BoatRight = ImageIO.read(this.getClass().getResourceAsStream("Level2Boat.Right.png"));
+			level2BoatRightUp = ImageIO.read(this.getClass().getResourceAsStream("Level2Boat.RightUp.png"));
+			level2BoatRightDown = ImageIO.read(this.getClass().getResourceAsStream("Level2Boat.RightDown.png"));
+			
+			
+			
+			level3BoatLeft = ImageIO.read(this.getClass().getResourceAsStream("Level3Boat.Left.png"));
+			level3BoatLeftUp = ImageIO.read(this.getClass().getResourceAsStream("Level3Boat.LeftUp.png"));
+			level3BoatLeftDown = ImageIO.read(this.getClass().getResourceAsStream("Level3Boat.LeftDown.png"));
+			level3BoatRight = ImageIO.read(this.getClass().getResourceAsStream("Level3Boat.Right.png"));
+			level3BoatRightUp = ImageIO.read(this.getClass().getResourceAsStream("Level3Boat.RightUp.png"));
+			level3BoatRightDown = ImageIO.read(this.getClass().getResourceAsStream("Level3Boat.RightDown.png"));
+			
+			
+			cannonBallProjectile = ImageIO.read(this.getClass().getResourceAsStream("cannonBallProjectile.png"));
 			MenuImg = ImageIO.read(this.getClass().getResourceAsStream("JourneyMenuImg.png"));
 			enemyShip = ImageIO.read(this.getClass().getResourceAsStream("EnemyShip.png"));
 		} catch (IOException e) {
@@ -554,7 +605,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void paintComponent(Graphics g) {
-
+		
 		if (currentState == MENU_STATE) {
 			drawMenuState(g);
 		} else if (currentState == END_STATE) {
@@ -651,11 +702,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 					b2.setX(b2.getX() + 1);
 				}
 			}
-		}
+			}
 		repaint();
 	}
 
 	void updateOceanState() {
+		
+		
 		checkUp();
 		checkDown();
 		checkLeft();
@@ -676,7 +729,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 		ship.draw(g);
 		eShip.draw(g, eShip.getX(), eShip.getY());
-
+		cannonballList.get(cannonballList.size()).draw(g);
 		g.setColor(Color.GRAY);
 		g.fillRect(850, 0, 150, 700);
 		g.setFont(inventoryFont);
@@ -758,13 +811,26 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		
+		
 if(e.getKeyCode() == KeyEvent.VK_H) {
 	mapStates[mapRow][mapColumn] = BAY_STATE;
 	o.coins += 100;
 }
 		// System.out.println("pressed");
-		if (sword.isFound) {
+		
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+				if(playerisSailing) {
+					if (ship.direction == 0) {
+						cannonballList.add(new PlayerCannonBall(ship.getX(), ship.getY(), 10, 10, 100));
+						
+					}
+					
+				}
+				
+				
+				
+				if (sword.isFound) {
 				if (doneAttacking == false) {
 					swordDown = true;
 					swordUp = false;
@@ -1022,9 +1088,11 @@ if(e.getKeyCode() == KeyEvent.VK_H) {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		eShip.setX(eShip.getX() - ((eShip.getX() - ship.getX()) / 100));
 		eShip.setY(eShip.getY() - ((eShip.getY() - ship.getY()) / 100));
-
+		
+		
 		if (!playerisSailing) {
 			if (up) {
 
@@ -1070,6 +1138,8 @@ if(e.getKeyCode() == KeyEvent.VK_H) {
 		repaint();
 	}
 
+	
+
 	void changePos(int newRow, int newColomn) {
 		mapRow = newRow;
 		mapColumn = newColomn;
@@ -1079,10 +1149,13 @@ if(e.getKeyCode() == KeyEvent.VK_H) {
 	void checkLeft() {
 		if (p.collisionBox.x < 0 || ship.collisionBox.x < 0) {
 			if (mapColumn > 0 && mapStates[mapRow][mapColumn - 1] != NO_PLACE) {
-
+               if(!playerisSailing) {
 				p.setX(800);
-				sword.setX(815);
-				changePos(mapRow, mapColumn - 1);
+				sword.setX(815);}
+               else if(playerisSailing) {           	   
+            	   ship.setX(815);
+               }
+               changePos(mapRow, mapColumn - 1);
 				System.out.println("left");
 				System.out.println(mapStates[mapRow][mapColumn]);
 			} else {

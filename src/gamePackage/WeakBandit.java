@@ -10,27 +10,28 @@ public class WeakBandit extends Game_Object {
 	Rectangle attackRadius;
 	boolean left;
 	boolean right;
-	boolean isDead = false;
+	boolean isDead;
 	boolean Start = false;
-	WeakBandit(int x, int y, int width, int height, int health, int speed) {
+
+	WeakBandit(int x, int y, int width, int height, int health, int speed, boolean isDead) {
 		super(x, y, width, height, health);
 		this.speed = speed;
-
+		this.isDead = isDead;
 	}
 
 	void update() {
-		super.update();
 		
+		super.update();
 
 	}
 
 	void draw(Graphics g) {
+		if(!isDead) {
 		g.setColor(Color.MAGENTA);
 		g.fillRect(x, y, width, height);
-		
-		drawHealth(g);
-		
 
+		drawHealth(g);
+		}
 	}
 
 	private void drawHealth(Graphics g) {

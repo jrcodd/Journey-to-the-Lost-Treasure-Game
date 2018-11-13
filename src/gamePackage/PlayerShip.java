@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 public class PlayerShip extends Game_Object {
 	int speed = 5;
 	int level = 2;
-	int direction = 0;
+	static int direction = 0;
 	boolean isBought;
 	Rectangle hitBox = new Rectangle(x, y, width, height);
 
@@ -240,8 +240,7 @@ public class PlayerShip extends Game_Object {
 				}
 
 			}
-		}
-		else {
+		} else {
 			g.drawImage(GamePanel.level1BoatLeft, x, y, width, height, null);
 		}
 	}

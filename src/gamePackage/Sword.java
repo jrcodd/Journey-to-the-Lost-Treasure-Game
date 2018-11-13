@@ -1,12 +1,12 @@
  package gamePackage;
 
-import java.awt.Color;
+
 import java.awt.Graphics;
 
 public class Sword extends Game_Object {
 
 	Player p = new Player(100, 500, 20, 60, 100, 5);
-	boolean isFound;
+	boolean isFound = true;
 
 	Sword(int x, int y, int width, int height, int health, boolean isFound) {
 		super(x, y, width, height, health);
@@ -14,8 +14,7 @@ public class Sword extends Game_Object {
 	}
 
 	void draw(Graphics g) {
-		g.setColor(Color.WHITE);
-		g.fillRect(x, y, width, height);
+		
 
 	}
 

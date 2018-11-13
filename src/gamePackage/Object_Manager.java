@@ -5,8 +5,11 @@ import java.util.ArrayList;
 public class Object_Manager {
 	static ArrayList<Game_Object> inv;
 	Shack s;
+	boolean enemyHasFired = false;
+	boolean playerHasFired = false;
 	BayShop bayShop;
 	PlayerShip ship;
+	EnemyShip eShip;
 	static SpeedyBoots caveBoots;
 	Player p;
 	static TreasureMap m;
@@ -20,15 +23,18 @@ public class Object_Manager {
 	boolean bStart;
 	int coins;
 	boolean coinsAdded;
+	boolean addedRewards;
 	private boolean coinsAdded1;
 	private boolean coinsAdded2;
 	boolean isDefending2;
 	boolean isDefending1;
 	boolean b1Start;
 	boolean b2Start;
+	boolean damageDelt = false;
+	boolean damageDelt2 = false;
 
 	Object_Manager(Player p, TreasureMap m, SpeedyBoots caveBoots, Shack s, BayShop bayShop, PlayerShip ship,
-			OldMan man, Sword sword, StrongBandit b, HealthPotion pot, WeakBandit b1, WeakBandit b2) {
+			OldMan man, Sword sword, StrongBandit b, HealthPotion pot, WeakBandit b1, WeakBandit b2, EnemyShip eShip) {
 		this.s = s;
 		this.bayShop = bayShop;
 		this.p = p;
@@ -40,6 +46,7 @@ public class Object_Manager {
 		this.b1 = b1;
 		this.b2 = b2;
 		this.ship = ship;
+		this.eShip = eShip;
 		Object_Manager.pot = pot;
 		inv = new ArrayList<Game_Object>();
 	}
@@ -79,36 +86,25 @@ public class Object_Manager {
 			}
 		}
 		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.PATH1_STATE) {
-			if (!bStart) {
-				if (!b.right) {
-					b.right = true;
-				}
-			}
+
 			if (b.isDead == false) {
-				if (b.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 150) {
-					System.out.println("hit the wall");
-					isDefending = false;
-					b.right = false;
-					b.left = true;
-				} else if (b.collisionBox.x < 0) {
-					System.out.println("hit the other wall");
-					isDefending = false;
-					b.right = true;
-					b.left = false;
-				}
 
 				if (p.collisionBox.intersects(b.collisionBox)) {
-					if (isDefending == false) {
-						p.health -= 5;
-						System.out.println("player health: " + p.health);
-						isDefending = true;
+					if (!GamePanel.swordDown) {
+						if (isDefending == false) {
+							p.health -= 5;
+							System.out.println("player health: " + p.health);
+							isDefending = true;
+						}
 					}
 				}
 				if (p.collisionBox.intersects(b.collisionBox)) {
 					if (GamePanel.swordDown) {
-						b.setHealth(b.getHealth() - 30);
-						isDefending = false;
-						System.out.println("bandit health: " + b.health);
+						if (isDefending == true) {
+							b.setHealth(b.getHealth() - 30);
+							isDefending = false;
+							System.out.println("bandit health: " + b.health);
+						}
 					}
 				}
 			}
@@ -120,16 +116,7 @@ public class Object_Manager {
 				}
 			}
 		} else if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.PATH2_STATE) {
-			if (!b1Start) {
-				if (!b1.right) {
-					b1.right = true;
-				}
-			}
-			if (!b2Start) {
-				if (!b2.right) {
-					b2.right = true;
-				}
-			}
+			System.out.println("weak bandit2 is dead: " + b2.isDead);
 			if (!b1.isDead) {
 				processWeakBanditIsAlive(b1);
 			}
@@ -139,7 +126,10 @@ public class Object_Manager {
 
 			if (b1.getHealth() <= 0) {
 				b1.isDead = true;
+				b2.isDead = false;
 				if (coinsAdded1 == false) {
+					b2.setX(300);
+					b2.setY(30);
 					coins += 25;
 					coinsAdded1 = true;
 				}
@@ -153,6 +143,7 @@ public class Object_Manager {
 				}
 			}
 		}
+
 		if (s.inside) {
 			if (p.collisionBox.intersects(man.collisionBox)) {
 
@@ -186,39 +177,64 @@ public class Object_Manager {
 			}
 		}
 		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.OCEAN_STATE) {
-			// move cannon ball
-			if (ship.direction == 0) {
-				GamePanel.cannonballList.get(0).setX(GamePanel.cannonballList.get(0).getX() - 5);
+			damageDelt = false;
+			damageDelt2 = false;
+			if (eShip.health <= 0) {
+				eShip.isAlive = false;
+				if (!addedRewards) {
+					coins += 50;
+					ship.level += 1;
+					addedRewards = true;
+				}
+			}
+			if (GamePanel.cannonballList.size() > 0) {
+				for (PlayerCannonBall ball : GamePanel.cannonballList) {
+					if (ball.collisionBox.intersects(eShip.collisionBox)) {
+						System.out.println("damage is delt? " + damageDelt);
+						if (damageDelt == false) {
+							System.out.println("hit");
+							GamePanel.cannonballList.remove(GamePanel.cannonballList.size() - 1);
+							eShip.health -= 30;
+							System.out.println("enemy Ship health: " + eShip.health);
+							damageDelt = true;
+						}
+					}
+				}
+			}
+			if (GamePanel.EnemycannonballList.size() > 0) {
+				for (EnemyCannonBall ball : GamePanel.EnemycannonballList) {
+					if (ball.collisionBox.intersects(ship.collisionBox)) {
+						if (damageDelt2 == false) {
+							System.out.println("hit");
+							GamePanel.EnemycannonballList.remove(GamePanel.EnemycannonballList.size() - 1);
+							ship.health -= 30;
+							System.out.println("player Ship health: " + ship.health);
+							damageDelt2 = true;
+						}
+					}
+				}
 			}
 		}
 	}
 
 	private void processWeakBanditIsAlive(WeakBandit wb) {
-
-		if (wb.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 150) {
-			System.out.println("hit the wall");
-			isDefending2 = false;
-			wb.right = false;
-			wb.left = true;
-		} else if (wb.collisionBox.x < 0) {
-			System.out.println("hit the other wall");
-			isDefending2 = false;
-			wb.right = true;
-			wb.left = false;
-		}
-		if (p.collisionBox.intersects(wb.collisionBox)) {
-			if (isDefending2 == false) {
-				p.health -= 3;
-				System.out.println("player health: " + p.health);
-				isDefending2 = true;
+		if (wb.collisionBox.intersects(p.collisionBox)) {
+			if (!GamePanel.swordDown) {
+				if (isDefending2 == false) {
+					p.health -= 3;
+					System.out.println("player health: " + p.health);
+					isDefending2 = true;
+				}
 			}
 		}
 		if (p.collisionBox.intersects(wb.collisionBox)) {
 			if (GamePanel.swordDown) {
-				wb.setHealth(wb.getHealth() - 30);
-				isDefending2 = false;
-				System.out.println("Weak bandit2 health: " + b2.health);
-				System.out.println("Weak bandit 1 health " + b1.health);
+				if (isDefending2 == true) {
+					wb.setHealth(wb.getHealth() - 30);
+					isDefending2 = false;
+					System.out.println("weak bandit1 health: " + b1.health);
+					System.out.println("weak bandit2 health: " + b2.health);
+				}
 			}
 		}
 	}
@@ -243,16 +259,42 @@ public class Object_Manager {
 	}
 
 	void update() {
-		//GamePanel.cannonballList.get(0).update();
+		// if (GamePanel.cannonballList.size() != 0) {
+		for (int i = 0; i < GamePanel.cannonballList.size(); i++) {
+
+			GamePanel.cannonballList.get(i).update();
+		}
+		// }
+		// if (GamePanel.EnemycannonballList.size() != 0) {
+		for (int i = 0; i < GamePanel.EnemycannonballList.size(); i++) {
+
+			GamePanel.EnemycannonballList.get(i).update();
+			// }
+		}
 		p.update();
 		ship.update();
+		eShip.update();
 		sword.update();
 		b.update();
 		b1.update();
 		b2.update();
 		pot.update();
 		checkCollision();
-
+		createEnemyCannonBalls();
 	}
 
+	void createEnemyCannonBalls() {
+		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.OCEAN_STATE) {
+			if (eShip.getX() - ship.getX() <= 100) {
+				if (playerHasFired == true) {
+					enemyHasFired = false;
+				}
+				if (!enemyHasFired) {
+					GamePanel.EnemycannonballList.add(new EnemyCannonBall(eShip.x, eShip.y, 10, 10, 10));
+					enemyHasFired = true;
+					playerHasFired = false;
+				}
+			}
+		}
+	}
 }

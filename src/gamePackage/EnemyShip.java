@@ -1,26 +1,36 @@
 package gamePackage;
 
 import java.awt.Graphics;
-import java.awt.Rectangle;
-
 public class EnemyShip extends Game_Object {
 	int speed = 2;
 	int level;
-	Rectangle hitBox = new Rectangle(x, y, width, height);
+	int health;
+
+	boolean isAlive = true;
 
 	EnemyShip(int x, int y, int width, int height, int health, int level) {
 		super(x, y, width, height, health);
 		this.level = level;
+		this.health = health;
+
 	}
 
 	void update() {
 		super.update();
-		hitBox.setBounds(x, y, width, height);
+
+		if (health <= 0) {
+			System.out.println("enemy is dead");
+			isAlive = false;
+		}
+		
 	}
 
-	void draw(Graphics g, int x, int y) {
+	void draw(Graphics g) {
+		if (isAlive) {
 			g.drawImage(GamePanel.enemyShip, x, y, width, height, null);
-		} 
+			g.drawString(Integer.toString(health), x+width/2, y+height+height/2);
+		}
+	}
 
 	int getX() {
 		return x;

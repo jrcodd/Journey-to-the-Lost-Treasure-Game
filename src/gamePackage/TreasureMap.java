@@ -79,7 +79,7 @@ public class TreasureMap extends Game_Object {
 		default:
 			if (Object_Manager.inv.contains(Object_Manager.m) == false) {
 				positionInInv = GamePanel.INVENTORY_SLOT1;
-                  
+
 				if (isAdded == false) {
 					Object_Manager.inv.add(Object_Manager.m);
 					isAdded = true;

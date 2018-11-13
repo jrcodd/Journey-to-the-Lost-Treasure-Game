@@ -17,8 +17,7 @@ public class HealthPotion extends Game_Object {
 
 	void draw(Graphics g) {
 
-		g.setColor(Color.CYAN);
-		g.fillRect(x, y, width, height);
+		g.drawImage(GamePanel.potion, x, y, width, height, null);
 	}
 
 	void update() {
@@ -75,11 +74,11 @@ public class HealthPotion extends Game_Object {
 			
 		
 		if (isEmpty == false) {
-			g.setColor(Color.cyan);
-			g.fillRect(900, positionInInv, 50, 50);
+			g.drawImage(GamePanel.potion, 900, positionInInv, width*2, height*2, null);
+			
 		} else if (isEmpty == true) {
-			g.setColor(Color.BLACK);
-			g.drawRect(900, positionInInv, 50, 50);
+			g.drawImage(GamePanel.emptyPotion, 900, positionInInv, width*2, height*2, null);
+			//g.drawRect(900, positionInInv, 50, 50);
 		}
 
 	}

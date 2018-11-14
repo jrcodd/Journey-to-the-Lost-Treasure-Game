@@ -5,7 +5,8 @@ public class EnemyShip extends Game_Object {
 	int speed = 2;
 	int level;
 	int health;
-
+boolean addedRewards = false;
+boolean damageDelt = false;
 	boolean isAlive = true;
 
 	EnemyShip(int x, int y, int width, int height, int health, int level) {
@@ -18,10 +19,7 @@ public class EnemyShip extends Game_Object {
 	void update() {
 		super.update();
 
-		if (health <= 0) {
-			System.out.println("enemy is dead");
-			isAlive = false;
-		}
+		
 		
 	}
 

@@ -5,7 +5,9 @@ import java.awt.Rectangle;
 
 public class PlayerShip extends Game_Object {
 	int speed = 5;
-	int level = 2;
+	int level;
+	int maxHealth;
+	int health;
 	static int direction = 0;
 	boolean isBought;
 	Rectangle hitBox = new Rectangle(x, y, width, height);
@@ -13,12 +15,16 @@ public class PlayerShip extends Game_Object {
 	PlayerShip(int x, int y, int width, int height, int health, int level) {
 		super(x, y, width, height, health);
 		this.level = level;
-
+this.health = health;
+maxHealth = health;
 	}
 
 	void update() {
 		super.update();
-		hitBox.setBounds(x, y, width, height);
+				hitBox.setBounds(x, y, width, height);
+				if(maxHealth<health) {
+					maxHealth = health;
+				}
 	}
 
 	void draw(Graphics g) {

@@ -57,8 +57,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	OldMan man = new OldMan(600, 75, 20, 60, 200);
 	Shack s = new Shack(530, 20, 300, 300, 2000, false);
 	BayShop bayShop = new BayShop(500, 10, 340, 340, 100, false);
-	static PlayerShip ship = new PlayerShip(50, 50, 433 / 3, 381 / 3, 500, 2);
-	static EnemyShip eShip = new EnemyShip(50, 50, 446 / 3, 442 / 3, 500, 1);
+	static PlayerShip ship = new PlayerShip(50, 50, 433 / 3, 381 / 3, 750, 1);
+	static ArrayList<EnemyShip> enemyShipList = new ArrayList<EnemyShip>();
+
 	SpeedyBoots caveBoots = new SpeedyBoots(230, 600, 10, 20, 50, false);
 	static Player p = new Player(100, 500, 162 / 2, 152 / 2, 100, 8);
 	TreasureMap m = new TreasureMap(400, 100, 10, 10, 10, false);
@@ -66,8 +67,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	StrongBandit b = new StrongBandit(400, 100, 40, 80, 300, 1);
 	WeakBandit b1 = new WeakBandit(30, 30, 20, 60, 100, 2, false);
 	WeakBandit b2 = new WeakBandit(800, 30, 20, 60, 100, 2, true);
-	HealthPotion pot = new HealthPotion(500, 468, 100/3, 106/3, 30, false);
-	Object_Manager o = new Object_Manager(p, m, caveBoots, s, bayShop, ship, man, sword, b, pot, b1, b2, eShip);
+	HealthPotion pot = new HealthPotion(500, 468, 100 / 3, 106 / 3, 30, false);
+	Object_Manager o = new Object_Manager(p, m, caveBoots, s, bayShop, ship, man, sword, b, pot, b1, b2);
 	static boolean up = false;
 	static boolean down = false;
 	static boolean right = false;
@@ -304,8 +305,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.red);
 
 		g.fillOval(p.getX() - 10, p.getY() + 80, p.health, 5);
-		if (!playerisSailing)
-			;
 
 	}
 
@@ -510,7 +509,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	void drawBayState(Graphics g) {
 
 		g.setColor(Color.GREEN);
-		
+
 		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH, JourneyToTheLostTreasure.HEIGHT);
 		g.setColor(Color.blue);
 		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH / 3, JourneyToTheLostTreasure.HEIGHT);
@@ -686,8 +685,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (!playerisSailing) {
 			p.draw(g);
 		}
+
+		for (int i = 0; i < enemyShipList.size(); i++) {
+			enemyShipList.get(i).draw(g);
+		}
 		ship.draw(g);
-		eShip.draw(g);
+
 		for (PlayerCannonBall b : cannonballList) {
 			b.draw(g);
 		}
@@ -708,7 +711,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.white);
 		g.drawString("Ocean", JourneyToTheLostTreasure.WIDTH / 3, 50);
 		g.setColor(Color.red);
-		g.fillOval(p.getX() - 10, p.getY() + 80, ship.health / 2, 5);
+		g.fillOval((ship.getX() + ship.width / 2) - ((ship.health / 5) / 2), ship.getY() + ship.height, ship.health / 5,
+				5);
 		repaint();
 	}
 
@@ -780,26 +784,29 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			// works
 			if (playerisSailing) {
-				o.playerHasFired = true;
+				for (int i = 0; i < enemyShipList.size(); i++) {
 
-				if (PlayerShip.direction == 0) {
+					o.playerHasFired = true;
 
-					cannonballList.add(new PlayerCannonBall(ship.getX(), ship.getY() + 80, 10, 10, 100));
+					if (PlayerShip.direction == 0) {
+
+						cannonballList.add(new PlayerCannonBall(ship.getX(), ship.getY() + 80, 10, 10, 100));
+
+					}
+					if (PlayerShip.direction == 3) {
+						cannonballList.add(new PlayerCannonBall(ship.getX() + 120, ship.getY() + 80, 10, 10, 100));
+
+					}
+					if (PlayerShip.direction == 1 || PlayerShip.direction == 4) {
+						cannonballList.add(new PlayerCannonBall(ship.getX() + 70, ship.getY(), 10, 10, 100));
+
+					}
+					if (PlayerShip.direction == 2 || PlayerShip.direction == 5) {
+						cannonballList.add(new PlayerCannonBall(ship.getX() + 80, ship.getY() + 120, 10, 10, 100));
+
+					}
 
 				}
-				if (PlayerShip.direction == 3) {
-					cannonballList.add(new PlayerCannonBall(ship.getX() + 120, ship.getY() + 80, 10, 10, 100));
-
-				}
-				if (PlayerShip.direction == 1 || PlayerShip.direction == 4) {
-					cannonballList.add(new PlayerCannonBall(ship.getX() + 70, ship.getY(), 10, 10, 100));
-
-				}
-				if (PlayerShip.direction == 2 || PlayerShip.direction == 5) {
-					cannonballList.add(new PlayerCannonBall(ship.getX() + 80, ship.getY() + 120, 10, 10, 100));
-
-				}
-
 			}
 
 			if (sword.isFound) {
@@ -1057,10 +1064,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		for (int i = 0; i < enemyShipList.size(); i++) {
 
-		eShip.setX(eShip.getX() - ((eShip.getX() - ship.getX()) / 100));
-		eShip.setY(eShip.getY() - ((eShip.getY() - ship.getY()) / 100));
-
+			enemyShipList.get(i)
+					.setX(enemyShipList.get(i).getX() - ((enemyShipList.get(i).getX() - ship.getX()) / 100));
+			enemyShipList.get(i)
+					.setY(enemyShipList.get(i).getY() - ((enemyShipList.get(i).getY() - ship.getY()) / 100));
+		}
 		b.setX(b.getX() - ((b.getX() - p.getX()) / 10));
 		b.setY(b.getY() - ((b.getY() - p.getY()) / 10));
 
@@ -1083,9 +1093,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 		for (PlayerCannonBall b : cannonballList) {
 
-			b.setX(b.getX() - ((b.getX() - (eShip.getX() + eShip.width / 2)) / 10));
+			b.setX(b.getX() - ((b.getX() - (enemyShipList.get(enemyShipList.size() - 1).getX()
+					+ enemyShipList.get(enemyShipList.size() - 1).width / 2)) / 10));
 
-			b.setY(b.getY() - ((b.getY() - (eShip.getY() + eShip.height / 2)) / 10));
+			b.setY(b.getY() - ((b.getY() - (enemyShipList.get(enemyShipList.size() - 1).getY()
+					+ enemyShipList.get(enemyShipList.size() - 1).height / 2)) / 10));
 
 		}
 
@@ -1189,7 +1201,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 					ship.setY(800);
 				}
 				changePos(mapRow - 1, mapColumn);
+				if (mapStates[mapRow][mapColumn] == OCEAN_STATE) {
+					enemyShipList.add(new EnemyShip(50, 50, 446 / 3, 442 / 3, 500, 1));
 
+				}
 			} else {
 				up = false;
 			}

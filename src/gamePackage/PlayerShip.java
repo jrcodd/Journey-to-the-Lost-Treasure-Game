@@ -173,7 +173,7 @@ maxHealth = health;
 					break;
 				}
 
-			} else if (level == 3) {
+			} else if (level >= 3) {
 				if (GamePanel.left == true && GamePanel.right == false && GamePanel.up == false
 						&& GamePanel.down == false) {
 					direction = 0;
@@ -247,7 +247,16 @@ maxHealth = health;
 
 			}
 		} else {
+			if(level == 1) {
 			g.drawImage(GamePanel.level1BoatLeft, x, y, width, height, null);
+			}
+			else if(level == 2) {
+				g.drawImage(GamePanel.level2BoatLeft, x, y, width, height, null);
+			}
+			else{
+				g.drawImage(GamePanel.level3BoatLeft, x, y, width, height, null);
+			}
+		
 		}
 	}
 

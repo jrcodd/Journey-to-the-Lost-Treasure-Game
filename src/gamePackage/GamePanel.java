@@ -51,6 +51,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public static BufferedImage PlayerSwordUpRight;
 	public static BufferedImage potion;
 	public static BufferedImage emptyPotion;
+	public static BufferedImage boots;
+	public static BufferedImage treasureMarker;
 	boolean doneAttacking;
 	final static int fps = 60;
 	Timer t;
@@ -61,7 +63,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	static ArrayList<EnemyShip> enemyShipList = new ArrayList<EnemyShip>();
 
 	SpeedyBoots caveBoots = new SpeedyBoots(230, 600, 10, 20, 50, false);
-	static Player p = new Player(100, 500, 162 / 2, 152 / 2, 100, 8);
+	static Player p = new Player(100, 500, 162 / 2, 152 / 2, 50, 8);
 	TreasureMap m = new TreasureMap(400, 100, 10, 10, 10, false);
 	Sword sword = new Sword(115, 500, 10, 40, 100, false);
 	StrongBandit b = new StrongBandit(400, 100, 40, 80, 300, 1);
@@ -155,6 +157,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			enemyShip = ImageIO.read(this.getClass().getResourceAsStream("EnemyShip.png"));
 			potion = ImageIO.read(this.getClass().getResourceAsStream("Potion.png"));
 			emptyPotion = ImageIO.read(this.getClass().getResourceAsStream("EmptyPotion.png"));
+			boots = ImageIO.read(this.getClass().getResourceAsStream("SpeedyBoots.png"));
+			treasureMarker = ImageIO.read(this.getClass().getResourceAsStream("x-marks-the-spot.png"));
 		} catch (IOException e) {
 
 			e.printStackTrace();
@@ -277,6 +281,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	}
 
+	void updateIslandState() {
+		if (ship.x > JourneyToTheLostTreasure.WIDTH / 4) {
+			playerisSailing = false;
+		}
+		checkUp();
+		checkDown();
+		checkLeft();
+		checkRight();
+		o.update();
+		o.checkCollision();
+		repaint();
+
+	}
+
 	void drawForestState(Graphics g) {
 
 		g.setColor(Color.GREEN);
@@ -301,11 +319,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.white);
 		g.drawString("Forest", JourneyToTheLostTreasure.WIDTH / 3, 50);
 		g.setFont(healthFont);
-
-		g.setColor(Color.red);
-
-		g.fillOval(p.getX() - 10, p.getY() + 80, p.health, 5);
-
+		drawPlayerHealth(g);
 	}
 
 	void drawLagoonState(Graphics g) {
@@ -332,9 +346,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (pot.isFound == false) {
 			pot.draw(g);
 		}
-		g.setColor(Color.red);
+		drawPlayerHealth(g);
 
-		g.fillOval(p.getX() - 10, p.getY() + 80, p.health, 5);
 		if (sword.isFound) {
 			sword.draw(g);
 		}
@@ -363,9 +376,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("Cave", JourneyToTheLostTreasure.WIDTH / 3, 50);
 		g.setFont(healthFont);
 
-		g.setColor(Color.red);
+		drawPlayerHealth(g);
 
-		g.fillOval(p.getX() - 10, p.getY() + 80, p.health, 5);
 		if (sword.isFound) {
 			sword.draw(g);
 		}
@@ -399,8 +411,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("Forest Edge", JourneyToTheLostTreasure.WIDTH / 4, 50);
 		g.setFont(healthFont);
 		g.setColor(Color.red);
+		drawPlayerHealth(g);
 
-		g.fillOval(p.getX() - 10, p.getY() + 80, p.health, 5);
 		if (sword.isFound) {
 			sword.draw(g);
 		}
@@ -414,7 +426,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void drawInShackState(Graphics g) {
-		g.setColor(Color.RED);
+		g.setColor(Color.ORANGE);
 		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH, JourneyToTheLostTreasure.HEIGHT);
 		g.setColor(Color.GRAY);
 		if (!playerisSailing) {
@@ -436,8 +448,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("Shack", JourneyToTheLostTreasure.WIDTH / 3, 50);
 		g.setFont(healthFont);
 		g.setColor(Color.red);
+		drawPlayerHealth(g);
 
-		g.fillOval(p.getX() - 10, p.getY() + 80, p.health, 5);
 		if (sword.isFound) {
 
 			sword.draw(g);
@@ -467,9 +479,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setFont(menuFont);
 		g.setColor(Color.white);
 		g.drawString("Path 2", JourneyToTheLostTreasure.WIDTH / 3, 50);
-		g.setColor(Color.red);
+		drawPlayerHealth(g);
 
-		g.fillOval(p.getX() - 10, p.getY() + 80, p.health, 5);
 		if (sword.isFound) {
 			sword.draw(g);
 		}
@@ -497,13 +508,44 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setFont(menuFont);
 		g.setColor(Color.white);
 		g.drawString("Path", JourneyToTheLostTreasure.WIDTH / 3, 50);
-		g.setColor(Color.red);
-
-		g.fillOval(p.getX() - 10, p.getY() + 80, p.health, 5);
+		drawPlayerHealth(g);
 		if (sword.isFound) {
 			sword.draw(g);
 		}
 
+	}
+
+	void drawIslandState(Graphics g) {
+
+		g.setColor(Color.ORANGE);
+
+		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH, JourneyToTheLostTreasure.HEIGHT);
+		g.setColor(Color.blue);
+		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH / 4, JourneyToTheLostTreasure.HEIGHT);
+		g.drawImage(treasureMarker, 600, 100, 200, 200, null);
+		if (!playerisSailing) {
+			p.draw(g);
+		}
+		g.setColor(Color.GRAY);
+		g.fillRect(850, 0, 150, 700);
+		g.setFont(inventoryFont);
+		g.setColor(Color.WHITE);
+		g.drawString("1", 860, 150);
+		g.drawString("2", 860, 300);
+		g.drawString("3", 860, 450);
+		g.drawString("4", 860, 600);
+		g.setColor(Color.YELLOW);
+		g.drawString(Integer.toString(o.coins), 870, 50);
+		g.setFont(menuFont);
+		g.setColor(Color.white);
+		g.drawString("Island", JourneyToTheLostTreasure.WIDTH / 3, 50);
+		ship.draw(g);
+		drawPlayerHealth(g);
+		if (sword.isFound) {
+			sword.draw(g);
+		}
+		drawPlayerHealth(g);
+		repaint();
 	}
 
 	void drawBayState(Graphics g) {
@@ -531,9 +573,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.white);
 		g.drawString("Bay", JourneyToTheLostTreasure.WIDTH / 3, 50);
 		ship.draw(g);
-		g.setColor(Color.red);
-
-		g.fillOval(p.getX() - 10, p.getY() + 80, p.health, 5);
+		drawPlayerHealth(g);
 		if (sword.isFound) {
 			sword.draw(g);
 		}
@@ -590,6 +630,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			} else if (mapStates[mapRow][mapColumn] == OCEAN_STATE) {
 				drawOceanState(g);
 				updateOceanState();
+			}
+			if (mapStates[mapRow][mapColumn] == ISLAND_STATE) {
+				drawIslandState(g);
+				updateIslandState();
 			}
 			if (m.isFound) {
 				m.drawInInv(g);
@@ -728,17 +772,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			right = false;
 		}
 
-		else if (p.collisionBox.y > JourneyToTheLostTreasure.HEIGHT) {
-			p.setX(10);
-			sword.setX(25);
-			if (mapRow < 6) {
-				mapRow += 1;
-			}
+		if (p.collisionBox.y > JourneyToTheLostTreasure.HEIGHT - 60) {
+			bayShop.inside = false;
+
+			p.setY(350);
+			p.setX(560);
+			sword.setX(575);
+			sword.setY(350);
+
 		}
 		o.update();
 		o.checkCollision();
 		repaint();
-
 	}
 
 	void drawInShopState(Graphics g) {
@@ -762,9 +807,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("Bay Shop", JourneyToTheLostTreasure.WIDTH / 3, 50);
 		g.setFont(healthFont);
 
-		g.setColor(Color.red);
-
-		g.fillOval(p.getX() - 10, p.getY() + 80, p.health, 5);
+		drawPlayerHealth(g);
 		if (sword.isFound) {
 
 			sword.draw(g);
@@ -1226,5 +1269,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				down = false;
 			}
 		}
+	}
+
+	void drawPlayerHealth(Graphics g) {
+		g.setColor(Color.red);
+		g.fillOval((p.getX() + (p.width / 2)) - ((p.health * 2) / 2), p.getY() + p.height, p.health * 2, 5);
+		repaint();
+
 	}
 }

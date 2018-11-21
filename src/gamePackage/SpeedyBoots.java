@@ -1,6 +1,6 @@
 package gamePackage;
 
-import java.awt.Color;
+
 import java.awt.Graphics;
 
 public class SpeedyBoots extends Game_Object {
@@ -34,9 +34,7 @@ public class SpeedyBoots extends Game_Object {
 	}
 
 	void draw(Graphics g) {
-		g.setColor(Color.YELLOW);
-		g.fillRect(x, y, width, height);
-		g.fillRect(x + 20, y, width, height);
+		g.drawImage(GamePanel.boots, x, y, width*3, height*2, null );
 	}
 
 	void drawInInv(Graphics g) {
@@ -82,8 +80,7 @@ public class SpeedyBoots extends Game_Object {
 			break;
           
 		}
-		g.setColor(Color.black);
-		g.fillRect(900, positionInInv, 50, 50);
+				g.drawImage(GamePanel.boots, 900, positionInInv, 50, 50, null);
 		/*
 		 * if (Object_Manager.inv.isEmpty()) { g.setColor(Color.YELLOW); g.fillRect(900,
 		 * GamePanel.INVENTORY_SLOT1, 50, 50);

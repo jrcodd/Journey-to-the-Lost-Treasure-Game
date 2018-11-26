@@ -15,16 +15,16 @@ public class PlayerShip extends Game_Object {
 	PlayerShip(int x, int y, int width, int height, int health, int level) {
 		super(x, y, width, height, health);
 		this.level = level;
-this.health = health;
-maxHealth = health;
+		this.health = health;
+		maxHealth = health;
 	}
 
 	void update() {
 		super.update();
-				hitBox.setBounds(x, y, width, height);
-				if(maxHealth<health) {
-					maxHealth = health;
-				}
+		hitBox.setBounds(x, y, width, height);
+		if (maxHealth < health) {
+			maxHealth = health;
+		}
 	}
 
 	void draw(Graphics g) {
@@ -247,16 +247,14 @@ maxHealth = health;
 
 			}
 		} else {
-			if(level == 1) {
-			g.drawImage(GamePanel.level1BoatLeft, x, y, width, height, null);
-			}
-			else if(level == 2) {
+			if (level == 1) {
+				g.drawImage(GamePanel.level1BoatLeft, x, y, width, height, null);
+			} else if (level == 2) {
 				g.drawImage(GamePanel.level2BoatLeft, x, y, width, height, null);
-			}
-			else{
+			} else {
 				g.drawImage(GamePanel.level3BoatLeft, x, y, width, height, null);
 			}
-		
+
 		}
 	}
 

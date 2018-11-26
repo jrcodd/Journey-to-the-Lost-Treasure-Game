@@ -9,7 +9,7 @@ public class Object_Manager {
 	boolean playerHasFired = false;
 	BayShop bayShop;
 	PlayerShip ship;
-
+	X x;
 	static SpeedyBoots caveBoots;
 	Player p;
 	static TreasureMap m;
@@ -20,10 +20,11 @@ public class Object_Manager {
 	WeakBandit b2;
 	boolean isDefending;
 	static HealthPotion pot;
+	static ShipRepairKit kit;
 	boolean bStart;
 	int coins;
 	boolean coinsAdded;
-	
+
 	private boolean coinsAdded1;
 	private boolean coinsAdded2;
 	boolean isDefending2;
@@ -31,10 +32,9 @@ public class Object_Manager {
 	boolean b1Start;
 	boolean b2Start;
 	boolean damageDelt = false;
-	
 
-	Object_Manager(Player p, TreasureMap m, SpeedyBoots caveBoots, Shack s, BayShop bayShop, PlayerShip ship,
-			OldMan man, Sword sword, StrongBandit b, HealthPotion pot, WeakBandit b1, WeakBandit b2) {
+	Object_Manager(Player p, TreasureMap m, ShipRepairKit kit, SpeedyBoots caveBoots, Shack s, BayShop bayShop, PlayerShip ship,
+			OldMan man, Sword sword, StrongBandit b, HealthPotion pot, WeakBandit b1, WeakBandit b2, X x) {
 		this.s = s;
 		this.bayShop = bayShop;
 		this.p = p;
@@ -46,6 +46,8 @@ public class Object_Manager {
 		this.b1 = b1;
 		this.b2 = b2;
 		this.ship = ship;
+		this.x = x;
+		Object_Manager.kit = kit;
 
 		Object_Manager.pot = pot;
 		inv = new ArrayList<Game_Object>();
@@ -154,7 +156,7 @@ public class Object_Manager {
 					GamePanel.left = false;
 					man.hasTalked = true;
 					man.talk();
-					sword.isFound = true;
+					kit.isFound = true;
 				}
 			}
 		}
@@ -177,10 +179,11 @@ public class Object_Manager {
 			}
 		}
 		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.OCEAN_STATE) {
-			damageDelt = false;for (int i = 0; i < GamePanel.enemyShipList.size(); i++) {
-				
-			
-			GamePanel.enemyShipList.get(i).damageDelt = false;}
+			damageDelt = false;
+			for (int i = 0; i < GamePanel.enemyShipList.size(); i++) {
+
+				GamePanel.enemyShipList.get(i).damageDelt = false;
+			}
 			for (int i = 0; i < GamePanel.enemyShipList.size(); i++) {
 
 				if (GamePanel.enemyShipList.get(i).health <= 0) {
@@ -188,7 +191,7 @@ public class Object_Manager {
 					if (!GamePanel.enemyShipList.get(i).addedRewards) {
 						coins += 50;
 						ship.level += 1;
-						ship.maxHealth = (ship.maxHealth * ship.level);
+						ship.maxHealth = (ship.maxHealth + 10* ship.level);
 						ship.health = ship.maxHealth;
 						GamePanel.enemyShipList.get(i).addedRewards = true;
 					}
@@ -212,7 +215,7 @@ public class Object_Manager {
 					if (GamePanel.enemyShipList.get(i).isAlive) {
 						for (int j = 0; j < GamePanel.EnemycannonballList.size(); j++) {
 							if (GamePanel.EnemycannonballList.get(j).collisionBox.intersects(ship.collisionBox)) {
-								if ( GamePanel.enemyShipList.get(i).damageDelt == false) {
+								if (GamePanel.enemyShipList.get(i).damageDelt == false) {
 									System.out.println("hit");
 									GamePanel.EnemycannonballList.remove(GamePanel.EnemycannonballList.size() - 1);
 									ship.health -= 30;
@@ -289,6 +292,7 @@ public class Object_Manager {
 
 			GamePanel.enemyShipList.get(j).update();
 		}
+	
 		sword.update();
 		b.update();
 		b1.update();
@@ -316,5 +320,28 @@ public class Object_Manager {
 				}
 			}
 		}
+		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.ISLAND_STATE) {
+			if (p.collisionBox.intersects(x.collisionBox)) {
+				System.out.println("TREASURE IS FOUND");
+			}
+		}
+	}
+	void processDeath() {
+		p.health = 50;
+		ship.maxHealth = 400;
+		ship.health = ship.maxHealth;
+		GamePanel.playerisSailing = false;
+		m.isFound = false;
+		pot.isFound = false;
+		kit.isFound = false;
+		caveBoots.isFound = false;
+		p.setX(100);
+		p.setY(500);
+		ship.setX(50);
+		ship.setY(50);
+		b.isDead = false;
+		b.setHealth(300);
+		b1.setHealth(100);
+		b2.setHealth(100);
 	}
 }

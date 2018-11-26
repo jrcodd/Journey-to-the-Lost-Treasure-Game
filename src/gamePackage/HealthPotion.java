@@ -1,6 +1,6 @@
 package gamePackage;
 
-import java.awt.Color;
+
 import java.awt.Graphics;
 
 public class HealthPotion extends Game_Object {

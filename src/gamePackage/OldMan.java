@@ -22,7 +22,7 @@ public class OldMan extends Game_Object {
 
 	void talk() {
 
-		JOptionPane.showMessageDialog(null, "Here is a __________. Be careful out there traveler.");
+		JOptionPane.showMessageDialog(null, "Here is a Ship Repair Kit. Be careful out there traveler.");
 
 	}
 

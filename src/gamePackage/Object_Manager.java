@@ -188,6 +188,7 @@ public class Object_Manager {
 
 				if (GamePanel.enemyShipList.get(i).health <= 0) {
 					GamePanel.enemyShipList.get(i).isAlive = false;
+					GamePanel.enemyShipList.remove(0);
 					if (!GamePanel.enemyShipList.get(i).addedRewards) {
 						coins += 50;
 						ship.level += 1;
@@ -340,6 +341,10 @@ public class Object_Manager {
 		ship.setX(50);
 		ship.setY(50);
 		b.isDead = false;
+		man.hasTalked = false;
+		b.isDead = false;
+		b1.isDead = false;
+		b2.isDead = false;
 		b.setHealth(300);
 		b1.setHealth(100);
 		b2.setHealth(100);

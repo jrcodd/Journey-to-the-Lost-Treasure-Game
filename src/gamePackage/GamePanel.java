@@ -305,7 +305,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH, JourneyToTheLostTreasure.HEIGHT);
 		g.setColor(Color.GRAY);
 		if (!playerisSailing) {
-			p.draw(g);
+			if (!mapOpen) {
+				p.draw(g);
+			}
 		}
 		g.fillRect(850, 0, 150, 700);
 		if (m.isFound == false) {
@@ -332,7 +334,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH, JourneyToTheLostTreasure.HEIGHT);
 		g.setColor(Color.GRAY);
 		if (!playerisSailing) {
-			p.draw(g);
+			if (!mapOpen) {
+				p.draw(g);
+			}
 		}
 
 		g.fillRect(850, 0, 150, 700);
@@ -365,7 +369,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 		g.setColor(Color.GRAY);
 		if (!playerisSailing) {
-			p.draw(g);
+			if (!mapOpen) {
+				p.draw(g);
+			}
 		}
 		g.fillRect(850, 0, 150, 700);
 		g.setFont(inventoryFont);
@@ -399,7 +405,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		s.draw(g);
 		g.setColor(Color.GRAY);
 		if (!playerisSailing) {
-			p.draw(g);
+			if (!mapOpen) {
+				p.draw(g);
+			}
 		}
 
 		g.fillRect(850, 0, 150, 700);
@@ -435,7 +443,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH, JourneyToTheLostTreasure.HEIGHT);
 		g.setColor(Color.GRAY);
 		if (!playerisSailing) {
-			p.draw(g);
+			if (!mapOpen) {
+				p.draw(g);
+			}
 		}
 		man.draw(g);
 
@@ -479,7 +489,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH, JourneyToTheLostTreasure.HEIGHT);
 		g.setColor(Color.GRAY);
 		if (!playerisSailing) {
-			p.draw(g);
+			if (!mapOpen) {
+				p.draw(g);
+			}
 		}
 
 		g.setColor(Color.GRAY);
@@ -508,7 +520,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH, JourneyToTheLostTreasure.HEIGHT);
 		g.setColor(Color.GRAY);
 		if (!playerisSailing) {
-			p.draw(g);
+			if (!mapOpen) {
+				p.draw(g);
+			}
 		}
 
 		g.setColor(Color.GRAY);
@@ -540,7 +554,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH / 4, JourneyToTheLostTreasure.HEIGHT);
 		x.draw(g);
 		if (!playerisSailing) {
-			p.draw(g);
+			if (!mapOpen) {
+				p.draw(g);
+			}
 		}
 		g.setColor(Color.GRAY);
 		g.fillRect(850, 0, 150, 700);
@@ -574,7 +590,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.GRAY);
 		g.fillRect(550, 10, 290, 290);
 		if (!playerisSailing) {
-			p.draw(g);
+			if (!mapOpen) {
+				p.draw(g);
+			}
 		}
 		g.fillRect(850, 0, 150, 700);
 		g.setFont(inventoryFont);
@@ -606,14 +624,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH, JourneyToTheLostTreasure.HEIGHT);
 			g.setFont(menuFont);
 			g.setColor(Color.black);
-			g.drawString("Game Over", (JourneyToTheLostTreasure.WIDTH/2)-200, JourneyToTheLostTreasure.HEIGHT/3);
-			g.drawString("Press ENTER To Restart", (JourneyToTheLostTreasure.WIDTH/2)-200, (JourneyToTheLostTreasure.HEIGHT/2));
+			g.drawString("Game Over", (JourneyToTheLostTreasure.WIDTH / 2) - 200, JourneyToTheLostTreasure.HEIGHT / 3);
+			g.drawString("Press ENTER To Restart", (JourneyToTheLostTreasure.WIDTH / 2) - 200,
+					(JourneyToTheLostTreasure.HEIGHT / 2));
 			o.processDeath();
 		} else {
-               if(p.health <=0 || ship.health <=0) {
-            	   System.out.println("Game Over");
-            	   currentState = END_STATE;
-               }
+			if (p.health <= 0 || ship.health <= 0) {
+				System.out.println("Game Over");
+				currentState = END_STATE;
+			}
 			if (mapStates[mapRow][mapColumn] == FOREST_STATE) {
 
 				updateForestState();
@@ -755,9 +774,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH, JourneyToTheLostTreasure.HEIGHT);
 
 		g.setColor(Color.GRAY);
-		if (!playerisSailing) {
-			p.draw(g);
-		}
 
 		for (int i = 0; i < enemyShipList.size(); i++) {
 			enemyShipList.get(i).draw(g);
@@ -784,8 +800,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.white);
 		g.drawString("Ocean", JourneyToTheLostTreasure.WIDTH / 3, 50);
 		g.setColor(Color.red);
-		g.fillOval((ship.getX() + ship.width / 2) - ((ship.health) / 2), ship.getY() + ship.height, ship.health,
-				5);
+		g.fillOval((ship.getX() + ship.width / 2) - ((ship.health) / 2), ship.getY() + ship.height, ship.health, 5);
 		repaint();
 	}
 
@@ -819,7 +834,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH, JourneyToTheLostTreasure.HEIGHT);
 		g.setColor(Color.GRAY);
-		p.draw(g);
+		if (!mapOpen) {
+			p.draw(g);
+		}
+
 		man.draw(g);
 
 		g.fillRect(850, 0, 150, 700);
@@ -909,49 +927,53 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				right = true;
 
 			}
+
 			if (kit.isFound) {
 				if (kit.positionInInv == INVENTORY_SLOT1) {
 					if (playerisSailing) {
 						if (e.getKeyCode() == KeyEvent.VK_1) {
+							System.out.println(kit.isUsed);
+							if (kit.timeUntilNextUse <= 0) {
+								if (ship.health < ship.maxHealth) {
+									ship.health = ship.maxHealth;
+									kit.timeUntilNextUse = fps * 15;
+								}
+							}
+						}
+					}
+				} else if (kit.positionInInv == INVENTORY_SLOT2) {
+					if (e.getKeyCode() == KeyEvent.VK_2) {
+						System.out.println(kit.isUsed);
+						if (kit.timeUntilNextUse <= 0) {
+							if (ship.health < ship.maxHealth) {
+								ship.health = ship.maxHealth;
+								kit.timeUntilNextUse = fps * 15;
+							}
+						}
+					}
+				} else if (kit.positionInInv == INVENTORY_SLOT3) {
+					if (e.getKeyCode() == KeyEvent.VK_3) {
+						if (kit.timeUntilNextUse <= 0) {
+							if (ship.health < ship.maxHealth) {
+								ship.health = ship.maxHealth;
+								kit.timeUntilNextUse = fps * 15;
+							}
+						}
+					}
+				} else if (kit.positionInInv == INVENTORY_SLOT4) {
+					if (e.getKeyCode() == KeyEvent.VK_4) {
 
-							if (kit.isUsed == false) {
-								if (ship.health < ship.maxHealth) {
-									ship.health = ship.maxHealth;
-									kit.isUsed = true;
-								}
-							}
-						}
-					} else if (kit.positionInInv == INVENTORY_SLOT2) {
-						if (e.getKeyCode() == KeyEvent.VK_2) {
-							if (kit.isUsed == false) {
-								if (ship.health < ship.maxHealth) {
-									ship.health =ship.maxHealth;
-									kit.isUsed = true;
-								}
-							}
-						}
-					} else if (kit.positionInInv == INVENTORY_SLOT3) {
-						if (e.getKeyCode() == KeyEvent.VK_3) {
-							if (kit.isUsed == false) {
-								if (ship.health < ship.maxHealth) {
-									ship.health = ship.maxHealth;
-									kit.isUsed = true;
-								}
-							}
-						}
-					} else if (kit.positionInInv == INVENTORY_SLOT4) {
-						if (e.getKeyCode() == KeyEvent.VK_4) {
-							if (kit.isUsed == false) {
-								if (ship.health < ship.maxHealth) {
-									ship.health = ship.maxHealth;
-									kit.isUsed = true;
-								}
+						if (kit.timeUntilNextUse <= 0) {
+							if (ship.health < ship.maxHealth) {
+								ship.health = ship.maxHealth;
+								kit.timeUntilNextUse = fps * 30;
 							}
 						}
 					}
 				}
 			}
 		}
+
 		if (pot.isFound) {
 
 			if (pot.positionInInv == INVENTORY_SLOT1) {
@@ -1110,9 +1132,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 					}
 				}
 			}
-			
+
 		}
 		repaint();}
+
+	
+
+	
 
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -1177,6 +1203,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (kit.timeUntilNextUse > 0) {
+			kit.timeUntilNextUse -= 1;
+		} else {
+			System.out.println("ready");
+		}
 		for (int i = 0; i < enemyShipList.size(); i++) {
 
 			enemyShipList.get(i)

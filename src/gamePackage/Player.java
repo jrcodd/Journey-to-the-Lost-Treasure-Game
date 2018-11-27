@@ -17,7 +17,9 @@ public class Player extends Game_Object {
 	}
 
 	void draw(Graphics g) {
+		
 		if (!GamePanel.playerisSailing) {
+		
 			if (GamePanel.left) {
 
 				dir = "LEFT";

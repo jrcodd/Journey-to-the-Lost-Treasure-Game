@@ -336,6 +336,7 @@ public class Object_Manager {
 		pot.isFound = false;
 		kit.isFound = false;
 		caveBoots.isFound = false;
+		pot.isDrank = false;
 		p.setX(100);
 		p.setY(500);
 		ship.setX(50);

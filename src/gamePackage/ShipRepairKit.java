@@ -1,5 +1,6 @@
 package gamePackage;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 public class ShipRepairKit extends Game_Object {
@@ -83,8 +84,9 @@ public class ShipRepairKit extends Game_Object {
 			break;
 		}
 
-		g.drawImage(GamePanel.RepairKitImg, 900, positionInInv, 50, 50, null);
-		g.fillOval((900 + (50/ 2)) - ((timeUntilNextUse /20) / 2), positionInInv + 50, timeUntilNextUse/20, 5);
+		g.drawImage(GamePanel.RepairKitImg, 900, positionInInv-50, 50, 50, null);
+		g.setColor(Color.black);
+		g.fillOval((900 + (50/ 2)) - ((timeUntilNextUse /20) / 2), (positionInInv-50 )+ 50, timeUntilNextUse/20, 5);
 		/*
 		 * if (Object_Manager.inv.isEmpty()) { g.setColor(Color.yellow); g.fillRect(900,
 		 * GamePanel.INVENTORY_SLOT1, 50, 50); if (isAdded == false) {

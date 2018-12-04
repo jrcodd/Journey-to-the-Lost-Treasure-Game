@@ -110,7 +110,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	final static int mapStates[][] = {
 
 			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, ISLAND_STATE },
-			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, OCEAN_STATE},
+			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, OCEAN_STATE },
 			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, OCEAN_STATE },
 			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, BAY_STATE },
 			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, NO_PLACE, PATH2_STATE },
@@ -177,7 +177,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.BLACK);
 		g.setFont(menuFont);
 		g.drawString("Journey To The Lost Treasure", JourneyToTheLostTreasure.WIDTH / 7,
-				JourneyToTheLostTreasure.HEIGHT / 4);
+		JourneyToTheLostTreasure.HEIGHT / 4);
 		g.setFont(instructionsFont);
 		g.drawString("Press ENTER to start", JourneyToTheLostTreasure.WIDTH / 3, JourneyToTheLostTreasure.HEIGHT / 2);
 	}
@@ -436,29 +436,76 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void drawMapState(Graphics g) {
-	
+
 		drawMap(g);
-	
+
 	}
 
 	void drawMap(Graphics g) {
+		g.setColor(new Color(0x999999));
+		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH , JourneyToTheLostTreasure.HEIGHT );
 		g.setColor(Color.blue);
-		g.fillRect((JourneyToTheLostTreasure.WIDTH/5), 0, (JourneyToTheLostTreasure.WIDTH/5)*4, JourneyToTheLostTreasure.HEIGHT);
+		g.fillRect((JourneyToTheLostTreasure.WIDTH / 5), 0, (JourneyToTheLostTreasure.WIDTH / 5) * 4,
+				JourneyToTheLostTreasure.HEIGHT);
 		g.setColor(Color.ORANGE);
-		g.fillRect((JourneyToTheLostTreasure.WIDTH/5)*4, 0, (JourneyToTheLostTreasure.WIDTH/5), JourneyToTheLostTreasure.HEIGHT/6);
-		g.setColor(new Color(0x00CC00));
-		g.fillRect((JourneyToTheLostTreasure.WIDTH/5)*4, (JourneyToTheLostTreasure.HEIGHT/7)*3, (JourneyToTheLostTreasure.WIDTH/5), JourneyToTheLostTreasure.HEIGHT/7);
+		g.fillRect((JourneyToTheLostTreasure.WIDTH / 5) * 4, 0, (JourneyToTheLostTreasure.WIDTH / 5),
+				JourneyToTheLostTreasure.HEIGHT / 6);
+		g.setColor(new Color(0xFFFF66));
+		g.fillRect((JourneyToTheLostTreasure.WIDTH / 5) * 4, (JourneyToTheLostTreasure.HEIGHT / 7) * 3,
+				(JourneyToTheLostTreasure.WIDTH / 5), JourneyToTheLostTreasure.HEIGHT / 7);
 		g.setColor(new Color(0x33FF33));
-		g.fillRect((JourneyToTheLostTreasure.WIDTH/5)*4, (JourneyToTheLostTreasure.HEIGHT/7)*4, (JourneyToTheLostTreasure.WIDTH/5), JourneyToTheLostTreasure.HEIGHT/7);
-		g.fillRect((JourneyToTheLostTreasure.WIDTH/5)*4, (JourneyToTheLostTreasure.HEIGHT/7)*5, (JourneyToTheLostTreasure.WIDTH/5), JourneyToTheLostTreasure.HEIGHT/7);
-        g.setColor(new Color(0x009900));
-        g.fillRect((JourneyToTheLostTreasure.WIDTH/5)*4, (JourneyToTheLostTreasure.HEIGHT/7)*6, (JourneyToTheLostTreasure.WIDTH/5), JourneyToTheLostTreasure.HEIGHT/7);
-        g.setColor(Color.cyan);
-        g.fillRect((JourneyToTheLostTreasure.WIDTH/5)*3, (JourneyToTheLostTreasure.HEIGHT/7)*6, (JourneyToTheLostTreasure.WIDTH/5), JourneyToTheLostTreasure.HEIGHT/7);
-        g.setColor(new Color(0x005000));
-        g.fillRect((JourneyToTheLostTreasure.WIDTH/5)*2, (JourneyToTheLostTreasure.HEIGHT/7)*6, (JourneyToTheLostTreasure.WIDTH/5), JourneyToTheLostTreasure.HEIGHT/7);
-        g.setColor(new Color(0x000000));
-        g.fillRect((JourneyToTheLostTreasure.WIDTH/5), (JourneyToTheLostTreasure.HEIGHT/7)*6, (JourneyToTheLostTreasure.WIDTH/5), JourneyToTheLostTreasure.HEIGHT/7);
+		g.fillRect((JourneyToTheLostTreasure.WIDTH / 5) * 4, (JourneyToTheLostTreasure.HEIGHT / 7) * 4,
+				(JourneyToTheLostTreasure.WIDTH / 5), JourneyToTheLostTreasure.HEIGHT / 7);
+		g.fillRect((JourneyToTheLostTreasure.WIDTH / 5) * 4, (JourneyToTheLostTreasure.HEIGHT / 7) * 5,
+				(JourneyToTheLostTreasure.WIDTH / 5), JourneyToTheLostTreasure.HEIGHT / 7);
+		g.setColor(new Color(0x009900));
+		g.fillRect((JourneyToTheLostTreasure.WIDTH / 5) * 4, (JourneyToTheLostTreasure.HEIGHT / 7) * 6,
+				(JourneyToTheLostTreasure.WIDTH / 5), JourneyToTheLostTreasure.HEIGHT / 7);
+		g.setColor(Color.cyan);
+		g.fillRect((JourneyToTheLostTreasure.WIDTH / 5) * 3, (JourneyToTheLostTreasure.HEIGHT / 7) * 6,
+				(JourneyToTheLostTreasure.WIDTH / 5), JourneyToTheLostTreasure.HEIGHT / 7);
+		g.setColor(new Color(0x009900));
+		g.fillRect((JourneyToTheLostTreasure.WIDTH / 5) * 2, (JourneyToTheLostTreasure.HEIGHT / 7) * 6,
+				(JourneyToTheLostTreasure.WIDTH / 5), JourneyToTheLostTreasure.HEIGHT / 7);
+		g.setColor(new Color(0x000000));
+		g.fillRect((JourneyToTheLostTreasure.WIDTH / 5), (JourneyToTheLostTreasure.HEIGHT / 7) * 6,
+				(JourneyToTheLostTreasure.WIDTH / 5), JourneyToTheLostTreasure.HEIGHT / 7);
+
+		g.setColor(Color.blue);
+		g.fillRect(0, 25, 100, 75);
+		g.setColor(Color.BLACK);
+		g.setFont(inventoryFont);
+		g.drawString("-OCEAN", 101, 25 + (75 / 2));
+		g.setColor(Color.ORANGE);
+		g.fillRect(0, 125, 100, 75);
+		g.setFont(inventoryFont);
+		g.setColor(Color.BLACK);
+		g.drawString("-ISLAND", 101, 125 + (75 / 2));
+		g.setColor(new Color(0xFFFF66));
+		g.fillRect(0, 225, 100, 75);
+		g.setFont(inventoryFont);
+		g.setColor(Color.BLACK);
+		g.drawString("-BAY", 101, 225 + (75 / 2));
+		g.setColor(new Color((0x33FF33)));
+		g.fillRect(0, 325, 100, 75);
+		g.setColor(Color.BLACK);
+		g.setFont(inventoryFont);
+		g.drawString("-PATH", 101, 325 + (75 / 2));
+		g.setColor(new Color((0x009900)));
+		g.fillRect(0, 425, 100, 75);
+		g.setColor(Color.BLACK);
+		g.setFont(inventoryFont);
+		g.drawString("-FOREST", 101, 425 + (75 / 2));
+		g.setColor(Color.cyan);
+		g.fillRect(0, 525, 100, 75);
+		g.setColor(Color.BLACK);
+		g.setFont(inventoryFont);
+		g.drawString("-LAGOON", 101, 525 + (75 / 2));
+		g.setColor(Color.black);
+		g.fillRect(0, 625, 100, 75);
+		g.setColor(Color.BLACK);
+		g.setFont(inventoryFont);
+		g.drawString("-CAVE", 101, 625 + (75 / 2));
 	}
 
 	void drawInShackState(Graphics g) {

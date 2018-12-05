@@ -16,6 +16,8 @@ import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+
+
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	/**
 	 * 
@@ -684,7 +686,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void paintComponent(Graphics g) {
-
+g.fillRect(0, 0, 1000000, 10000000);
 		if (currentState == MENU_STATE) {
 			drawMenuState(g);
 		} else if (currentState == END_STATE) {
@@ -699,6 +701,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		} else if (!mapOpen) {
 
 			if (p.health <= 0 || ship.health <= 0) {
+			//	DeathListener.death();
 				System.out.println("Game Over");
 				currentState = END_STATE;
 			}
@@ -936,10 +939,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 
-		if (e.getKeyCode() == KeyEvent.VK_H) {
-			mapStates[mapRow][mapColumn] = BAY_STATE;
-			o.coins += 100;
-		}
+		
 
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			// works
@@ -1424,7 +1424,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	void checkDown() {
 		if (p.collisionBox.y > 800 || ship.collisionBox.y > 800) {
-			if (mapRow < 5 && mapStates[mapRow + 1][mapColumn] != NO_PLACE) {
+			if (mapRow < 6 && mapStates[mapRow + 1][mapColumn] != NO_PLACE) {
 				if (!playerisSailing) {
 					p.setY(10);
 					sword.setY(10);

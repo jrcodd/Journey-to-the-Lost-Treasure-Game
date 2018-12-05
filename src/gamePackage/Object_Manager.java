@@ -33,8 +33,9 @@ public class Object_Manager {
 	boolean b2Start;
 	boolean damageDelt = false;
 
-	Object_Manager(Player p, TreasureMap m, ShipRepairKit kit, SpeedyBoots caveBoots, Shack s, BayShop bayShop, PlayerShip ship,
-			OldMan man, Sword sword, StrongBandit b, HealthPotion pot, WeakBandit b1, WeakBandit b2, X x) {
+	Object_Manager(Player p, TreasureMap m, ShipRepairKit kit, SpeedyBoots caveBoots, Shack s, BayShop bayShop,
+			PlayerShip ship, OldMan man, Sword sword, StrongBandit b, HealthPotion pot, WeakBandit b1, WeakBandit b2,
+			X x) {
 		this.s = s;
 		this.bayShop = bayShop;
 		this.p = p;
@@ -184,53 +185,66 @@ public class Object_Manager {
 
 				GamePanel.enemyShipList.get(i).damageDelt = false;
 			}
-			for (int i = 0; i < GamePanel.enemyShipList.size(); i++) {
+			if (!GamePanel.enemyShipList.isEmpty()) {
+				for (int i = 0; i < GamePanel.enemyShipList.size(); i++) {
+					System.out.println(GamePanel.enemyShipList.get(i).health);
+					if (GamePanel.enemyShipList.get(i).health <= 0) {
+						GamePanel.enemyShipList.get(i).isAlive = false;
 
-				if (GamePanel.enemyShipList.get(i).health <= 0) {
-					GamePanel.enemyShipList.get(i).isAlive = false;
-					GamePanel.enemyShipList.remove(0);
-					if (!GamePanel.enemyShipList.get(i).addedRewards) {
-						coins += 50;
-						ship.level += 1;
-						ship.maxHealth = (ship.maxHealth + 10* ship.level);
-						ship.health = ship.maxHealth;
-						GamePanel.enemyShipList.get(i).addedRewards = true;
-					}
-				}
-				if (GamePanel.cannonballList.size() > 0) {
-					for (int o = 0; o < GamePanel.cannonballList.size(); o++) {
-						if (GamePanel.cannonballList.get(i).collisionBox
-								.intersects(GamePanel.enemyShipList.get(i).collisionBox)) {
-
-							if (damageDelt == false) {
-								System.out.println("hit");
-								GamePanel.cannonballList.remove(GamePanel.cannonballList.size() - 1);
-								GamePanel.enemyShipList.get(i).health -= 30;
-								System.out.println("enemy Ship health: " + GamePanel.enemyShipList.get(i).health);
-								damageDelt = true;
-							}
+						if (!GamePanel.enemyShipList.get(i).addedRewards) {
+							coins += 50;
+							ship.level += 1;
+							ship.maxHealth = (ship.maxHealth + 10 * ship.level);
+							ship.health = ship.maxHealth;
+							GamePanel.enemyShipList.get(i).addedRewards = true;
+							GamePanel.enemyShipList.remove(0);
 						}
 					}
-				}
-				if (GamePanel.EnemycannonballList.size() > 0) {
-					if (GamePanel.enemyShipList.get(i).isAlive) {
-						for (int j = 0; j < GamePanel.EnemycannonballList.size(); j++) {
-							if (GamePanel.EnemycannonballList.get(j).collisionBox.intersects(ship.collisionBox)) {
-								if (GamePanel.enemyShipList.get(i).damageDelt == false) {
+
+					if (GamePanel.cannonballList.size() > 0) {
+						for (int o = 0; o < GamePanel.cannonballList.size(); o++) {
+							if (GamePanel.cannonballList.get(i).collisionBox
+									.intersects(GamePanel.enemyShipList.get(i).collisionBox)) {
+
+								if (damageDelt == false) {
 									System.out.println("hit");
-									GamePanel.EnemycannonballList.remove(GamePanel.EnemycannonballList.size() - 1);
-									ship.health -= 30;
-									System.out.println("player Ship health: " + ship.health);
-									GamePanel.enemyShipList.get(i).damageDelt = true;
+									GamePanel.cannonballList.remove(GamePanel.cannonballList.size() - 1);
+									GamePanel.enemyShipList.get(i).health -= 30;
+									System.out.println("enemy Ship health: " + GamePanel.enemyShipList.get(i).health);
+									damageDelt = true;
 								}
 							}
 						}
-					} else {
-						GamePanel.EnemycannonballList.remove(GamePanel.EnemycannonballList.size() - 1);
+					}
+				}
+				for (int j = 0; j < GamePanel.enemyShipList.size(); j++) {
+
+					if (GamePanel.EnemycannonballList.size() > 0) {
+						if (GamePanel.enemyShipList.get(j).isAlive) {
+							for (int k = 0; k < GamePanel.EnemycannonballList.size(); k++) {
+								if (GamePanel.EnemycannonballList.get(k).collisionBox.intersects(ship.collisionBox)) {
+									if (GamePanel.enemyShipList.get(j).damageDelt == false) {
+										System.out.println("hit");
+										GamePanel.EnemycannonballList.remove(GamePanel.EnemycannonballList.size() - 1);
+										ship.health -= 30;
+										System.out.println("player Ship health: " + ship.health);
+										GamePanel.enemyShipList.get(j).damageDelt = true;
+									}
+								}
+							}
+						}
 					}
 				}
 			}
 		}
+		for (int l = 0; l < GamePanel.EnemycannonballList.size(); l++) {
+
+			if ((GamePanel.EnemycannonballList.get(l).collisionBox.intersects(ship.collisionBox))) {
+				GamePanel.EnemycannonballList.remove(GamePanel.EnemycannonballList.size() - 1);
+			}
+
+		}
+
 	}
 
 	private void processWeakBanditIsAlive(WeakBandit wb) {
@@ -293,7 +307,7 @@ public class Object_Manager {
 
 			GamePanel.enemyShipList.get(j).update();
 		}
-	
+
 		sword.update();
 		b.update();
 		b1.update();
@@ -327,27 +341,35 @@ public class Object_Manager {
 			}
 		}
 	}
+	
+
 	void processDeath() {
-		p.health = 50;
-		ship.maxHealth = 400;
-		ship.health = ship.maxHealth;
-		GamePanel.playerisSailing = false;
-		m.isFound = false;
-		pot.isFound = false;
-		kit.isFound = false;
-		caveBoots.isFound = false;
-		pot.isDrank = false;
-		p.setX(100);
-		p.setY(500);
-		ship.setX(50);
-		ship.setY(50);
-		b.isDead = false;
-		man.hasTalked = false;
-		b.isDead = false;
-		b1.isDead = false;
-		b2.isDead = false;
-		b.setHealth(300);
-		b1.setHealth(100);
-		b2.setHealth(100);
+//		p.health = 50;
+//		ship.maxHealth = 400;
+//		ship.health = ship.maxHealth;
+//		GamePanel.playerisSailing = false;
+//		m.isFound = false;
+//		pot.isFound = false;
+//		kit.isFound = false;
+//		caveBoots.isFound = false;
+//		pot.isDrank = false;
+//		p.setX(100);
+//		p.setY(500);
+//		ship.setX(50);
+//		ship.setY(50);
+//		b.isDead = false;
+//		man.hasTalked = false;
+//		b.isDead = false;
+//		b1.isDead = false;
+//		b2.isDead = false;
+//		b.setHealth(300);
+//		b1.setHealth(100);
+//		b2.setHealth(100);
+	}
+	
+	
+	
+	public interface DeathListener{
+	//	public static void death();
 	}
 }

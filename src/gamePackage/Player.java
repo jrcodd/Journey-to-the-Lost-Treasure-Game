@@ -3,6 +3,7 @@ package gamePackage;
 import java.awt.Graphics;
 
 public class Player extends Game_Object {
+
 	int speed = 5;
 	String dir = "LEFT";
 	boolean dirSet = false;
@@ -17,9 +18,9 @@ public class Player extends Game_Object {
 	}
 
 	void draw(Graphics g) {
-		
-		if (!GamePanel.playerisSailing) {
-		
+
+		if (!Object_Manager.playerisSailing) {
+
 			if (GamePanel.left) {
 
 				dir = "LEFT";

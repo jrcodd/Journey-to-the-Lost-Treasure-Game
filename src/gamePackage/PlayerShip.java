@@ -28,7 +28,7 @@ public class PlayerShip extends Game_Object {
 	}
 
 	void draw(Graphics g) {
-		if (GamePanel.playerisSailing) {
+		if (Object_Manager.playerisSailing) {
 			if (level == 1) {
 				if (GamePanel.left == true && GamePanel.right == false && GamePanel.up == false
 						&& GamePanel.down == false) {

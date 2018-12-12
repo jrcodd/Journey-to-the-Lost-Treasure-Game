@@ -6,11 +6,9 @@ public class PlayerCannonBall extends Game_Object {
 	static String dir;
 	boolean isAlive;
 	boolean dirSet = false;
-	
 
 	PlayerCannonBall(int x, int y, int width, int height, int health) {
 		super(x, y, width, height, health);
-		
 
 	}
 
@@ -20,9 +18,9 @@ public class PlayerCannonBall extends Game_Object {
 
 	void update() {
 		super.update();
-		checkBounds();
+
 		checkDirection();
-		
+
 	}
 
 	void checkDirection() {/*
@@ -37,22 +35,6 @@ public class PlayerCannonBall extends Game_Object {
 							 * break; case "DOWN": y += 1; break; default:
 							 * System.out.println("ERROR NO DIRECTION"); }
 							 */
-	}
-
-	void checkBounds() {
-		// works
-		if (x < 0) {
-			GamePanel.cannonballList.remove(GamePanel.cannonballList.size() - 1);
-		}
-		if (x > JourneyToTheLostTreasure.WIDTH) {
-			GamePanel.cannonballList.remove(GamePanel.cannonballList.size() - 1);
-		}
-		if (y < 0) {
-			GamePanel.cannonballList.remove(GamePanel.cannonballList.size() - 1);
-		}
-		if (y > JourneyToTheLostTreasure.HEIGHT) {
-			GamePanel.cannonballList.remove(GamePanel.cannonballList.size() - 1);
-		}
 	}
 
 	int getX() {

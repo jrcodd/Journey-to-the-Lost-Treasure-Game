@@ -5,6 +5,9 @@ import java.util.ArrayList;
 public class Object_Manager {
 	static ArrayList<Game_Object> inv;
 	Shack s;
+	ArrayList<EnemyShip> enemyShipList = new ArrayList<EnemyShip>();
+	ArrayList<PlayerCannonBall> cannonballList = new ArrayList<PlayerCannonBall>();
+	ArrayList<EnemyCannonBall> EnemycannonballList = new ArrayList<EnemyCannonBall>();
 	boolean enemyHasFired = false;
 	boolean playerHasFired = false;
 	BayShop bayShop;
@@ -24,7 +27,7 @@ public class Object_Manager {
 	boolean bStart;
 	int coins;
 	boolean coinsAdded;
-
+	static boolean playerisSailing;
 	private boolean coinsAdded1;
 	private boolean coinsAdded2;
 	boolean isDefending2;
@@ -181,54 +184,53 @@ public class Object_Manager {
 		}
 		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.OCEAN_STATE) {
 			damageDelt = false;
-			for (int i = 0; i < GamePanel.enemyShipList.size(); i++) {
+			for (int i = 0; i < enemyShipList.size(); i++) {
 
-				GamePanel.enemyShipList.get(i).damageDelt = false;
+				enemyShipList.get(i).damageDelt = false;
 			}
-			if (!GamePanel.enemyShipList.isEmpty()) {
-				for (int i = 0; i < GamePanel.enemyShipList.size(); i++) {
-					System.out.println(GamePanel.enemyShipList.get(i).health);
-					if (GamePanel.enemyShipList.get(i).health <= 0) {
-						GamePanel.enemyShipList.get(i).isAlive = false;
+			if (!enemyShipList.isEmpty()) {
+				for (int i = 0; i < enemyShipList.size(); i++) {
+					System.out.println(enemyShipList.get(i).health);
+					if (enemyShipList.get(i).health <= 0) {
+						enemyShipList.get(i).isAlive = false;
 
-						if (!GamePanel.enemyShipList.get(i).addedRewards) {
+						if (!enemyShipList.get(i).addedRewards) {
 							coins += 50;
 							ship.level += 1;
 							ship.maxHealth = (ship.maxHealth + 10 * ship.level);
 							ship.health = ship.maxHealth;
-							GamePanel.enemyShipList.get(i).addedRewards = true;
-							GamePanel.enemyShipList.remove(0);
+							enemyShipList.get(i).addedRewards = true;
+							enemyShipList.remove(0);
 						}
 					}
 
-					if (GamePanel.cannonballList.size() > 0) {
-						for (int o = 0; o < GamePanel.cannonballList.size(); o++) {
-							if (GamePanel.cannonballList.get(i).collisionBox
-									.intersects(GamePanel.enemyShipList.get(i).collisionBox)) {
+					if (cannonballList.size() > 0) {
+						for (int o = 0; o < cannonballList.size(); o++) {
+							if (cannonballList.get(i).collisionBox.intersects(enemyShipList.get(i).collisionBox)) {
 
 								if (damageDelt == false) {
 									System.out.println("hit");
-									GamePanel.cannonballList.remove(GamePanel.cannonballList.size() - 1);
-									GamePanel.enemyShipList.get(i).health -= 30;
-									System.out.println("enemy Ship health: " + GamePanel.enemyShipList.get(i).health);
+									cannonballList.remove(cannonballList.size() - 1);
+									enemyShipList.get(i).health -= 30;
+									System.out.println("enemy Ship health: " + enemyShipList.get(i).health);
 									damageDelt = true;
 								}
 							}
 						}
 					}
 				}
-				for (int j = 0; j < GamePanel.enemyShipList.size(); j++) {
+				for (int j = 0; j < enemyShipList.size(); j++) {
 
-					if (GamePanel.EnemycannonballList.size() > 0) {
-						if (GamePanel.enemyShipList.get(j).isAlive) {
-							for (int k = 0; k < GamePanel.EnemycannonballList.size(); k++) {
-								if (GamePanel.EnemycannonballList.get(k).collisionBox.intersects(ship.collisionBox)) {
-									if (GamePanel.enemyShipList.get(j).damageDelt == false) {
+					if (EnemycannonballList.size() > 0) {
+						if (enemyShipList.get(j).isAlive) {
+							for (int k = 0; k < EnemycannonballList.size(); k++) {
+								if (EnemycannonballList.get(k).collisionBox.intersects(ship.collisionBox)) {
+									if (enemyShipList.get(j).damageDelt == false) {
 										System.out.println("hit");
-										GamePanel.EnemycannonballList.remove(GamePanel.EnemycannonballList.size() - 1);
+										EnemycannonballList.remove(EnemycannonballList.size() - 1);
 										ship.health -= 30;
 										System.out.println("player Ship health: " + ship.health);
-										GamePanel.enemyShipList.get(j).damageDelt = true;
+										enemyShipList.get(j).damageDelt = true;
 									}
 								}
 							}
@@ -237,10 +239,10 @@ public class Object_Manager {
 				}
 			}
 		}
-		for (int l = 0; l < GamePanel.EnemycannonballList.size(); l++) {
+		for (int l = 0; l < EnemycannonballList.size(); l++) {
 
-			if ((GamePanel.EnemycannonballList.get(l).collisionBox.intersects(ship.collisionBox))) {
-				GamePanel.EnemycannonballList.remove(GamePanel.EnemycannonballList.size() - 1);
+			if ((EnemycannonballList.get(l).collisionBox.intersects(ship.collisionBox))) {
+				EnemycannonballList.remove(EnemycannonballList.size() - 1);
 			}
 
 		}
@@ -280,7 +282,7 @@ public class Object_Manager {
 
 	void LeaveInShip() {
 		if (ship.isBought) {
-			GamePanel.playerisSailing = true;
+			playerisSailing = true;
 			p.setX(ship.getX() + 50);
 			p.setY(ship.getY() + 20);
 			sword.setX(ship.getX() + 60);
@@ -289,23 +291,24 @@ public class Object_Manager {
 	}
 
 	void update() {
-		// if (GamePanel.cannonballList.size() != 0) {
-		for (int i = 0; i < GamePanel.cannonballList.size(); i++) {
+		// if (cannonballList.size() != 0) {
+		for (int i = 0; i < cannonballList.size(); i++) {
 
-			GamePanel.cannonballList.get(i).update();
+			cannonballList.get(i).update();
 		}
 		// }
-		// if (GamePanel.EnemycannonballList.size() != 0) {
-		for (int i = 0; i < GamePanel.EnemycannonballList.size(); i++) {
+		// if (EnemycannonballList.size() != 0) {
+		for (int i = 0; i < EnemycannonballList.size(); i++) {
 
-			GamePanel.EnemycannonballList.get(i).update();
+			EnemycannonballList.get(i).update();
 			// }
 		}
 		p.update();
 		ship.update();
-		for (int j = 0; j < GamePanel.enemyShipList.size(); j++) {
+		for (int j = 0; j < enemyShipList.size(); j++) {
 
-			GamePanel.enemyShipList.get(j).update();
+			enemyShipList.get(j).update();
+
 		}
 
 		sword.update();
@@ -316,19 +319,20 @@ public class Object_Manager {
 		checkCollision();
 		createEnemyCannonBalls();
 
+		purgeBullets();
 	}
 
 	void createEnemyCannonBalls() {
 		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.OCEAN_STATE) {
-			for (int j = 0; j < GamePanel.enemyShipList.size(); j++) {
+			for (int j = 0; j < enemyShipList.size(); j++) {
 
-				if (GamePanel.enemyShipList.get(j).getX() - ship.getX() <= 100) {
+				if (enemyShipList.get(j).getX() - ship.getX() <= 100) {
 					if (playerHasFired == true) {
 						enemyHasFired = false;
 					}
 					if (!enemyHasFired) {
-						GamePanel.EnemycannonballList.add(new EnemyCannonBall(GamePanel.enemyShipList.get(j).x,
-								GamePanel.enemyShipList.get(j).y, 10, 10, 10));
+						EnemycannonballList
+								.add(new EnemyCannonBall(enemyShipList.get(j).x, enemyShipList.get(j).y, 10, 10, 10));
 						enemyHasFired = true;
 						playerHasFired = false;
 					}
@@ -341,35 +345,116 @@ public class Object_Manager {
 			}
 		}
 	}
-	
+
+	void moveEnemyShip() {
+		for (int i = 0; i < enemyShipList.size(); i++) {
+
+			enemyShipList.get(i)
+					.setX(enemyShipList.get(i).getX() - ((enemyShipList.get(i).getX() - ship.getX()) / 100));
+			enemyShipList.get(i)
+					.setY(enemyShipList.get(i).getY() - ((enemyShipList.get(i).getY() - ship.getY()) / 100));
+		}
+	}
+
+	void moveBullets() {
+		for (EnemyCannonBall b : EnemycannonballList) {
+
+			b.setX(b.getX() - ((b.getX() - (ship.getX() + ship.width / 2)) / 10));
+
+			b.setY(b.getY() - ((b.getY() - (ship.getY() + ship.height / 2)) / 10));
+		}
+		for (PlayerCannonBall b : cannonballList) {
+
+			b.setX(b.getX() - ((b.getX() - (enemyShipList.get(enemyShipList.size() - 1).getX()
+					+ enemyShipList.get(enemyShipList.size() - 1).width / 2)) / 10));
+
+			b.setY(b.getY() - ((b.getY() - (enemyShipList.get(enemyShipList.size() - 1).getY()
+					+ enemyShipList.get(enemyShipList.size() - 1).height / 2)) / 10));
+
+		}
+	}
+
+	void purgeBullets() {
+		for (EnemyCannonBall b : EnemycannonballList) {
+			checkEnemyBulletBounds(b.x, b.y);
+		}
+		for (PlayerCannonBall p : cannonballList) {
+			checkPlayerBulletBounds(p.x, p.y);
+		}
+		if (EnemycannonballList.size() >= 20) {
+			EnemycannonballList.remove(EnemycannonballList.size() - 1);
+		}
+		if (cannonballList.size() >= 20) {
+			cannonballList.remove(cannonballList.size() - 1);
+		}
+	}
 
 	void processDeath() {
-//		p.health = 50;
-//		ship.maxHealth = 400;
-//		ship.health = ship.maxHealth;
-//		GamePanel.playerisSailing = false;
-//		m.isFound = false;
-//		pot.isFound = false;
-//		kit.isFound = false;
-//		caveBoots.isFound = false;
-//		pot.isDrank = false;
-//		p.setX(100);
-//		p.setY(500);
-//		ship.setX(50);
-//		ship.setY(50);
-//		b.isDead = false;
-//		man.hasTalked = false;
-//		b.isDead = false;
-//		b1.isDead = false;
-//		b2.isDead = false;
-//		b.setHealth(300);
-//		b1.setHealth(100);
-//		b2.setHealth(100);
+		// p.health = 50;
+		// ship.maxHealth = 400;
+		// ship.health = ship.maxHealth;
+		// GamePanel.playerisSailing = false;
+		// m.isFound = false;
+		// pot.isFound = false;
+		// kit.isFound = false;
+		// caveBoots.isFound = false;
+		// pot.isDrank = false;
+		// p.setX(100);
+		// p.setY(500);
+		// ship.setX(50);
+		// ship.setY(50);
+		// b.isDead = false;
+		// man.hasTalked = false;
+		// b.isDead = false;
+		// b1.isDead = false;
+		// b2.isDead = false;
+		// b.setHealth(300);
+		// b1.setHealth(100);
+		// b2.setHealth(100);
 	}
-	
-	
-	
-	public interface DeathListener{
-	//	public static void death();
+
+	void checkEnemyBulletBounds(int x, int y) {
+		if (EnemycannonballList.size() > 0) {
+			if (x < 0) {
+				EnemycannonballList.remove(cannonballList.size() - 1);
+			}
+			if (x > JourneyToTheLostTreasure.WIDTH) {
+				EnemycannonballList.remove(cannonballList.size() - 1);
+			}
+			if (y < 0) {
+				EnemycannonballList.remove(cannonballList.size() - 1);
+			}
+			if (y > JourneyToTheLostTreasure.HEIGHT) {
+				EnemycannonballList.remove(cannonballList.size() - 1);
+			}
+		}
+	}
+
+	void checkPlayerBulletBounds(int x, int y) {
+		// works
+		if (x < 0) {
+			cannonballList.remove(cannonballList.size() - 1);
+		}
+		if (x > JourneyToTheLostTreasure.WIDTH) {
+			cannonballList.remove(cannonballList.size() - 1);
+		}
+		if (y < 0) {
+			cannonballList.remove(cannonballList.size() - 1);
+		}
+		if (y > JourneyToTheLostTreasure.HEIGHT) {
+			cannonballList.remove(cannonballList.size() - 1);
+		}
+	}
+
+	boolean getPlayerisSailing() {
+		return playerisSailing;
+	}
+
+	void setPlayerisSailing(boolean newValue) {
+		playerisSailing = newValue;
+	}
+
+	public interface DeathListener {
+		// public static void death();
 	}
 }

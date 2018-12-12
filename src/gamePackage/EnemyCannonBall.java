@@ -18,25 +18,7 @@ public class EnemyCannonBall extends Game_Object {
 
 	void update() {
 		super.update();
-		checkBounds();
 
-	}
-
-	void checkBounds() {
-		if (GamePanel.EnemycannonballList.size() > 0) {
-			if (x < 0) {
-				GamePanel.EnemycannonballList.remove(GamePanel.cannonballList.size() - 1);
-			}
-			if (x > JourneyToTheLostTreasure.WIDTH) {
-				GamePanel.EnemycannonballList.remove(GamePanel.cannonballList.size() - 1);
-			}
-			if (y < 0) {
-				GamePanel.EnemycannonballList.remove(GamePanel.cannonballList.size() - 1);
-			}
-			if (y > JourneyToTheLostTreasure.HEIGHT) {
-				GamePanel.EnemycannonballList.remove(GamePanel.cannonballList.size() - 1);
-			}
-		}
 	}
 
 	int getX() {

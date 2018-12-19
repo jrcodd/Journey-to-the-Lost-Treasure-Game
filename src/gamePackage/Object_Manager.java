@@ -342,6 +342,7 @@ public class Object_Manager {
 		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.ISLAND_STATE) {
 			if (p.collisionBox.intersects(x.collisionBox)) {
 				System.out.println("TREASURE IS FOUND");
+
 			}
 		}
 	}

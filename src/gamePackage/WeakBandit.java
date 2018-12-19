@@ -20,17 +20,17 @@ public class WeakBandit extends Game_Object {
 	}
 
 	void update() {
-		
+
 		super.update();
 
 	}
 
 	void draw(Graphics g) {
-		if(!isDead) {
-		g.setColor(Color.MAGENTA);
-		g.fillRect(x, y, width, height);
-
-		drawHealth(g);
+		if (!isDead) {
+			g.setColor(Color.MAGENTA);
+			g.fillRect(x, y, width, height);
+			g.drawImage(GamePanel.enemy, x, y, width, height, null);
+			drawHealth(g);
 		}
 	}
 

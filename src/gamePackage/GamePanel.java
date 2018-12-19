@@ -3,6 +3,7 @@ package gamePackage;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -11,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -52,8 +54,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public static BufferedImage boots;
 	public static BufferedImage treasureMarker;
 	public static BufferedImage RepairKitImg;
+	public static Image enemy;
 	boolean doneAttacking;
 	final static int fps = 80;
+	private static final int LAST_ROW = 6;
+	private static final int LAST_COL = 4;
 	Timer t;
 	OldMan man = new OldMan(600, 75, 20, 60, 200);
 	Shack s = new Shack(530, 20, 300, 300, 2000, false);
@@ -163,6 +168,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			boots = ImageIO.read(this.getClass().getResourceAsStream("SpeedyBoots.png"));
 			treasureMarker = ImageIO.read(this.getClass().getResourceAsStream("x-marks-the-spot.png"));
 			RepairKitImg = ImageIO.read(this.getClass().getResourceAsStream("repairKit.png"));
+			enemy = new ImageIcon(getClass().getResource("enemy.gif")).getImage();
 		} catch (IOException e) {
 
 			e.printStackTrace();
@@ -181,10 +187,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void updateForestState() {
-		checkUp();
-		checkDown();
-		checkLeft();
-		checkRight();
+
 		o.update();
 		o.checkCollision();
 		repaint();
@@ -192,10 +195,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void updateLagoonState() {
-		checkUp();
-		checkDown();
-		checkLeft();
-		checkRight();
+
 		o.update();
 		o.checkCollision();
 		repaint();
@@ -203,10 +203,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void updateCaveState() {
-		checkUp();
-		checkDown();
-		checkLeft();
-		checkRight();
+
 		o.update();
 		o.checkCollision();
 		repaint();
@@ -214,10 +211,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void updateShackState() {
-		checkUp();
-		checkDown();
-		checkLeft();
-		checkRight();
 
 		o.update();
 		o.checkCollision();
@@ -253,10 +246,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void updatePath1State() {
-		checkUp();
-		checkDown();
-		checkLeft();
-		checkRight();
+
 		o.update();
 		b.update();
 		o.checkCollision();
@@ -264,10 +254,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void updatePath2State() {
-		checkUp();
-		checkDown();
-		checkLeft();
-		checkRight();
 
 		o.update();
 
@@ -275,10 +261,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void updateBayState() {
-		checkUp();
-		checkDown();
-		checkLeft();
-		checkRight();
+
 		o.update();
 		o.checkCollision();
 		repaint();
@@ -290,10 +273,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			o.setPlayerisSailing(false);
 		}
 		x.update();
-		checkUp();
-		checkDown();
-		checkLeft();
-		checkRight();
+
 		o.update();
 		o.checkCollision();
 		repaint();
@@ -473,37 +453,37 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 25, 100, 75);
 		g.setColor(Color.BLACK);
 		g.setFont(inventoryFont);
-		g.drawString("-OCEAN", 101, 25 + (75 / 2));
+		g.drawString("OCEAN", 101, 25 + (75 / 2));
 		g.setColor(Color.ORANGE);
 		g.fillRect(0, 125, 100, 75);
 		g.setFont(inventoryFont);
 		g.setColor(Color.BLACK);
-		g.drawString("-ISLAND", 101, 125 + (75 / 2));
+		g.drawString("ISLAND", 101, 125 + (75 / 2));
 		g.setColor(new Color(0xFFFF66));
 		g.fillRect(0, 225, 100, 75);
 		g.setFont(inventoryFont);
 		g.setColor(Color.BLACK);
-		g.drawString("-BAY", 101, 225 + (75 / 2));
+		g.drawString("BAY", 101, 225 + (75 / 2));
 		g.setColor(new Color((0x33FF33)));
 		g.fillRect(0, 325, 100, 75);
 		g.setColor(Color.BLACK);
 		g.setFont(inventoryFont);
-		g.drawString("-PATH", 101, 325 + (75 / 2));
+		g.drawString("PATH", 101, 325 + (75 / 2));
 		g.setColor(new Color((0x009900)));
 		g.fillRect(0, 425, 100, 75);
 		g.setColor(Color.BLACK);
 		g.setFont(inventoryFont);
-		g.drawString("-FOREST", 101, 425 + (75 / 2));
+		g.drawString("FOREST", 101, 425 + (75 / 2));
 		g.setColor(Color.cyan);
 		g.fillRect(0, 525, 100, 75);
 		g.setColor(Color.BLACK);
 		g.setFont(inventoryFont);
-		g.drawString("-LAGOON", 101, 525 + (75 / 2));
+		g.drawString("LAGOON", 101, 525 + (75 / 2));
 		g.setColor(Color.black);
 		g.fillRect(0, 625, 100, 75);
 		g.setColor(Color.BLACK);
 		g.setFont(inventoryFont);
-		g.drawString("-CAVE", 101, 625 + (75 / 2));
+		g.drawString("CAVE", 101, 625 + (75 / 2));
 	}
 
 	void drawInShackState(Graphics g) {
@@ -831,10 +811,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	void updateOceanState() {
 
-		checkUp();
-		checkDown();
-		checkLeft();
-		checkRight();
 		o.update();
 		o.checkCollision();
 		repaint();
@@ -969,29 +945,29 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		else {
 			if (e.getKeyCode() == KeyEvent.VK_W) {
 				up = true;
-
+				checkUp();
 			} else if (e.getKeyCode() == KeyEvent.VK_S) {
 				down = true;
-
+				checkDown();
 			} else if (e.getKeyCode() == KeyEvent.VK_A) {
 				left = true;
-
+				checkLeft();
 			} else if (e.getKeyCode() == KeyEvent.VK_D) {
 				right = true;
-
+				checkRight();
 			}
 			if (e.getKeyCode() == KeyEvent.VK_UP) {
 				up = true;
-
+				checkUp();
 			} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 				down = true;
-
+				checkDown();
 			} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 				left = true;
-
+				checkLeft();
 			} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				right = true;
-
+				checkRight();
 			}
 
 			if (kit.isFound) {
@@ -1038,167 +1014,167 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 					}
 				}
 			}
-		}
 
-		if (pot.isFound) {
+			if (pot.isFound) {
 
-			if (pot.positionInInv == INVENTORY_SLOT1) {
+				if (pot.positionInInv == INVENTORY_SLOT1) {
 
-				if (e.getKeyCode() == KeyEvent.VK_1) {
-
-					if (pot.isDrank == false) {
-						if (p.health < 50) {
-							p.health = 50;
-							pot.isDrank = true;
-						}
-					}
-				}
-			} else if (pot.positionInInv == INVENTORY_SLOT2) {
-				if (e.getKeyCode() == KeyEvent.VK_2) {
-					if (pot.isDrank == false) {
-						if (p.health < 50) {
-							p.health = 50;
-							pot.isDrank = true;
-						}
-					}
-				}
-			} else if (pot.positionInInv == INVENTORY_SLOT3) {
-				if (e.getKeyCode() == KeyEvent.VK_3) {
-					if (pot.isDrank == false) {
-						if (p.health < 50) {
-							p.health = 50;
-							pot.isDrank = true;
-						}
-					}
-				}
-			} else if (pot.positionInInv == INVENTORY_SLOT4) {
-				if (e.getKeyCode() == KeyEvent.VK_4) {
-					if (pot.isDrank == false) {
-						if (p.health < 50) {
-							p.health = 50;
-							pot.isDrank = true;
-						}
-					}
-				}
-			}
-		}
-
-		if (caveBoots.isFound) {
-			if (Object_Manager.inv.contains(caveBoots)) {
-				if (caveBoots.positionInInv == INVENTORY_SLOT1) {
 					if (e.getKeyCode() == KeyEvent.VK_1) {
-						if (mapOpen == false) {
 
-							if (updatedSpeed == false) {
-								p.speed += 3;
-								updatedSpeed = true;
+						if (pot.isDrank == false) {
+							if (p.health < 50) {
+								p.health = 50;
+								pot.isDrank = true;
 							}
 						}
 					}
-				} else if (caveBoots.positionInInv == INVENTORY_SLOT2) {
+				} else if (pot.positionInInv == INVENTORY_SLOT2) {
 					if (e.getKeyCode() == KeyEvent.VK_2) {
-						if (mapOpen == false) {
-
-							if (updatedSpeed == false) {
-								p.speed += 3;
-								updatedSpeed = true;
+						if (pot.isDrank == false) {
+							if (p.health < 50) {
+								p.health = 50;
+								pot.isDrank = true;
 							}
 						}
 					}
-				} else if (caveBoots.positionInInv == INVENTORY_SLOT3) {
+				} else if (pot.positionInInv == INVENTORY_SLOT3) {
 					if (e.getKeyCode() == KeyEvent.VK_3) {
-						if (mapOpen == false) {
-
-							if (updatedSpeed == false) {
-								p.speed += 3;
-								updatedSpeed = true;
+						if (pot.isDrank == false) {
+							if (p.health < 50) {
+								p.health = 50;
+								pot.isDrank = true;
 							}
 						}
 					}
-				}
-				if (caveBoots.positionInInv == INVENTORY_SLOT4) {
+				} else if (pot.positionInInv == INVENTORY_SLOT4) {
 					if (e.getKeyCode() == KeyEvent.VK_4) {
-						if (mapOpen == false) {
-
-							if (updatedSpeed == false) {
-								p.speed += 3;
-								updatedSpeed = true;
+						if (pot.isDrank == false) {
+							if (p.health < 50) {
+								p.health = 50;
+								pot.isDrank = true;
 							}
 						}
 					}
 				}
 			}
-		}
-		if (m.isFound()) {
-			if (Object_Manager.inv.contains(m)) {
-				if (m.positionInInv == INVENTORY_SLOT1) {
-					if (e.getKeyCode() == KeyEvent.VK_1) {
-						if (mapOpen == false) {
 
-							mapOpen = true;
+			if (caveBoots.isFound) {
+				if (Object_Manager.inv.contains(caveBoots)) {
+					if (caveBoots.positionInInv == INVENTORY_SLOT1) {
+						if (e.getKeyCode() == KeyEvent.VK_1) {
+							if (mapOpen == false) {
+
+								if (updatedSpeed == false) {
+									p.speed += 3;
+									updatedSpeed = true;
+								}
+							}
 						}
-					} else if (m.positionInInv == INVENTORY_SLOT2) {
+					} else if (caveBoots.positionInInv == INVENTORY_SLOT2) {
 						if (e.getKeyCode() == KeyEvent.VK_2) {
 							if (mapOpen == false) {
 
-								mapOpen = true;
+								if (updatedSpeed == false) {
+									p.speed += 3;
+									updatedSpeed = true;
+								}
 							}
 						}
-					} else if (m.positionInInv == INVENTORY_SLOT3) {
+					} else if (caveBoots.positionInInv == INVENTORY_SLOT3) {
 						if (e.getKeyCode() == KeyEvent.VK_3) {
 							if (mapOpen == false) {
 
-								mapOpen = true;
+								if (updatedSpeed == false) {
+									p.speed += 3;
+									updatedSpeed = true;
+								}
 							}
 						}
-					} else if (m.positionInInv == INVENTORY_SLOT4) {
+					}
+					if (caveBoots.positionInInv == INVENTORY_SLOT4) {
 						if (e.getKeyCode() == KeyEvent.VK_4) {
+							if (mapOpen == false) {
+
+								if (updatedSpeed == false) {
+									p.speed += 3;
+									updatedSpeed = true;
+								}
+							}
+						}
+					}
+				}
+			}
+			if (m.isFound()) {
+				if (Object_Manager.inv.contains(m)) {
+					if (m.positionInInv == INVENTORY_SLOT1) {
+						if (e.getKeyCode() == KeyEvent.VK_1) {
 							if (mapOpen == false) {
 
 								mapOpen = true;
 							}
+						} else if (m.positionInInv == INVENTORY_SLOT2) {
+							if (e.getKeyCode() == KeyEvent.VK_2) {
+								if (mapOpen == false) {
+
+									mapOpen = true;
+								}
+							}
+						} else if (m.positionInInv == INVENTORY_SLOT3) {
+							if (e.getKeyCode() == KeyEvent.VK_3) {
+								if (mapOpen == false) {
+
+									mapOpen = true;
+								}
+							}
+						} else if (m.positionInInv == INVENTORY_SLOT4) {
+							if (e.getKeyCode() == KeyEvent.VK_4) {
+								if (mapOpen == false) {
+
+									mapOpen = true;
+								}
+							}
 						}
 					}
 				}
 			}
-		}
 
-		if (mapStates[mapRow][mapColumn] == LAGOON_STATE) {
+			if (mapStates[mapRow][mapColumn] == LAGOON_STATE) {
 
-			if (pot.positionInInv == INVENTORY_SLOT1) {
-				if (e.getKeyCode() == KeyEvent.VK_1) {
-					if (pot.isDrank == true) {
+				if (pot.positionInInv == INVENTORY_SLOT1) {
+					if (e.getKeyCode() == KeyEvent.VK_1) {
+						if (pot.isDrank == true) {
 
-						pot.isDrank = false;
+							pot.isDrank = false;
 
+						}
+					}
+				} else if (pot.positionInInv == INVENTORY_SLOT2) {
+					if (e.getKeyCode() == KeyEvent.VK_2) {
+						if (pot.isDrank == true) {
+
+							pot.isDrank = false;
+
+						}
+					}
+				} else if (pot.positionInInv == INVENTORY_SLOT3) {
+					if (e.getKeyCode() == KeyEvent.VK_3) {
+						if (pot.isDrank == true) {
+
+							pot.isDrank = false;
+
+						}
+					}
+				} else if (pot.positionInInv == INVENTORY_SLOT4) {
+					if (e.getKeyCode() == KeyEvent.VK_4) {
+						if (pot.isDrank == true) {
+
+							pot.isDrank = false;
+
+						}
 					}
 				}
-			} else if (pot.positionInInv == INVENTORY_SLOT2) {
-				if (e.getKeyCode() == KeyEvent.VK_2) {
-					if (pot.isDrank == true) {
 
-						pot.isDrank = false;
-
-					}
-				}
-			} else if (pot.positionInInv == INVENTORY_SLOT3) {
-				if (e.getKeyCode() == KeyEvent.VK_3) {
-					if (pot.isDrank == true) {
-
-						pot.isDrank = false;
-
-					}
-				}
-			} else if (pot.positionInInv == INVENTORY_SLOT4) {
-				if (e.getKeyCode() == KeyEvent.VK_4) {
-					if (pot.isDrank == true) {
-
-						pot.isDrank = false;
-
-					}
-				}
 			}
-
 		}
 		repaint();
 	}
@@ -1339,6 +1315,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	void checkLeft() {
 		if (p.collisionBox.x < 0 || ship.collisionBox.x < 0) {
+			if (mapColumn <= 0) {
+				playerCanMoveLeft = false;
+			}
 			if (mapColumn > 0 && mapStates[mapRow][mapColumn - 1] == NO_PLACE) {
 				playerCanMoveLeft = false;
 			}
@@ -1362,16 +1341,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	void checkRight() {
 		if (p.collisionBox.x > 815 || ship.collisionBox.x > 815) {
-			if (mapColumn < 3 && mapStates[mapRow][mapColumn + 1] == NO_PLACE) {
+			if (mapColumn >= LAST_COL) {
 				playerCanMoveRight = false;
 			}
-			if (!o.getPlayerisSailing() && mapColumn < 3 && mapStates[mapRow][mapColumn + 1] == OCEAN_STATE) {
+			if (mapColumn < LAST_COL && mapStates[mapRow][mapColumn + 1] == NO_PLACE) {
+				playerCanMoveRight = false;
+			}
+			if (!o.getPlayerisSailing() && mapColumn < LAST_COL && mapStates[mapRow][mapColumn + 1] == OCEAN_STATE) {
 				playerCanMoveRight = false;
 			}
 			if (playerCanMoveRight) {
-				if (mapColumn < 3) {
-					changePos(mapRow, mapColumn + 1);
-				}
+				changePos(mapRow, mapColumn + 1);
 				if (!o.getPlayerisSailing()) {
 					p.setX(10);
 					sword.setX(10);
@@ -1388,18 +1368,21 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	void checkUp() {
 		if (p.collisionBox.y < 0 || ship.collisionBox.y < 0) {
-			if (mapRow > 0 && mapStates[mapRow - 1][mapColumn] != NO_PLACE) {
+			if (mapRow <= 0) {
 				playerCanMoveUp = false;
 			}
-			if (!o.getPlayerisSailing() && mapRow > 0 && mapStates[mapRow][mapColumn - 1] == OCEAN_STATE) {
+			if (mapRow < 0 || mapStates[mapRow - 1][mapColumn] == NO_PLACE) {
+				playerCanMoveUp = false;
+			}
+			if (!o.getPlayerisSailing() && mapRow >= 0 && mapStates[mapRow - 1][mapColumn] == OCEAN_STATE) {
 				playerCanMoveUp = false;
 			}
 			if (playerCanMoveUp) {
 				if (!o.getPlayerisSailing()) {
-					p.setX(800);
-					sword.setX(815);
+					p.setY(800);
+					sword.setY(815);
 				} else if (o.getPlayerisSailing()) {
-					ship.setX(815);
+					ship.setY(815);
 				}
 				changePos(mapRow - 1, mapColumn);
 			} else {
@@ -1411,18 +1394,22 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	void checkDown() {
 		if (p.collisionBox.y > 800 || ship.collisionBox.y > 800) {
-			if (mapRow < 7 && mapStates[mapRow + 1][mapColumn] == NO_PLACE) {
+			if (mapRow >= LAST_ROW) {
 				playerCanMoveDown = false;
 			}
-			if (!o.getPlayerisSailing() && mapRow < 7 && mapStates[mapRow + 1][mapColumn] == OCEAN_STATE) {
+
+			if (mapRow < LAST_ROW && mapStates[mapRow + 1][mapColumn] == NO_PLACE) {
+				playerCanMoveDown = false;
+			}
+			if (!o.getPlayerisSailing() && mapRow < LAST_ROW && mapStates[mapRow + 1][mapColumn] == OCEAN_STATE) {
 				playerCanMoveDown = false;
 			}
 			if (playerCanMoveDown) {
 				if (!o.getPlayerisSailing()) {
-					p.setX(800);
-					sword.setX(815);
+					p.setY(10);
+					sword.setY(10);
 				} else if (o.getPlayerisSailing()) {
-					ship.setX(815);
+					ship.setY(10);
 				}
 				changePos(mapRow + 1, mapColumn);
 			} else {

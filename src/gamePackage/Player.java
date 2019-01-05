@@ -12,11 +12,10 @@ public class Player extends Game_Object {
 		super(x, y, width, height, health);
 		this.speed = speed;
 	}
-
 	void update() {
 		super.update();
+		System.out.println(x+ " "+ y);
 	}
-
 	void draw(Graphics g) {
 
 		if (!Object_Manager.playerisSailing) {
@@ -27,9 +26,7 @@ public class Player extends Game_Object {
 
 			}
 			if (GamePanel.right) {
-
 				dir = "RIGHT";
-
 			}
 			switch (dir) {
 			case "LEFT":
@@ -67,26 +64,33 @@ public class Player extends Game_Object {
 				}
 			}
 		}
-
 	}
-
 	int getX() {
 		return x;
-
 	}
 
 	int getY() {
 		return y;
 	}
-
 	void setX(int newX) {
-		x = newX;
+		if (newX > GamePanel.RIGHT) {
+			x = GamePanel.RIGHT+1;
+		} else if (newX < 0) {
+			x = -1;
+		} else {
+			x = newX;
+		}
 	}
 
 	void setY(int newY) {
-		y = newY;
+		if (newY > GamePanel.BOTTOM) {
+			y = GamePanel.BOTTOM + 1;
+		} else if (newY < 0) {
+			y = -1;
+		} else {
+			y = newY;
+		}
 	}
-
 	int getSpeed() {
 		return speed;
 	}

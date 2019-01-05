@@ -11,7 +11,10 @@ public class JourneyToTheLostTreasure {
 
 	public static void main(String[] args) {
 		// JourneyToTheLostTreasure journey = new JourneyToTheLostTreasure();
+		
 		new JourneyToTheLostTreasure();
+		
+		
 		// journey.setup();
 	}
 

@@ -3,7 +3,7 @@ package gamePackage;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
+
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -54,17 +54,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public static BufferedImage boots;
 	public static BufferedImage treasureMarker;
 	public static BufferedImage RepairKitImg;
-	public static Image enemy;
+	// public static Image enemy;
 	boolean doneAttacking;
 	final static int fps = 80;
 	private static final int LAST_ROW = 6;
 	private static final int LAST_COL = 4;
+	static final int BOTTOM = 620;
+	static final int RIGHT = 800;
 	Timer t;
 	OldMan man = new OldMan(600, 75, 20, 60, 200);
 	Shack s = new Shack(530, 20, 300, 300, 2000, false);
-	BayShop bayShop = new BayShop(500, 10, 340, 340, 100, false);
 	PlayerShip ship = new PlayerShip(50, 50, 433 / 3, 381 / 3, 400, 1);
-
 	SpeedyBoots caveBoots = new SpeedyBoots(230, 600, 10, 20, 50, false);
 	Player p = new Player(100, 500, 162 / 2, 152 / 2, 50, 8);
 	TreasureMap m = new TreasureMap(400, 100, 10, 10, 10, false);
@@ -75,7 +75,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	WeakBandit b2 = new WeakBandit(800, 30, 20, 60, 100, 2, true);
 	HealthPotion pot = new HealthPotion(500, 468, 100 / 3, 106 / 3, 30, false);
 	X x = new X(600, 100, 200, 200, 1);
-	Object_Manager o = new Object_Manager(p, m, kit, caveBoots, s, bayShop, ship, man, sword, b, pot, b1, b2, x);
+	Object_Manager o = new Object_Manager(p, m, kit, caveBoots, s, ship, man, sword, b, pot, b1, b2, x);
 	static boolean up = false;
 	static boolean down = false;
 	static boolean right = false;
@@ -121,10 +121,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	boolean mapOpen;
 	boolean updatedSpeed;
-	boolean playerCanMoveLeft = true;
-	boolean playerCanMoveRight = true;
-	boolean playerCanMoveUp = true;
-	boolean playerCanMoveDown = true;
+
 	int currentState = MENU_STATE;
 
 	GamePanel() {
@@ -168,7 +165,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			boots = ImageIO.read(this.getClass().getResourceAsStream("SpeedyBoots.png"));
 			treasureMarker = ImageIO.read(this.getClass().getResourceAsStream("x-marks-the-spot.png"));
 			RepairKitImg = ImageIO.read(this.getClass().getResourceAsStream("repairKit.png"));
-			enemy = new ImageIcon(getClass().getResource("enemy.gif")).getImage();
+			// enemy = new ImageIcon(getClass().getResource("enemy.gif")).getImage();
 		} catch (IOException e) {
 
 			e.printStackTrace();
@@ -231,14 +228,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 		if (p.collisionBox.y > JourneyToTheLostTreasure.HEIGHT - 60) {
 			s.inside = false;
-
-			// currentState = FOREST_EDGE;
-
 			p.setY(350);
 			p.setX(560);
 			sword.setX(575);
 			sword.setY(350);
-
 		}
 		o.update();
 		o.checkCollision();
@@ -594,7 +587,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void drawIslandState(Graphics g) {
-
+		System.out.println(o.treasureIsFound);
+		g.setColor(Color.BLACK);
+		if (o.treasureIsFound) {
+			g.drawString("YOU FOUND THE TREASURE!", JourneyToTheLostTreasure.WIDTH / 2,
+					JourneyToTheLostTreasure.HEIGHT / 2);
+		}
 		g.setColor(Color.ORANGE);
 
 		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH, JourneyToTheLostTreasure.HEIGHT);
@@ -636,7 +634,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.blue);
 		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH / 3, JourneyToTheLostTreasure.HEIGHT);
 		g.setColor(Color.GRAY);
-		g.fillRect(550, 10, 290, 290);
 		if (!o.getPlayerisSailing()) {
 
 			p.draw(g);
@@ -675,7 +672,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			g.drawString("Game Over", (JourneyToTheLostTreasure.WIDTH / 2) - 200, JourneyToTheLostTreasure.HEIGHT / 3);
 			g.drawString("Press ENTER To Restart", (JourneyToTheLostTreasure.WIDTH / 2) - 200,
 					(JourneyToTheLostTreasure.HEIGHT / 2));
-			o.processDeath();
+
 		} else if (!mapOpen) {
 
 			if (p.health <= 0 || ship.health <= 0) {
@@ -745,10 +742,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			if (s.inside) {
 				updateInShackState();
 				drawInShackState(g);
-			}
-			if (bayShop.inside) {
-				drawInShopState(g);
-				updateInShopState();
 			}
 
 			if (swordDown) {
@@ -852,64 +845,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		repaint();
 	}
 
-	void updateInShopState() {
-		if (p.collisionBox.y < 0) {
-			up = false;
-
-		}
-		if (p.collisionBox.x < 0) {
-			left = false;
-		}
-		if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 160) {
-			right = false;
-		}
-
-		if (p.collisionBox.y > JourneyToTheLostTreasure.HEIGHT - 60) {
-			bayShop.inside = false;
-
-			p.setY(350);
-			p.setX(560);
-			sword.setX(575);
-			sword.setY(350);
-
-		}
-		o.update();
-		o.checkCollision();
-		repaint();
-	}
-
-	void drawInShopState(Graphics g) {
-		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(0, 0, JourneyToTheLostTreasure.WIDTH, JourneyToTheLostTreasure.HEIGHT);
-		g.setColor(Color.GRAY);
-
-		p.draw(g);
-
-		man.draw(g);
-
-		g.fillRect(850, 0, 150, 700);
-		g.setFont(inventoryFont);
-		g.setColor(Color.WHITE);
-		g.drawString("1", 860, 150);
-		g.drawString("2", 860, 300);
-		g.drawString("3", 860, 450);
-		g.drawString("4", 860, 600);
-		g.setColor(Color.YELLOW);
-		g.drawString(Integer.toString(o.coins), 870, 50);
-		g.setFont(menuFont);
-		g.setColor(Color.white);
-		g.drawString("Bay Shop", JourneyToTheLostTreasure.WIDTH / 3, 50);
-		g.setFont(healthFont);
-
-		drawPlayerHealth(g);
-		if (sword.isFound) {
-
-			sword.draw(g);
-		}
-
-		repaint();
-	}
-
 	@Override
 	public void keyPressed(KeyEvent e) {
 
@@ -938,6 +873,26 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			}
 		} else if (currentState == END_STATE) {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				man = new OldMan(600, 75, 20, 60, 200);
+				s = new Shack(530, 20, 300, 300, 2000, false);
+				ship = new PlayerShip(50, 50, 433 / 3, 381 / 3, 400, 1);
+				caveBoots = new SpeedyBoots(230, 600, 10, 20, 50, false);
+				p = new Player(100, 500, 162 / 2, 152 / 2, 50, 8);
+				m = new TreasureMap(400, 100, 10, 10, 10, false);
+				kit = new ShipRepairKit(400, 100, 10, 10, 10, false);
+				sword = new Sword(115, 500, 10, 40, 100, false);
+				b = new StrongBandit(400, 100, 40, 80, 300, 1);
+				b1 = new WeakBandit(30, 30, 20, 60, 100, 2, false);
+				b2 = new WeakBandit(800, 30, 20, 60, 100, 2, true);
+				pot = new HealthPotion(500, 468, 100 / 3, 106 / 3, 30, false);
+				x = new X(600, 100, 200, 200, 1);
+				o = new Object_Manager(p, m, kit, caveBoots, s, ship, man, sword, b, pot, b1, b2, x);
+				up = false;
+				down = false;
+				right = false;
+				left = false;
+				swordUp = true;
+				swordDown = false;
 				currentState = MENU_STATE;
 			}
 		}
@@ -1316,20 +1271,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	void checkLeft() {
 		if (p.collisionBox.x < 0 || ship.collisionBox.x < 0) {
 			if (mapColumn <= 0) {
-				playerCanMoveLeft = false;
+				left = false;
 			}
 			if (mapColumn > 0 && mapStates[mapRow][mapColumn - 1] == NO_PLACE) {
-				playerCanMoveLeft = false;
+				left = false;
 			}
 			if (!o.getPlayerisSailing() && mapColumn > 0 && mapStates[mapRow][mapColumn - 1] == OCEAN_STATE) {
-				playerCanMoveLeft = false;
+				left = false;
 			}
-			if (playerCanMoveLeft) {
+			if (left) {
 				if (!o.getPlayerisSailing()) {
-					p.setX(800);
-					sword.setX(815);
+					p.setX(RIGHT);
+					sword.setX(RIGHT);
 				} else if (o.getPlayerisSailing()) {
-					ship.setX(815);
+					ship.setX(RIGHT);
 				}
 				changePos(mapRow, mapColumn - 1);
 			} else {
@@ -1340,17 +1295,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void checkRight() {
-		if (p.collisionBox.x > 815 || ship.collisionBox.x > 815) {
+
+		if (p.collisionBox.x > RIGHT || ship.collisionBox.x > RIGHT) {
 			if (mapColumn >= LAST_COL) {
-				playerCanMoveRight = false;
+				right = false;
 			}
 			if (mapColumn < LAST_COL && mapStates[mapRow][mapColumn + 1] == NO_PLACE) {
-				playerCanMoveRight = false;
+				right = false;
 			}
 			if (!o.getPlayerisSailing() && mapColumn < LAST_COL && mapStates[mapRow][mapColumn + 1] == OCEAN_STATE) {
-				playerCanMoveRight = false;
+				right = false;
 			}
-			if (playerCanMoveRight) {
+			if (right) {
 				changePos(mapRow, mapColumn + 1);
 				if (!o.getPlayerisSailing()) {
 					p.setX(10);
@@ -1369,21 +1325,23 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	void checkUp() {
 		if (p.collisionBox.y < 0 || ship.collisionBox.y < 0) {
 			if (mapRow <= 0) {
-				playerCanMoveUp = false;
+				up = false;
 			}
 			if (mapRow < 0 || mapStates[mapRow - 1][mapColumn] == NO_PLACE) {
-				playerCanMoveUp = false;
+				up = false;
 			}
 			if (!o.getPlayerisSailing() && mapRow >= 0 && mapStates[mapRow - 1][mapColumn] == OCEAN_STATE) {
-				playerCanMoveUp = false;
+				up = false;
 			}
-			if (playerCanMoveUp) {
+			if (up) {
 				if (!o.getPlayerisSailing()) {
 					p.setY(800);
 					sword.setY(815);
 				} else if (o.getPlayerisSailing()) {
 					ship.setY(815);
 				}
+				o.enemyShipList.add(new EnemyShip(JourneyToTheLostTreasure.WIDTH / 2,
+						JourneyToTheLostTreasure.HEIGHT / 2, 446 / 3, 442 / 3, 650, 5));
 				changePos(mapRow - 1, mapColumn);
 			} else {
 				up = false;
@@ -1393,18 +1351,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void checkDown() {
-		if (p.collisionBox.y > 800 || ship.collisionBox.y > 800) {
+
+		if (p.collisionBox.y > BOTTOM || ship.collisionBox.y > BOTTOM) {
 			if (mapRow >= LAST_ROW) {
-				playerCanMoveDown = false;
+				down = false;
 			}
 
 			if (mapRow < LAST_ROW && mapStates[mapRow + 1][mapColumn] == NO_PLACE) {
-				playerCanMoveDown = false;
+				down = false;
 			}
 			if (!o.getPlayerisSailing() && mapRow < LAST_ROW && mapStates[mapRow + 1][mapColumn] == OCEAN_STATE) {
-				playerCanMoveDown = false;
+				down = false;
 			}
-			if (playerCanMoveDown) {
+			if (down) {
 				if (!o.getPlayerisSailing()) {
 					p.setY(10);
 					sword.setY(10);
@@ -1412,8 +1371,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 					ship.setY(10);
 				}
 				changePos(mapRow + 1, mapColumn);
-			} else {
-				down = false;
 			}
 
 		}

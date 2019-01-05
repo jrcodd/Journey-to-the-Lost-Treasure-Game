@@ -29,7 +29,7 @@ public class WeakBandit extends Game_Object {
 		if (!isDead) {
 			g.setColor(Color.MAGENTA);
 			g.fillRect(x, y, width, height);
-			g.drawImage(GamePanel.enemy, x, y, width, height, null);
+			//g.drawImage(GamePanel.enemy, x, y, width, height, null);
 			drawHealth(g);
 		}
 	}

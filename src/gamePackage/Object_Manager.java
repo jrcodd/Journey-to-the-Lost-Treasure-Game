@@ -10,7 +10,7 @@ public class Object_Manager {
 	ArrayList<EnemyCannonBall> EnemycannonballList = new ArrayList<EnemyCannonBall>();
 	boolean enemyHasFired = false;
 	boolean playerHasFired = false;
-	BayShop bayShop;
+	boolean treasureIsFound = false;
 	PlayerShip ship;
 	X x;
 	static SpeedyBoots caveBoots;
@@ -36,11 +36,10 @@ public class Object_Manager {
 	boolean b2Start;
 	boolean damageDelt = false;
 
-	Object_Manager(Player p, TreasureMap m, ShipRepairKit kit, SpeedyBoots caveBoots, Shack s, BayShop bayShop,
-			PlayerShip ship, OldMan man, Sword sword, StrongBandit b, HealthPotion pot, WeakBandit b1, WeakBandit b2,
-			X x) {
+	Object_Manager(Player p, TreasureMap m, ShipRepairKit kit, SpeedyBoots caveBoots, Shack s, PlayerShip ship,
+			OldMan man, Sword sword, StrongBandit b, HealthPotion pot, WeakBandit b1, WeakBandit b2, X x) {
 		this.s = s;
-		this.bayShop = bayShop;
+
 		this.p = p;
 		Object_Manager.m = m;
 		Object_Manager.caveBoots = caveBoots;
@@ -63,9 +62,6 @@ public class Object_Manager {
 			if (ship.hitBox.x <= 0) {
 				GamePanel.mapRow = 3;
 				GamePanel.mapColumn = 2;
-			}
-			if (p.collisionBox.intersects(bayShop.collisionBox)) {
-				bayShop.inside = true;
 			}
 
 			if (p.collisionBox.intersects(ship.hitBox)) {
@@ -151,6 +147,15 @@ public class Object_Manager {
 		}
 
 		if (s.inside) {
+			if (p.y >= GamePanel.BOTTOM) {
+				s.inside = false;
+				p.y = s.y + s.width + 3;
+				p.x = s.x + 10;
+			} else if (p.y <= 2) {
+				GamePanel.up = false;
+			} else if (p.x <= 2) {
+				GamePanel.left = false;
+			}
 			if (p.collisionBox.intersects(man.collisionBox)) {
 
 				if (man.hasTalked == false) {
@@ -341,6 +346,7 @@ public class Object_Manager {
 		}
 		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.ISLAND_STATE) {
 			if (p.collisionBox.intersects(x.collisionBox)) {
+				treasureIsFound = true;
 				System.out.println("TREASURE IS FOUND");
 
 			}
@@ -390,29 +396,7 @@ public class Object_Manager {
 		}
 	}
 
-	void processDeath() {
-		// p.health = 50;
-		// ship.maxHealth = 400;
-		// ship.health = ship.maxHealth;
-		// GamePanel.playerisSailing = false;
-		// m.isFound = false;
-		// pot.isFound = false;
-		// kit.isFound = false;
-		// caveBoots.isFound = false;
-		// pot.isDrank = false;
-		// p.setX(100);
-		// p.setY(500);
-		// ship.setX(50);
-		// ship.setY(50);
-		// b.isDead = false;
-		// man.hasTalked = false;
-		// b.isDead = false;
-		// b1.isDead = false;
-		// b2.isDead = false;
-		// b.setHealth(300);
-		// b1.setHealth(100);
-		// b2.setHealth(100);
-	}
+	
 
 	void checkEnemyBulletBounds(int x, int y) {
 		if (EnemycannonballList.size() > 0) {

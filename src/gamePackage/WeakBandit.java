@@ -12,6 +12,7 @@ public class WeakBandit extends Game_Object {
 	boolean right;
 	boolean isDead;
 	boolean Start = false;
+	
 
 	WeakBandit(int x, int y, int width, int height, int health, int speed, boolean isDead) {
 		super(x, y, width, height, health);
@@ -24,16 +25,30 @@ public class WeakBandit extends Game_Object {
 		super.update();
 
 	}
-
-	void draw(Graphics g) {
+	void drawLeft(Graphics g) {
 		if (!isDead) {
-			g.setColor(Color.MAGENTA);
-			g.fillRect(x, y, width, height);
-			//g.drawImage(GamePanel.enemy, x, y, width, height, null);
+			 g.drawImage(GamePanel.WeakEnemyLeft, x, y, width, height, null);
 			drawHealth(g);
 		}
 	}
-
+	void drawRight(Graphics g) {
+		if (!isDead) {
+			 g.drawImage(GamePanel.WeakEnemyRight, x, y, width, height, null);
+			drawHealth(g);
+		}
+	}
+	void drawLeftAttack(Graphics g) {
+		if (!isDead) {
+			 g.drawImage(GamePanel.WeakEnemyLeftAttacking, x, y, width, height, null);
+			drawHealth(g);
+		}
+	}
+	void drawRightAttack(Graphics g) {
+		if (!isDead) {
+			 g.drawImage(GamePanel.WeakEnemyRightAttacking, x, y, width, height, null);
+			drawHealth(g);
+		}
+	}
 	private void drawHealth(Graphics g) {
 		if (health < 30) {
 			g.setColor(Color.red);

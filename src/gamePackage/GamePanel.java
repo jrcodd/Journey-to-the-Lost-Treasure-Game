@@ -45,6 +45,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	public static BufferedImage cannonBallProjectile;
 	public static BufferedImage enemyShip;
+	public static BufferedImage WeakEnemyLeftAttacking;
+	public static BufferedImage WeakEnemyRightAttacking;
+	public static BufferedImage WeakEnemyLeft;
+	public static BufferedImage WeakEnemyRight;
 	public static BufferedImage PlayerSwordDownLeft;
 	public static BufferedImage PlayerSwordDownRight;
 	public static BufferedImage PlayerSwordUpLeft;
@@ -54,6 +58,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public static BufferedImage boots;
 	public static BufferedImage treasureMarker;
 	public static BufferedImage RepairKitImg;
+	
 	// public static Image enemy;
 	boolean doneAttacking;
 	final static int fps = 80;
@@ -152,6 +157,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			level3BoatRight = ImageIO.read(this.getClass().getResourceAsStream("Level3Boat.Right.png"));
 			level3BoatRightUp = ImageIO.read(this.getClass().getResourceAsStream("Level3Boat.RightUp.png"));
 			level3BoatRightDown = ImageIO.read(this.getClass().getResourceAsStream("Level3Boat.RightDown.png"));
+			
+			WeakEnemyLeftAttacking = ImageIO.read(this.getClass().getResourceAsStream("enemy skeleton facing left attacking.png"));;
+			 WeakEnemyRightAttacking =ImageIO.read(this.getClass().getResourceAsStream("enemy skeleton facing right attacking.png"));;
+			WeakEnemyLeft  =ImageIO.read(this.getClass().getResourceAsStream("enemy skeleton facing left.png"));;;
+			WeakEnemyRight =  ImageIO.read(this.getClass().getResourceAsStream("enemy skeleton facing right.png"));;;
 
 			cannonBallProjectile = ImageIO.read(this.getClass().getResourceAsStream("cannonBallProjectile.png"));
 			MenuImg = ImageIO.read(this.getClass().getResourceAsStream("JourneyMenuImg.png"));
@@ -708,14 +718,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			} else if (mapStates[mapRow][mapColumn] == PATH2_STATE) {
 				drawPath2State(g);
 				updatePath2State();
-				if (b1.getHealth() > 0) {
-					b1.draw(g);
-
-				}
-				if (b2.getHealth() > 0) {
-					b2.draw(g);
-
-				}
+				
 			} else if (mapStates[mapRow][mapColumn] == BAY_STATE) {
 				drawBayState(g);
 				updateBayState();

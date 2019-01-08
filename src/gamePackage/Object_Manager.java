@@ -76,6 +76,8 @@ public class Object_Manager {
 			b.left = false;
 		}
 		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] != GamePanel.PATH2_STATE) {
+			
+			
 			b1.right = false;
 			b2.right = false;
 			b1.left = false;
@@ -118,6 +120,9 @@ public class Object_Manager {
 				}
 			}
 		} else if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.PATH2_STATE) {
+			
+			
+			
 			System.out.println("weak bandit2 is dead: " + b2.isDead);
 			if (!b1.isDead) {
 				processWeakBanditIsAlive(b1);

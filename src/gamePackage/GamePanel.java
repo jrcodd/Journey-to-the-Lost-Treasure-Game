@@ -45,20 +45,28 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	public static BufferedImage cannonBallProjectile;
 	public static BufferedImage enemyShip;
+
 	public static BufferedImage WeakEnemyLeftAttacking;
 	public static BufferedImage WeakEnemyRightAttacking;
 	public static BufferedImage WeakEnemyLeft;
 	public static BufferedImage WeakEnemyRight;
+
+	public static BufferedImage StrongEnemyLeftAttacking;
+	public static BufferedImage StrongEnemyRightAttacking;
+	public static BufferedImage StrongEnemyLeft;
+	public static BufferedImage StrongEnemyRight;
+
 	public static BufferedImage PlayerSwordDownLeft;
 	public static BufferedImage PlayerSwordDownRight;
 	public static BufferedImage PlayerSwordUpLeft;
 	public static BufferedImage PlayerSwordUpRight;
+
 	public static BufferedImage potion;
 	public static BufferedImage emptyPotion;
 	public static BufferedImage boots;
 	public static BufferedImage treasureMarker;
 	public static BufferedImage RepairKitImg;
-	
+
 	// public static Image enemy;
 	boolean doneAttacking;
 	final static int fps = 80;
@@ -75,9 +83,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	TreasureMap m = new TreasureMap(400, 100, 10, 10, 10, false);
 	ShipRepairKit kit = new ShipRepairKit(400, 100, 10, 10, 10, false);
 	Sword sword = new Sword(115, 500, 10, 40, 100, false);
-	StrongBandit b = new StrongBandit(400, 100, 40, 80, 300, 1);
-	WeakBandit b1 = new WeakBandit(30, 30, 20, 60, 100, 2, false);
-	WeakBandit b2 = new WeakBandit(800, 30, 20, 60, 100, 2, true);
+	StrongBandit b = new StrongBandit(400, 100, 320 / 2, 300 / 2, 300, 1);
+	WeakBandit b1 = new WeakBandit(30, 30, 162 / 2, 152 / 2, 100, 2, false);
+	WeakBandit b2 = new WeakBandit(800, 30, 162 / 2, 152 / 2, 100, 2, true);
 	HealthPotion pot = new HealthPotion(500, 468, 100 / 3, 106 / 3, 30, false);
 	X x = new X(600, 100, 200, 200, 1);
 	Object_Manager o = new Object_Manager(p, m, kit, caveBoots, s, ship, man, sword, b, pot, b1, b2, x);
@@ -157,11 +165,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			level3BoatRight = ImageIO.read(this.getClass().getResourceAsStream("Level3Boat.Right.png"));
 			level3BoatRightUp = ImageIO.read(this.getClass().getResourceAsStream("Level3Boat.RightUp.png"));
 			level3BoatRightDown = ImageIO.read(this.getClass().getResourceAsStream("Level3Boat.RightDown.png"));
-			
-			WeakEnemyLeftAttacking = ImageIO.read(this.getClass().getResourceAsStream("enemy skeleton facing left attacking.png"));;
-			 WeakEnemyRightAttacking =ImageIO.read(this.getClass().getResourceAsStream("enemy skeleton facing right attacking.png"));;
-			WeakEnemyLeft  =ImageIO.read(this.getClass().getResourceAsStream("enemy skeleton facing left.png"));;;
-			WeakEnemyRight =  ImageIO.read(this.getClass().getResourceAsStream("enemy skeleton facing right.png"));;;
+
+			WeakEnemyLeftAttacking = ImageIO
+					.read(this.getClass().getResourceAsStream("enemy skeleton facing left attacking.png"));
+			WeakEnemyRightAttacking = ImageIO
+					.read(this.getClass().getResourceAsStream("enemy skeleton facing right attacking.png"));
+			WeakEnemyLeft = ImageIO.read(this.getClass().getResourceAsStream("enemy skeleton facing left.png"));
+			WeakEnemyRight = ImageIO.read(this.getClass().getResourceAsStream("enemy skeleton facing right.png"));
+
+			StrongEnemyLeftAttacking = ImageIO
+					.read(this.getClass().getResourceAsStream("Strong enemy facing left attacking.png"));
+			StrongEnemyRightAttacking = ImageIO
+					.read(this.getClass().getResourceAsStream("Strong enemy facing right attacking.png"));
+			StrongEnemyLeft = ImageIO.read(this.getClass().getResourceAsStream("Strong enemy facing left.png"));
+			StrongEnemyRight = ImageIO.read(this.getClass().getResourceAsStream("Strong enemy facing right.png"));
 
 			cannonBallProjectile = ImageIO.read(this.getClass().getResourceAsStream("cannonBallProjectile.png"));
 			MenuImg = ImageIO.read(this.getClass().getResourceAsStream("JourneyMenuImg.png"));
@@ -175,7 +192,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			boots = ImageIO.read(this.getClass().getResourceAsStream("SpeedyBoots.png"));
 			treasureMarker = ImageIO.read(this.getClass().getResourceAsStream("x-marks-the-spot.png"));
 			RepairKitImg = ImageIO.read(this.getClass().getResourceAsStream("repairKit.png"));
-			// enemy = new ImageIcon(getClass().getResource("enemy.gif")).getImage();
+
 		} catch (IOException e) {
 
 			e.printStackTrace();
@@ -711,14 +728,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			else if (mapStates[mapRow][mapColumn] == PATH1_STATE) {
 				updatePath1State();
 				drawPath1State(g);
-				if (b.getHealth() > 0) {
-					b.draw(g);
-				}
+				o.drawStrongBandit(g);
 
 			} else if (mapStates[mapRow][mapColumn] == PATH2_STATE) {
 				drawPath2State(g);
 				updatePath2State();
-				
+				o.drawWeakBandits(g);
 			} else if (mapStates[mapRow][mapColumn] == BAY_STATE) {
 				drawBayState(g);
 				updateBayState();
@@ -884,9 +899,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				m = new TreasureMap(400, 100, 10, 10, 10, false);
 				kit = new ShipRepairKit(400, 100, 10, 10, 10, false);
 				sword = new Sword(115, 500, 10, 40, 100, false);
-				b = new StrongBandit(400, 100, 40, 80, 300, 1);
-				b1 = new WeakBandit(30, 30, 20, 60, 100, 2, false);
-				b2 = new WeakBandit(800, 30, 20, 60, 100, 2, true);
+				b = new StrongBandit(400, 100, 320 / 2, 300/2, 300, 1);
+				b1 = new WeakBandit(30, 30, 20,162 / 2, 152 / 2 , 2, false);
+				b2 = new WeakBandit(800, 30,162 / 2, 152 / 2, 100, 2, true);
 				pot = new HealthPotion(500, 468, 100 / 3, 106 / 3, 30, false);
 				x = new X(600, 100, 200, 200, 1);
 				o = new Object_Manager(p, m, kit, caveBoots, s, ship, man, sword, b, pot, b1, b2, x);
@@ -1200,10 +1215,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (kit.timeUntilNextUse > 0) {
-			kit.timeUntilNextUse -= 1;
-		} else {
-			System.out.println("ready");
+		if (kit.isFound) {
+			if (kit.timeUntilNextUse > 0) {
+				kit.timeUntilNextUse -= 1;
+			} else {
+				System.out.println("ready");
+			}
 		}
 		o.moveEnemyShip();
 		b.setX(b.getX() - ((b.getX() - p.getX()) / 10));

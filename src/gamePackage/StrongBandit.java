@@ -9,7 +9,7 @@ public class StrongBandit extends Game_Object {
 	Rectangle attackRadius;
 	boolean left;
 	boolean right;
-	 boolean isDead = false;
+	boolean isDead = false;
 
 	StrongBandit(int x, int y, int width, int height, int health, int speed) {
 		super(x, y, width, height, health);
@@ -27,9 +27,35 @@ public class StrongBandit extends Game_Object {
 		}
 	}
 
-	void draw(Graphics g) {
-		g.setColor(Color.RED);
-		g.fillRect(x, y, width, height);
+	void drawLeft(Graphics g) {
+		if (!isDead) {
+			g.drawImage(GamePanel.StrongEnemyLeft, x, y, width, height, null);
+			drawHealth(g);
+		}
+	}
+
+	void drawRight(Graphics g) {
+		if (!isDead) {
+			g.drawImage(GamePanel.StrongEnemyRight, x, y, width, height, null);
+			drawHealth(g);
+		}
+	}
+
+	void drawLeftAttack(Graphics g) {
+		if (!isDead) {
+			g.drawImage(GamePanel.StrongEnemyLeftAttacking, x, y, width, height, null);
+			drawHealth(g);
+		}
+	}
+
+	void drawRightAttack(Graphics g) {
+		if (!isDead) {
+			g.drawImage(GamePanel.StrongEnemyRightAttacking, x, y, width, height, null);
+			drawHealth(g);
+		}
+	}
+
+	void drawHealth(Graphics g) {
 		if (health < 30) {
 			g.setColor(Color.red);
 		} else if (health < 50) {
@@ -38,6 +64,7 @@ public class StrongBandit extends Game_Object {
 			g.setColor(Color.darkGray);
 		}
 		g.drawString(Integer.toString(health), getX(), getY() + 110);
+
 	}
 
 	int getX() {
@@ -67,6 +94,15 @@ public class StrongBandit extends Game_Object {
 
 	int getHealth() {
 		return health;
+	}
+	int getWidth() {
+		return width;
+	}
+	void setWidth(int newWidth) {
+		width = newWidth;
+	}
+	int getHeight() {
+		return height;
 	}
 
 	void move() {

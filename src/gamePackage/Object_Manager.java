@@ -1,5 +1,6 @@
 package gamePackage;
 
+import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class Object_Manager {
@@ -76,8 +77,7 @@ public class Object_Manager {
 			b.left = false;
 		}
 		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] != GamePanel.PATH2_STATE) {
-			
-			
+
 			b1.right = false;
 			b2.right = false;
 			b1.left = false;
@@ -120,44 +120,7 @@ public class Object_Manager {
 				}
 			}
 		} else if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.PATH2_STATE) {
-			if(p.getX()-b1.getX()>0) {
-				b1.drawLeft(g);
-				//Weak bandit 1 is facing left
-				if(isDefending1) {
-					b1.drawLeftAttack(g);
-					//weak bandit 1 is attacking and facing left
-				}
-			}
-			else if(p.getX()-b1.getX()<0) {
-				b1.drawRight(g);
-				//Weak bandit 1 is facing right
-				if(isDefending1) {
-					b1.drawRightAttack(g);
-					//Weak bandit 1 is attacking and facing right
-				}
-			}
-			if(p.getX()-b2.getX()>0) {
-				b2.drawLeft(g);
-				//Weak bandit 2 is facing left
-				if(isDefending2) {
-					b2.drawLeftAttack(g);
-					//weak bandit 2 is attacking and facing left
-				}
-			}
-			else if(p.getX()-b2.getX()<0) {
-				b2.drawRight(g);
-				//Weak bandit 2 is facing right
-				if(isDefending2) {
-					b2.drawRightAttack(g);
-					//Weak bandit 2 is attacking and facing right
-				}
-			}
-			else {
-				b1.drawLeft(g);
-				b2.drawLeft(g);
-			}
-			
-			
+
 			System.out.println("weak bandit2 is dead: " + b2.isDead);
 			if (!b1.isDead) {
 				processWeakBanditIsAlive(b1);
@@ -298,7 +261,7 @@ public class Object_Manager {
 		if (wb.collisionBox.intersects(p.collisionBox)) {
 			if (!GamePanel.swordDown) {
 				if (isDefending2 == false) {
-					p.health -= 3;
+					p.health -= 8;
 					System.out.println("player health: " + p.health);
 					isDefending2 = true;
 				}
@@ -307,7 +270,7 @@ public class Object_Manager {
 		if (p.collisionBox.intersects(wb.collisionBox)) {
 			if (GamePanel.swordDown) {
 				if (isDefending2 == true) {
-					wb.setHealth(wb.getHealth() - 30);
+					wb.setHealth(wb.getHealth() - 20);
 					isDefending2 = false;
 					System.out.println("weak bandit1 health: " + b1.health);
 					System.out.println("weak bandit2 health: " + b2.health);
@@ -436,8 +399,6 @@ public class Object_Manager {
 		}
 	}
 
-	
-
 	void checkEnemyBulletBounds(int x, int y) {
 		if (EnemycannonballList.size() > 0) {
 			if (x < 0) {
@@ -469,6 +430,88 @@ public class Object_Manager {
 		if (y > JourneyToTheLostTreasure.HEIGHT) {
 			cannonballList.remove(cannonballList.size() - 1);
 		}
+	}
+void drawStrongBandit(Graphics g) {
+	
+		if (!b.isDead) {
+			if (p.getX() - b.getX() < 0) {
+				// strong bandit is facing left
+				if (isDefending) {
+					b.setWidth(320 / 2+50);
+					b.drawLeft(g);
+					// not attacking and facing left
+				} else if (!isDefending) {
+					b.setWidth(320 / 2+50);
+					b.drawLeftAttack(g);
+					// strong bandit is attacking and facing left
+				}
+			} else if (p.getX() - b.getX() > 0) {
+				// strong bandit is facing right
+				if (isDefending) {
+					b.setWidth(320 / 2+50);
+					b.drawRight(g);
+					// strong bandit is facing left and not attacking
+				} else if (!isDefending) {
+					b.setWidth(320 / 2+50);
+					b.drawRightAttack(g);
+					// strong bandit is attacking and facing right
+				}
+			}
+		}
+}
+	void drawWeakBandits(Graphics g) {
+		if (!b1.isDead) {
+			if (p.getX() - b1.getX() < 0) {
+				// Weak bandit 1 is facing left
+				if (isDefending1) {
+					b1.drawLeft(g);
+					// not attacking and facing left
+				} else if (!isDefending1) {
+					b1.drawLeftAttack(g);
+					// weak bandit 1 is attacking and facing left
+				}
+			} else if (p.getX() - b1.getX() > 0) {
+				// Weak bandit 1 is facing right
+				if (isDefending1) {
+					b1.drawRight(g);
+					// weak bandit 1 is facing left and not attacking
+				} else if (!isDefending1) {
+					b1.drawRightAttack(g);
+					// Weak bandit 1 is attacking and facing right
+				}
+			}
+		}
+		if (!b2.isDead) {
+			if (p.getX() - b2.getX() < 0) {
+				// Weak bandit 2 is facing left
+				if (isDefending2) {
+					b2.drawLeft(g);
+					// weak bandit 2 is not attacking and facing left
+				} else if (!isDefending2) {
+					b2.drawLeftAttack(g);
+					// weak bandit 2 is attacking and facing left
+				}
+			} else if (p.getX() - b2.getX() > 0) {
+				if (isDefending2) {
+					b2.drawRight(g);
+					// weak bandit 2 is not attacking and facing right
+				}
+				// Weak bandit 2 is facing right
+				else if (!isDefending2) {
+					b2.drawRightAttack(g);
+					// Weak bandit 2 is attacking and facing right
+				}
+			}
+		}
+		// else {
+//			if (!b1.isDead) {
+//				b1.drawLeft(g);
+//			}
+//			if (!b2.isDead) {
+//				b2.drawLeft(g);
+//			}
+//		}
+
 	}
 
 	boolean getPlayerisSailing() {

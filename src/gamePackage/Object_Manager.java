@@ -120,7 +120,42 @@ public class Object_Manager {
 				}
 			}
 		} else if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.PATH2_STATE) {
-			
+			if(p.getX()-b1.getX()>0) {
+				b1.drawLeft(g);
+				//Weak bandit 1 is facing left
+				if(isDefending1) {
+					b1.drawLeftAttack(g);
+					//weak bandit 1 is attacking and facing left
+				}
+			}
+			else if(p.getX()-b1.getX()<0) {
+				b1.drawRight(g);
+				//Weak bandit 1 is facing right
+				if(isDefending1) {
+					b1.drawRightAttack(g);
+					//Weak bandit 1 is attacking and facing right
+				}
+			}
+			if(p.getX()-b2.getX()>0) {
+				b2.drawLeft(g);
+				//Weak bandit 2 is facing left
+				if(isDefending2) {
+					b2.drawLeftAttack(g);
+					//weak bandit 2 is attacking and facing left
+				}
+			}
+			else if(p.getX()-b2.getX()<0) {
+				b2.drawRight(g);
+				//Weak bandit 2 is facing right
+				if(isDefending2) {
+					b2.drawRightAttack(g);
+					//Weak bandit 2 is attacking and facing right
+				}
+			}
+			else {
+				b1.drawLeft(g);
+				b2.drawLeft(g);
+			}
 			
 			
 			System.out.println("weak bandit2 is dead: " + b2.isDead);

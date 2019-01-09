@@ -63,7 +63,7 @@ public class StrongBandit extends Game_Object {
 		} else if (health > 50) {
 			g.setColor(Color.darkGray);
 		}
-		g.drawString(Integer.toString(health), getX(), getY() + 110);
+		g.drawString(Integer.toString(health), x + (width * (2 / 3)), y + height + 10);
 
 	}
 
@@ -95,12 +95,15 @@ public class StrongBandit extends Game_Object {
 	int getHealth() {
 		return health;
 	}
+
 	int getWidth() {
 		return width;
 	}
+
 	void setWidth(int newWidth) {
 		width = newWidth;
 	}
+
 	int getHeight() {
 		return height;
 	}

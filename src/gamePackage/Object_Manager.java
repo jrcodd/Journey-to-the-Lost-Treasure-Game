@@ -3,6 +3,8 @@ package gamePackage;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 public class Object_Manager {
 	static ArrayList<Game_Object> inv;
 	Shack s;
@@ -285,6 +287,8 @@ public class Object_Manager {
 				coins -= 100;
 				ship.isBought = true;
 			}
+		} else if (coins < 100 && playerisSailing == false) {
+			JOptionPane.showMessageDialog(null, "You need to find 100 gold to buy the ship and sail away!");
 		}
 	}
 
@@ -431,53 +435,56 @@ public class Object_Manager {
 			cannonballList.remove(cannonballList.size() - 1);
 		}
 	}
-void drawStrongBandit(Graphics g) {
-	
+
+	void drawStrongBandit(Graphics g) {
+
 		if (!b.isDead) {
 			if (p.getX() - b.getX() < 0) {
 				// strong bandit is facing left
 				if (isDefending) {
-					b.setWidth(320 / 2+50);
+					b.setWidth(320 / 2 + 50);
 					b.drawLeft(g);
 					// not attacking and facing left
 				} else if (!isDefending) {
-					b.setWidth(320 / 2+50);
+					b.setWidth(320 / 2 + 50);
 					b.drawLeftAttack(g);
 					// strong bandit is attacking and facing left
 				}
 			} else if (p.getX() - b.getX() > 0) {
 				// strong bandit is facing right
 				if (isDefending) {
-					b.setWidth(320 / 2+50);
+					b.setWidth(320 / 2 + 50);
 					b.drawRight(g);
 					// strong bandit is facing left and not attacking
 				} else if (!isDefending) {
-					b.setWidth(320 / 2+50);
+					b.setWidth(320 / 2 + 50);
 					b.drawRightAttack(g);
 					// strong bandit is attacking and facing right
 				}
 			}
 		}
-}
+	}
+
 	void drawWeakBandits(Graphics g) {
 		if (!b1.isDead) {
 			if (p.getX() - b1.getX() < 0) {
-				// Weak bandit 1 is facing left
-				if (isDefending1) {
+				// Weak Bandit 1 is facing left
+				if (isDefending2) {
 					b1.drawLeft(g);
-					// not attacking and facing left
-				} else if (!isDefending1) {
+					// Weak Bandit 1 is not attacking and facing left
+				} else if (!isDefending2) {
 					b1.drawLeftAttack(g);
-					// weak bandit 1 is attacking and facing left
+					// Weak Bandit 1 is attacking and facing left
 				}
 			} else if (p.getX() - b1.getX() > 0) {
-				// Weak bandit 1 is facing right
-				if (isDefending1) {
+				if (isDefending2) {
 					b1.drawRight(g);
-					// weak bandit 1 is facing left and not attacking
-				} else if (!isDefending1) {
+					// Weak Bandit 1 is not attacking and facing right
+				}
+				// Weak Bandit 1 is facing right
+				else if (!isDefending2) {
 					b1.drawRightAttack(g);
-					// Weak bandit 1 is attacking and facing right
+					// Weak Bandit 1 is attacking and facing right
 				}
 			}
 		}
@@ -504,13 +511,13 @@ void drawStrongBandit(Graphics g) {
 			}
 		}
 		// else {
-//			if (!b1.isDead) {
-//				b1.drawLeft(g);
-//			}
-//			if (!b2.isDead) {
-//				b2.drawLeft(g);
-//			}
-//		}
+		// if (!b1.isDead) {
+		// b1.drawLeft(g);
+		// }
+		// if (!b2.isDead) {
+		// b2.drawLeft(g);
+		// }
+		// }
 
 	}
 

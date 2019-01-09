@@ -1,12 +1,13 @@
 package gamePackage;
 
 import java.awt.Graphics;
+
 public class EnemyShip extends Game_Object {
 	int speed = 2;
 	int level;
 	int health;
-boolean addedRewards = false;
-boolean damageDelt = false;
+	boolean addedRewards = false;
+	boolean damageDelt = false;
 	boolean isAlive = true;
 
 	EnemyShip(int x, int y, int width, int height, int health, int level) {
@@ -19,14 +20,12 @@ boolean damageDelt = false;
 	void update() {
 		super.update();
 
-		
-		
 	}
 
 	void draw(Graphics g) {
 		if (isAlive) {
 			g.drawImage(GamePanel.enemyShip, x, y, width, height, null);
-			g.drawString(Integer.toString(health), x+width/2, y+height+height/2);
+			g.drawString(Integer.toString(health), x + width / 2, y + height + height / 5);
 		}
 	}
 

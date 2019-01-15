@@ -3,13 +3,15 @@ package gamePackage;
 
 import java.awt.Graphics;
 
+import javax.swing.JOptionPane;
+
 public class HealthPotion extends Game_Object {
 	boolean isFound;
 	boolean isAdded = false;
 	int positionInInv;
 	boolean isDrank = false;
 	boolean isPlaced = false;
-
+boolean hasTalked;
 	HealthPotion(int x, int y, int width, int height, int health, boolean isFound) {
 		super(x, y, width, height, health);
 
@@ -20,6 +22,12 @@ public class HealthPotion extends Game_Object {
 		g.drawImage(GamePanel.potion, x, y, width, height, null);
 	}
 
+	void talk() {
+
+		JOptionPane.showMessageDialog(null,
+				"This potion heals the player back to full health and can be refilled at the lagoon.");
+
+	}
 	void update() {
 		super.update();
 

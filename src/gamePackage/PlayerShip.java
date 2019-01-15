@@ -3,6 +3,8 @@ package gamePackage;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+import javax.swing.JOptionPane;
+
 public class PlayerShip extends Game_Object {
 	int speed = 5;
 	int level;
@@ -11,7 +13,7 @@ public class PlayerShip extends Game_Object {
 	static int direction = 0;
 	boolean isBought;
 	Rectangle hitBox = new Rectangle(x, y, width, height);
-
+boolean hasTalked;
 	PlayerShip(int x, int y, int width, int height, int health, int level) {
 		super(x, y, width, height, health);
 		this.level = level;
@@ -257,7 +259,11 @@ public class PlayerShip extends Game_Object {
 
 		}
 	}
+	void talk() {
 
+		JOptionPane.showMessageDialog(null, "You need 100 gold to pilot this ship.");
+
+	}
 	int getX() {
 		return x;
 

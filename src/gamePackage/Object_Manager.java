@@ -3,8 +3,6 @@ package gamePackage;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
 public class Object_Manager {
 	static ArrayList<Game_Object> inv;
 	Shack s;
@@ -38,6 +36,9 @@ public class Object_Manager {
 	boolean b1Start;
 	boolean b2Start;
 	boolean damageDelt = false;
+	boolean potionmessage = true;
+	boolean mapmessage = true;
+	boolean bootsmessage = true;
 
 	Object_Manager(Player p, TreasureMap m, ShipRepairKit kit, SpeedyBoots caveBoots, Shack s, PlayerShip ship,
 			OldMan man, Sword sword, StrongBandit b, HealthPotion pot, WeakBandit b1, WeakBandit b2, X x) {
@@ -87,8 +88,25 @@ public class Object_Manager {
 		}
 		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.LAGOON_STATE) {
 			if (p.collisionBox.intersects(pot.collisionBox)) {
-				pot.isFound = true;
 
+				if (pot.hasTalked == false) {
+					GamePanel.up = false;
+					GamePanel.down = false;
+					GamePanel.right = false;
+					GamePanel.left = false;
+					pot.hasTalked = true;
+					pot.talk();
+					pot.isFound = true;
+
+				}
+
+//				pot.isFound = true;
+//				if (potionmessage) {
+//					JOptionPane.showMessageDialog(null,
+//							"This potion heals the player back to full health and can be refilled at the lagoon.");
+//					GamePanel.stop();
+//					potionmessage = false;
+//				}
 			}
 		}
 		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.PATH1_STATE) {
@@ -171,19 +189,54 @@ public class Object_Manager {
 					man.hasTalked = true;
 					man.talk();
 					kit.isFound = true;
+
 				}
 			}
 		}
 		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.FOREST_STATE) {
 			if (p.collisionBox.intersects(m.collisionBox)) {
-				m.isFound = true;
+				if (m.hasTalked == false) {
+					GamePanel.up = false;
+					GamePanel.down = false;
+					GamePanel.right = false;
+					GamePanel.left = false;
+					m.hasTalked = true;
+					m.talk();
+					m.isFound = true;
+
+				}
+
+//				if (mapmessage) {
+//					JOptionPane.showMessageDialog(null,
+//							"This map can be used to know where the player is. (You can find your current location at the top of the screen)");
+//
+//					mapmessage = false;
+//					GamePanel.stop();
+//				}
 
 			}
 		}
 		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.CAVE_STATE) {
 			if (caveBoots.collisionBox.intersects(p.collisionBox)) {
-				caveBoots.isFound = true;
+				if (caveBoots.hasTalked == false) {
+					GamePanel.up = false;
+					GamePanel.down = false;
+					GamePanel.right = false;
+					GamePanel.left = false;
+					caveBoots.hasTalked = true;
+					caveBoots.talk();
+					caveBoots.isFound = true;
 
+				}
+
+//				
+//				caveBoots.isFound = true;
+//				if (bootsmessage) {
+//					JOptionPane.showMessageDialog(null,
+//							"These boots allow the player to travel at a much faster speed.");
+//					bootsmessage = false;
+//					GamePanel.stop();
+//				}
 			}
 		}
 		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.FOREST_EDGE) {
@@ -288,7 +341,16 @@ public class Object_Manager {
 				ship.isBought = true;
 			}
 		} else if (coins < 100 && playerisSailing == false) {
-			JOptionPane.showMessageDialog(null, "You need to find 100 gold to buy the ship and sail away!");
+			if (!ship.hasTalked) {
+
+				GamePanel.up = false;
+				GamePanel.down = false;
+				GamePanel.right = false;
+				GamePanel.left = false;
+				ship.hasTalked = true;
+				ship.talk();
+
+			}
 		}
 	}
 

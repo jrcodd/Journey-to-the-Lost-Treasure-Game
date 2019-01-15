@@ -240,7 +240,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - p.width) {
 			right = false;
 		}
-		if (p.collisionBox.x < 0 + p.width) {
+		if (p.collisionBox.x < 0 ) {
 			left = false;
 		}
 		o.update();
@@ -256,11 +256,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (p.collisionBox.x < 0) {
 			left = false;
 		}
-		if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - 160) {
+		if (p.collisionBox.x > JourneyToTheLostTreasure.WIDTH - p.width) {
 			right = false;
 		}
 
-		if (p.collisionBox.y > JourneyToTheLostTreasure.HEIGHT - 60) {
+		if (p.collisionBox.y > JourneyToTheLostTreasure.HEIGHT - p.height) {
 			s.inside = false;
 			p.setY(350);
 			p.setX(560);
@@ -1318,7 +1318,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				} else if (o.getPlayerisSailing()) {
 					ship.setX(RIGHT);
 				}
-				changePos(mapRow, mapColumn - 1);
+				if(!s.inside) {
+				changePos(mapRow, mapColumn - 1);}
 			} else {
 				left = false;
 			}
@@ -1335,6 +1336,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			if (mapColumn < LAST_COL && mapStates[mapRow][mapColumn + 1] == NO_PLACE) {
 				right = false;
 			}
+			if (mapColumn < LAST_COL && mapStates[mapRow][mapColumn + 1] == BAY_STATE && Object_Manager.playerisSailing) {
+				right = false;
+			} 
 			if (!o.getPlayerisSailing() && mapColumn < LAST_COL && mapStates[mapRow][mapColumn + 1] == OCEAN_STATE) {
 				right = false;
 			}
@@ -1362,6 +1366,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			if (mapRow < 0 || mapStates[mapRow - 1][mapColumn] == NO_PLACE) {
 				up = false;
 			}
+			if (mapRow < 0 || mapStates[mapRow - 1][mapColumn] == BAY_STATE && Object_Manager.playerisSailing) {
+				up = false;
+			}
 			if (!o.getPlayerisSailing() && mapRow >= 0 && mapStates[mapRow - 1][mapColumn] == OCEAN_STATE) {
 				up = false;
 			}
@@ -1376,7 +1383,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 					o.enemyShipList.add(new EnemyShip(JourneyToTheLostTreasure.WIDTH / 2,
 							JourneyToTheLostTreasure.HEIGHT / 2, 446 / 3, 442 / 3, 650, 5));
 				}
-				changePos(mapRow - 1, mapColumn);
+				if(s.inside == false) {
+				changePos(mapRow - 1, mapColumn);}
 			} else {
 				up = false;
 			}
@@ -1392,6 +1400,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			}
 
 			if (mapRow < LAST_ROW && mapStates[mapRow + 1][mapColumn] == NO_PLACE) {
+				down = false;
+			}
+			if (mapRow < LAST_ROW && mapStates[mapRow + 1][mapColumn] == BAY_STATE && Object_Manager.playerisSailing) {
 				down = false;
 			}
 			if (!o.getPlayerisSailing() && mapRow < LAST_ROW && mapStates[mapRow + 1][mapColumn] == OCEAN_STATE) {
@@ -1416,4 +1427,5 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		repaint();
 
 	}
+	
 }

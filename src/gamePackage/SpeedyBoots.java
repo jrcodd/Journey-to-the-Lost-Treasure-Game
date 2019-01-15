@@ -1,12 +1,15 @@
 package gamePackage;
 
-
 import java.awt.Graphics;
+
+import javax.swing.JOptionPane;
 
 public class SpeedyBoots extends Game_Object {
 	boolean isFound;
 	boolean isAdded = false;
-    int positionInInv;
+	int positionInInv;
+	boolean hasTalked;
+
 	SpeedyBoots(int x, int y, int width, int height, int health, boolean isFound) {
 		super(x, y, width, height, health);
 		this.isFound = isFound;
@@ -34,7 +37,13 @@ public class SpeedyBoots extends Game_Object {
 	}
 
 	void draw(Graphics g) {
-		g.drawImage(GamePanel.boots, x, y, width*3, height*2, null );
+		g.drawImage(GamePanel.boots, x, y, width * 3, height * 2, null);
+	}
+
+	void talk() {
+
+		JOptionPane.showMessageDialog(null, "These boots allow the player to travel at a much faster speed.");
+
 	}
 
 	void drawInInv(Graphics g) {
@@ -78,9 +87,9 @@ public class SpeedyBoots extends Game_Object {
 				}
 			}
 			break;
-          
+
 		}
-				g.drawImage(GamePanel.boots, 900, positionInInv, 50, 50, null);
+		g.drawImage(GamePanel.boots, 900, positionInInv, 50, 50, null);
 		/*
 		 * if (Object_Manager.inv.isEmpty()) { g.setColor(Color.YELLOW); g.fillRect(900,
 		 * GamePanel.INVENTORY_SLOT1, 50, 50);

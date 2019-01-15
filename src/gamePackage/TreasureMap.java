@@ -3,11 +3,13 @@ package gamePackage;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import javax.swing.JOptionPane;
+
 public class TreasureMap extends Game_Object {
 	boolean isFound;
 	boolean isAdded = false;
 	int positionInInv;
-
+	boolean hasTalked;
 	TreasureMap(int x, int y, int width, int height, int health, boolean found) {
 		super(x, y, width, height, health);
 		this.isFound = found;
@@ -16,6 +18,13 @@ public class TreasureMap extends Game_Object {
 	void draw(Graphics g) {
 		g.setColor(Color.YELLOW);
 		g.fillRect(x, y, width, height);
+
+	}
+
+	void talk() {
+
+		JOptionPane.showMessageDialog(null,
+				"This map can be used to know where the player is. Use esc to return to the game.  (You can find your current location at the top of the screen)");
 
 	}
 

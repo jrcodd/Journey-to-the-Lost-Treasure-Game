@@ -23,7 +23,8 @@ public class OldMan extends Game_Object {
 	void talk() {
 
 		JOptionPane.showMessageDialog(null, "Here is a Ship Repair Kit. Be careful out there traveler.");
-
+		JOptionPane.showMessageDialog(null,
+				"The Ship Repair kit can be used to heal the ship to full health. It has a cooldown.");
 	}
 
 }

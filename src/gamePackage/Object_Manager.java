@@ -39,6 +39,9 @@ public class Object_Manager {
 	boolean potionmessage = true;
 	boolean mapmessage = true;
 	boolean bootsmessage = true;
+	static String currentMessage1 = "Welcome To Journey To The Lost Treasure!!";
+	static String currentMessage2 = "To move use WASD or the arrow keys. Use space to attack";
+	static String currentMessage3 = "and the corresponding number key to use items.";
 
 	Object_Manager(Player p, TreasureMap m, ShipRepairKit kit, SpeedyBoots caveBoots, Shack s, PlayerShip ship,
 			OldMan man, Sword sword, StrongBandit b, HealthPotion pot, WeakBandit b1, WeakBandit b2, X x) {
@@ -100,13 +103,14 @@ public class Object_Manager {
 
 				}
 
-//				pot.isFound = true;
-//				if (potionmessage) {
-//					JOptionPane.showMessageDialog(null,
-//							"This potion heals the player back to full health and can be refilled at the lagoon.");
-//					GamePanel.stop();
-//					potionmessage = false;
-//				}
+				// pot.isFound = true;
+				// if (potionmessage) {
+				// JOptionPane.showMessageDialog(null,
+				// "This potion heals the player back to full health and can be refilled at the
+				// lagoon.");
+				// GamePanel.stop();
+				// potionmessage = false;
+				// }
 			}
 		}
 		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.PATH1_STATE) {
@@ -206,13 +210,14 @@ public class Object_Manager {
 
 				}
 
-//				if (mapmessage) {
-//					JOptionPane.showMessageDialog(null,
-//							"This map can be used to know where the player is. (You can find your current location at the top of the screen)");
-//
-//					mapmessage = false;
-//					GamePanel.stop();
-//				}
+				// if (mapmessage) {
+				// JOptionPane.showMessageDialog(null,
+				// "This map can be used to know where the player is. (You can find your current
+				// location at the top of the screen)");
+				//
+				// mapmessage = false;
+				// GamePanel.stop();
+				// }
 
 			}
 		}
@@ -229,14 +234,14 @@ public class Object_Manager {
 
 				}
 
-//				
-//				caveBoots.isFound = true;
-//				if (bootsmessage) {
-//					JOptionPane.showMessageDialog(null,
-//							"These boots allow the player to travel at a much faster speed.");
-//					bootsmessage = false;
-//					GamePanel.stop();
-//				}
+				//
+				// caveBoots.isFound = true;
+				// if (bootsmessage) {
+				// JOptionPane.showMessageDialog(null,
+				// "These boots allow the player to travel at a much faster speed.");
+				// bootsmessage = false;
+				// GamePanel.stop();
+				// }
 			}
 		}
 		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.FOREST_EDGE) {
@@ -416,7 +421,6 @@ public class Object_Manager {
 		if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.ISLAND_STATE) {
 			if (p.collisionBox.intersects(x.collisionBox)) {
 				treasureIsFound = true;
-				System.out.println("TREASURE IS FOUND");
 
 			}
 		}

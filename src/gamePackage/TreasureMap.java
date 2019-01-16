@@ -1,31 +1,29 @@
 package gamePackage;
 
-import java.awt.Color;
 import java.awt.Graphics;
 
-import javax.swing.JOptionPane;
-
 public class TreasureMap extends Game_Object {
+
 	boolean isFound;
 	boolean isAdded = false;
 	int positionInInv;
 	boolean hasTalked;
+
 	TreasureMap(int x, int y, int width, int height, int health, boolean found) {
 		super(x, y, width, height, health);
 		this.isFound = found;
 	}
 
 	void draw(Graphics g) {
-		g.setColor(Color.YELLOW);
-		g.fillRect(x, y, width, height);
+		g.drawImage(GamePanel.Map, x, y, width, height, null);
 
 	}
 
 	void talk() {
 
-		JOptionPane.showMessageDialog(null,
-				"This map can be used to know where the player is. Use esc to return to the game.  (You can find your current location at the top of the screen)");
-
+		Object_Manager.currentMessage1 = "This map can be used to know where the player is. Use esc to return";
+		Object_Manager.currentMessage2 = "to the game.  (You can find your current location at the top of the screen)";
+		Object_Manager.currentMessage3 = "";
 	}
 
 	void update() {
@@ -96,8 +94,8 @@ public class TreasureMap extends Game_Object {
 			}
 			break;
 		}
-		g.setColor(Color.yellow);
-		g.fillRect(900, positionInInv, 50, 50);
+		g.drawImage(GamePanel.Map, 900, positionInInv, 50, 50, null);
+		// g.fillRect(900, positionInInv, 50, 50);
 		/*
 		 * if (Object_Manager.inv.isEmpty()) { g.setColor(Color.yellow); g.fillRect(900,
 		 * GamePanel.INVENTORY_SLOT1, 50, 50); if (isAdded == false) {

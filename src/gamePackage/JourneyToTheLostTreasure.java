@@ -11,10 +11,9 @@ public class JourneyToTheLostTreasure {
 
 	public static void main(String[] args) {
 		// JourneyToTheLostTreasure journey = new JourneyToTheLostTreasure();
-		
+
 		new JourneyToTheLostTreasure();
-		
-		
+
 		// journey.setup();
 	}
 
@@ -31,8 +30,8 @@ public class JourneyToTheLostTreasure {
 		f.addKeyListener(gp);
 		f.setVisible(true);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setSize(WIDTH + 18, HEIGHT + 47);
-
+		f.setSize(WIDTH + 18, HEIGHT + 247);
+		f.setResizable(false);
 	}
 
 }

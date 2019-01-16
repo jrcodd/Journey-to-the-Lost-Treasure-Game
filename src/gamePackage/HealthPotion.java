@@ -1,9 +1,6 @@
 package gamePackage;
 
-
 import java.awt.Graphics;
-
-import javax.swing.JOptionPane;
 
 public class HealthPotion extends Game_Object {
 	boolean isFound;
@@ -11,7 +8,8 @@ public class HealthPotion extends Game_Object {
 	int positionInInv;
 	boolean isDrank = false;
 	boolean isPlaced = false;
-boolean hasTalked;
+	boolean hasTalked;
+
 	HealthPotion(int x, int y, int width, int height, int health, boolean isFound) {
 		super(x, y, width, height, health);
 
@@ -23,11 +21,11 @@ boolean hasTalked;
 	}
 
 	void talk() {
-
-		JOptionPane.showMessageDialog(null,
-				"This potion heals the player back to full health and can be refilled at the lagoon.");
-
+		Object_Manager.currentMessage1 = "This potion heals the player back to full health and";
+		Object_Manager.currentMessage2 = "can be refilled at the lagoon.";
+		Object_Manager.currentMessage3 = "";
 	}
+
 	void update() {
 		super.update();
 
@@ -35,58 +33,57 @@ boolean hasTalked;
 
 	void drawInInv(Graphics g, boolean isEmpty) {
 
-			switch (Object_Manager.inv.size()) {
-			case 1:
-				if (Object_Manager.inv.contains(Object_Manager.pot) == false) {
-					positionInInv = GamePanel.INVENTORY_SLOT2;
+		switch (Object_Manager.inv.size()) {
+		case 1:
+			if (Object_Manager.inv.contains(Object_Manager.pot) == false) {
+				positionInInv = GamePanel.INVENTORY_SLOT2;
 
-					if (isAdded == false) {
-						Object_Manager.inv.add(Object_Manager.pot);
-						isAdded = true;
-					}
-				}
-				break;
-			case 2:
-				if (Object_Manager.inv.contains(Object_Manager.pot) == false) {
-					positionInInv = GamePanel.INVENTORY_SLOT3;
-
-					if (isAdded == false) {
-						Object_Manager.inv.add(Object_Manager.pot);
-						isAdded = true;
-					}
-				}
-				break;
-			case 3:
-				if (Object_Manager.inv.contains(Object_Manager.pot) == false) {
-					positionInInv = GamePanel.INVENTORY_SLOT4;
-
-					if (isAdded == false) {
-						Object_Manager.inv.add(Object_Manager.pot);
-						isAdded = true;
-					}
-				}
-
-				break;
-			default:
-				if (Object_Manager.inv.contains(Object_Manager.pot) == false) {
-					positionInInv = GamePanel.INVENTORY_SLOT1;
-
-					if (isAdded == false) {
-						Object_Manager.inv.add(Object_Manager.pot);
-						isAdded = true;
-						
-					}
-					break;
+				if (isAdded == false) {
+					Object_Manager.inv.add(Object_Manager.pot);
+					isAdded = true;
 				}
 			}
-			
-		
+			break;
+		case 2:
+			if (Object_Manager.inv.contains(Object_Manager.pot) == false) {
+				positionInInv = GamePanel.INVENTORY_SLOT3;
+
+				if (isAdded == false) {
+					Object_Manager.inv.add(Object_Manager.pot);
+					isAdded = true;
+				}
+			}
+			break;
+		case 3:
+			if (Object_Manager.inv.contains(Object_Manager.pot) == false) {
+				positionInInv = GamePanel.INVENTORY_SLOT4;
+
+				if (isAdded == false) {
+					Object_Manager.inv.add(Object_Manager.pot);
+					isAdded = true;
+				}
+			}
+
+			break;
+		default:
+			if (Object_Manager.inv.contains(Object_Manager.pot) == false) {
+				positionInInv = GamePanel.INVENTORY_SLOT1;
+
+				if (isAdded == false) {
+					Object_Manager.inv.add(Object_Manager.pot);
+					isAdded = true;
+
+				}
+				break;
+			}
+		}
+
 		if (isEmpty == false) {
-			g.drawImage(GamePanel.potion, 900, positionInInv, width*2, height*2, null);
-			
+			g.drawImage(GamePanel.potion, 900, positionInInv, width * 2, height * 2, null);
+
 		} else if (isEmpty == true) {
-			g.drawImage(GamePanel.emptyPotion, 900, positionInInv, width*2, height*2, null);
-			//g.drawRect(900, positionInInv, 50, 50);
+			g.drawImage(GamePanel.emptyPotion, 900, positionInInv, width * 2, height * 2, null);
+			// g.drawRect(900, positionInInv, 50, 50);
 		}
 
 	}

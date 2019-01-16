@@ -2,8 +2,6 @@ package gamePackage;
 
 import java.awt.Graphics;
 
-import javax.swing.JOptionPane;
-
 public class SpeedyBoots extends Game_Object {
 	boolean isFound;
 	boolean isAdded = false;
@@ -41,8 +39,9 @@ public class SpeedyBoots extends Game_Object {
 	}
 
 	void talk() {
-
-		JOptionPane.showMessageDialog(null, "These boots allow the player to travel at a much faster speed.");
+		Object_Manager.currentMessage1 = "These boots will allow the player ro move at a much faster speed.";
+		Object_Manager.currentMessage2 = "";
+		Object_Manager.currentMessage3 = "";
 
 	}
 

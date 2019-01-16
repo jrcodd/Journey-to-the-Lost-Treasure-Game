@@ -1,10 +1,7 @@
 package gamePackage;
 
 import java.awt.Color;
-
 import java.awt.Graphics;
-
-import javax.swing.JOptionPane;
 
 public class OldMan extends Game_Object {
 
@@ -21,10 +18,9 @@ public class OldMan extends Game_Object {
 	}
 
 	void talk() {
-
-		JOptionPane.showMessageDialog(null, "Here is a Ship Repair Kit. Be careful out there traveler.");
-		JOptionPane.showMessageDialog(null,
-				"The Ship Repair kit can be used to heal the ship to full health. It has a cooldown.");
+		Object_Manager.currentMessage1 = "Here is a Ship Repair Kit. Be careful out there traveler.";
+		Object_Manager.currentMessage2 = "The Ship Repair kit can be used to heal the ship to full health. It has a cooldown.";
+		Object_Manager.currentMessage3 = "";
 	}
 
 }

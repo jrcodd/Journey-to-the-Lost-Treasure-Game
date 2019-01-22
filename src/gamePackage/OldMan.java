@@ -13,8 +13,7 @@ public class OldMan extends Game_Object {
 	}
 
 	void draw(Graphics g) {
-		g.setColor(Color.GRAY);
-		g.fillRect(x, y, width, height);
+		g.drawImage(GamePanel.OldMan, x, y, width, height,null);
 	}
 
 	void talk() {

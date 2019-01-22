@@ -65,7 +65,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public static BufferedImage treasureMarker;
 	public static BufferedImage RepairKitImg;
 	public static BufferedImage Map;
-	// public static Image enemy;
+	public static BufferedImage OldMan;
 	boolean doneAttacking;
 	final static int fps = 80;
 	private static final int LAST_ROW = 6;
@@ -73,7 +73,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	static final int BOTTOM = 620;
 	static final int RIGHT = 800;
 	Timer t;
-	OldMan man = new OldMan(600, 75, 20, 60, 200);
+	OldMan man = new OldMan(600, 75, 162 / 2, 152 / 2, 200);
 	Shack s = new Shack(530, 20, 300, 300, 2000, false);
 	PlayerShip ship = new PlayerShip(50, 50, 433 / 3, 381 / 3, 400, 1);
 	SpeedyBoots caveBoots = new SpeedyBoots(230, 600, 10, 20, 50, false);
@@ -192,6 +192,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			treasureMarker = ImageIO.read(this.getClass().getResourceAsStream("x-marks-the-spot.png"));
 			RepairKitImg = ImageIO.read(this.getClass().getResourceAsStream("repairKit.png"));
 			Map = ImageIO.read(this.getClass().getResourceAsStream("map.png"));
+			OldMan = ImageIO.read(this.getClass().getResourceAsStream("Old Man.png"));
 		} catch (IOException e) {
 
 			e.printStackTrace();
@@ -908,7 +909,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			}
 		} else if (currentState == END_STATE) {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-				man = new OldMan(600, 75, 20, 60, 200);
+				man = new OldMan(600, 75, 162 / 2, 152 / 2, 200);
 				s = new Shack(530, 20, 300, 300, 2000, false);
 				ship = new PlayerShip(50, 50, 433 / 3, 381 / 3, 400, 1);
 				caveBoots = new SpeedyBoots(230, 600, 10, 20, 50, false);
@@ -1379,6 +1380,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			if (mapRow < 0 || mapStates[mapRow - 1][mapColumn] == NO_PLACE) {
 				up = false;
 			}
+			if(Object_Manager.playerisSailing &&  mapStates[mapRow - 1][mapColumn] == ISLAND_STATE) {
+				up=false;
+			}
 			if (mapRow < 0 || mapStates[mapRow - 1][mapColumn] == BAY_STATE && Object_Manager.playerisSailing) {
 				up = false;
 			}
@@ -1397,8 +1401,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 							JourneyToTheLostTreasure.HEIGHT / 2, 446 / 3, 442 / 3, 650, 5));
 				}
 				if (s.inside == false || mapStates[mapRow - 1][mapColumn] != BAY_STATE) {
-					changePos(mapRow - 1, mapColumn);
-				}
+					
+						changePos(mapRow - 1, mapColumn);
+					}
+				
+
 			} else {
 				up = false;
 			}

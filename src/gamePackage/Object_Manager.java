@@ -274,7 +274,7 @@ public class Object_Manager {
 
 					if (cannonballList.size() > 0) {
 						for (int o = 0; o < cannonballList.size(); o++) {
-							if (cannonballList.get(i).collisionBox.intersects(enemyShipList.get(i).collisionBox)) {
+							if (cannonballList.get(o).collisionBox.intersects(enemyShipList.get(i).collisionBox)) {
 
 								if (damageDelt == false) {
 									System.out.println("hit");
@@ -455,11 +455,13 @@ public class Object_Manager {
 	}
 
 	void purgeBullets() {
-		for (EnemyCannonBall b : EnemycannonballList) {
-			checkEnemyBulletBounds(b.x, b.y);
+		for (int i = 0; i < EnemycannonballList.size(); i++) {
+
+			checkEnemyBulletBounds(EnemycannonballList.get(i).x, EnemycannonballList.get(i).y);
 		}
-		for (PlayerCannonBall p : cannonballList) {
-			checkPlayerBulletBounds(p.x, p.y);
+		for (int i = 0; i < cannonballList.size(); i++) {
+
+			checkPlayerBulletBounds(cannonballList.get(i).x, cannonballList.get(i).y);
 		}
 		if (EnemycannonballList.size() >= 20) {
 			EnemycannonballList.remove(EnemycannonballList.size() - 1);
@@ -472,33 +474,34 @@ public class Object_Manager {
 	void checkEnemyBulletBounds(int x, int y) {
 		if (EnemycannonballList.size() > 0) {
 			if (x < 0) {
-				EnemycannonballList.remove(cannonballList.size() - 1);
+				EnemycannonballList.remove(EnemycannonballList.size() - 1);
 			}
 			if (x > JourneyToTheLostTreasure.WIDTH) {
-				EnemycannonballList.remove(cannonballList.size() - 1);
+				EnemycannonballList.remove(EnemycannonballList.size() - 1);
 			}
 			if (y < 0) {
-				EnemycannonballList.remove(cannonballList.size() - 1);
+				EnemycannonballList.remove(EnemycannonballList.size() - 1);
 			}
 			if (y > JourneyToTheLostTreasure.HEIGHT) {
-				EnemycannonballList.remove(cannonballList.size() - 1);
+				EnemycannonballList.remove(EnemycannonballList.size() - 1);
 			}
 		}
 	}
 
 	void checkPlayerBulletBounds(int x, int y) {
-		// works
-		if (x < 0) {
-			cannonballList.remove(cannonballList.size() - 1);
-		}
-		if (x > JourneyToTheLostTreasure.WIDTH) {
-			cannonballList.remove(cannonballList.size() - 1);
-		}
-		if (y < 0) {
-			cannonballList.remove(cannonballList.size() - 1);
-		}
-		if (y > JourneyToTheLostTreasure.HEIGHT) {
-			cannonballList.remove(cannonballList.size() - 1);
+		if (cannonballList.size() > 0) {
+			if (x < 0) {
+				cannonballList.remove(cannonballList.size() - 1);
+			}
+			if (x > JourneyToTheLostTreasure.WIDTH) {
+				cannonballList.remove(cannonballList.size() - 1);
+			}
+			if (y < 0) {
+				cannonballList.remove(cannonballList.size() - 1);
+			}
+			if (y > JourneyToTheLostTreasure.HEIGHT) {
+				cannonballList.remove(cannonballList.size() - 1);
+			}
 		}
 	}
 

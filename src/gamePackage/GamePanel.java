@@ -649,7 +649,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.white);
 		g.drawString("Island", JourneyToTheLostTreasure.WIDTH / 3, 50);
 		ship.draw(g);
-		drawPlayerHealth(g);
+
 		if (sword.isFound) {
 			sword.draw(g);
 		}
@@ -658,7 +658,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			g.drawString("YOU FOUND THE TREASURE!", 150, 400);
 		}
 
-		drawPlayerHealth(g);
 		repaint();
 	}
 
@@ -931,6 +930,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				swordDown = false;
 				currentState = MENU_STATE;
 				Object_Manager.playerisSailing = false;
+				Object_Manager.currentMessage1 = "";
+				Object_Manager.currentMessage2 = "";
+				Object_Manager.currentMessage3 = "";
 			}
 		}
 
@@ -1377,16 +1379,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			if (mapRow <= 0) {
 				up = false;
 			}
-			if (mapRow < 0 || mapStates[mapRow - 1][mapColumn] == NO_PLACE) {
+			if (mapRow > 0 && mapStates[mapRow - 1][mapColumn] == NO_PLACE) {
 				up = false;
 			}
-			if(Object_Manager.playerisSailing &&  mapStates[mapRow - 1][mapColumn] == ISLAND_STATE) {
-				up=false;
-			}
-			if (mapRow < 0 || mapStates[mapRow - 1][mapColumn] == BAY_STATE && Object_Manager.playerisSailing) {
+			if (Object_Manager.playerisSailing && mapRow > 0 && mapStates[mapRow - 1][mapColumn] == ISLAND_STATE) {
 				up = false;
 			}
-			if (!o.getPlayerisSailing() && mapRow >= 0 && mapStates[mapRow - 1][mapColumn] == OCEAN_STATE) {
+			if (mapRow > 0 && mapStates[mapRow - 1][mapColumn] == BAY_STATE && Object_Manager.playerisSailing) {
+				up = false;
+			}
+			if (!o.getPlayerisSailing() && mapRow > 0 && mapStates[mapRow - 1][mapColumn] == OCEAN_STATE) {
 				up = false;
 			}
 			if (up) {
@@ -1401,10 +1403,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 							JourneyToTheLostTreasure.HEIGHT / 2, 446 / 3, 442 / 3, 650, 5));
 				}
 				if (s.inside == false || mapStates[mapRow - 1][mapColumn] != BAY_STATE) {
-					
-						changePos(mapRow - 1, mapColumn);
-					}
-				
+
+					changePos(mapRow - 1, mapColumn);
+				}
 
 			} else {
 				up = false;

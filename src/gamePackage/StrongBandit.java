@@ -10,6 +10,8 @@ public class StrongBandit extends Game_Object {
 	boolean left;
 	boolean right;
 	boolean isDead = false;
+	boolean ready = true;
+	int cooldown = 100;
 
 	StrongBandit(int x, int y, int width, int height, int health, int speed) {
 		super(x, y, width, height, health);
@@ -78,6 +80,14 @@ public class StrongBandit extends Game_Object {
 
 	void setX(int newX) {
 		x = newX;
+	}
+
+	boolean getReady() {
+		return ready;
+	}
+
+	void setReady(boolean newReady) {
+		ready = newReady;
 	}
 
 	void setY(int newY) {

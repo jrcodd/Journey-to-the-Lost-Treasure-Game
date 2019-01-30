@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class Object_Manager {
+
 	static ArrayList<Game_Object> inv;
 	Shack s;
 	ArrayList<EnemyShip> enemyShipList = new ArrayList<EnemyShip>();
@@ -22,7 +23,8 @@ public class Object_Manager {
 	StrongBandit b;
 	WeakBandit b1;
 	WeakBandit b2;
-	boolean isDefending;
+	boolean strongBanditIsAttacking;
+	boolean takeDamage = false;
 	static HealthPotion pot;
 	static ShipRepairKit kit;
 	boolean bStart;
@@ -118,24 +120,35 @@ public class Object_Manager {
 			if (b.isDead == false) {
 
 				if (p.collisionBox.intersects(b.collisionBox)) {
-					if (!GamePanel.swordDown) {
-						if (isDefending == false) {
-							p.health -= 5;
-							System.out.println("player health: " + p.health);
-							isDefending = true;
-						}
+					if (b.getReady()) {
+						strongBanditIsAttacking = true;
+						p.health -= 15;
+						b.setReady(false);
+						strongBanditIsAttacking = false;
 					}
 				}
+
+				// if (!GamePanel.swordDown) {
+				// if (isDefending == false) {
+				// if (b.getReady()) {
+				// p.health -= 15;
+				// }
+				// System.out.println("player health: " + p.health);
+				// isDefending = true;
+				// }
+				// }
+				// }
 				if (p.collisionBox.intersects(b.collisionBox)) {
 					if (GamePanel.swordDown) {
-						if (isDefending == true) {
-							b.setHealth(b.getHealth() - 30);
-							isDefending = false;
-							System.out.println("bandit health: " + b.health);
-						}
+
+						b.setHealth(b.getHealth() - 30);
+
 					}
+
+					System.out.println("bandit health: " + b.health);
 				}
 			}
+
 			if (b.getHealth() <= 0) {
 				b.isDead = true;
 				if (coinsAdded == false) {
@@ -287,32 +300,33 @@ public class Object_Manager {
 						}
 					}
 				}
-				for (int j = 0; j < enemyShipList.size(); j++) {
+			}
+			for (int j = 0; j < enemyShipList.size(); j++) {
 
-					if (EnemycannonballList.size() > 0) {
-						if (enemyShipList.get(j).isAlive) {
-							for (int k = 0; k < EnemycannonballList.size(); k++) {
-								if (EnemycannonballList.get(k).collisionBox.intersects(ship.collisionBox)) {
-									if (enemyShipList.get(j).damageDelt == false) {
-										System.out.println("hit");
-										EnemycannonballList.remove(EnemycannonballList.size() - 1);
-										ship.health -= 30;
-										System.out.println("player Ship health: " + ship.health);
-										enemyShipList.get(j).damageDelt = true;
-									}
+				if (EnemycannonballList.size() > 0) {
+					if (enemyShipList.get(j).isAlive) {
+						for (int k = 0; k < EnemycannonballList.size(); k++) {
+							if (EnemycannonballList.get(k).collisionBox.intersects(ship.collisionBox)) {
+								if (enemyShipList.get(j).damageDelt == false) {
+									System.out.println("hit");
+									EnemycannonballList.remove(EnemycannonballList.size() - 1);
+									ship.health -= 30;
+									System.out.println("player Ship health: " + ship.health);
+									enemyShipList.get(j).damageDelt = true;
 								}
 							}
 						}
 					}
 				}
 			}
-		}
-		for (int l = 0; l < EnemycannonballList.size(); l++) {
 
-			if ((EnemycannonballList.get(l).collisionBox.intersects(ship.collisionBox))) {
-				EnemycannonballList.remove(EnemycannonballList.size() - 1);
+			for (int l = 0; l < EnemycannonballList.size(); l++) {
+
+				if ((EnemycannonballList.get(l).collisionBox.intersects(ship.collisionBox))) {
+					EnemycannonballList.remove(EnemycannonballList.size() - 1);
+				}
+
 			}
-
 		}
 
 	}
@@ -510,22 +524,22 @@ public class Object_Manager {
 		if (!b.isDead) {
 			if (p.getX() - b.getX() < 0) {
 				// strong bandit is facing left
-				if (isDefending) {
+				if (strongBanditIsAttacking) {
 					b.setWidth(320 / 2 + 50);
 					b.drawLeft(g);
 					// not attacking and facing left
-				} else if (!isDefending) {
+				} else if (!strongBanditIsAttacking) {
 					b.setWidth(320 / 2 + 50);
 					b.drawLeftAttack(g);
 					// strong bandit is attacking and facing left
 				}
 			} else if (p.getX() - b.getX() > 0) {
 				// strong bandit is facing right
-				if (isDefending) {
+				if (strongBanditIsAttacking) {
 					b.setWidth(320 / 2 + 50);
 					b.drawRight(g);
 					// strong bandit is facing left and not attacking
-				} else if (!isDefending) {
+				} else if (!strongBanditIsAttacking) {
 					b.setWidth(320 / 2 + 50);
 					b.drawRightAttack(g);
 					// strong bandit is attacking and facing right

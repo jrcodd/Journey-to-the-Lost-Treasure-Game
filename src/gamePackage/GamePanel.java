@@ -123,8 +123,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	final static int mapStates[][] = {
 
 			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, ISLAND_STATE },
-			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, OCEAN_STATE },
-			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, OCEAN_STATE },
+			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, NO_PLACE },
+			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, NO_PLACE },
 			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, BAY_STATE },
 			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, NO_PLACE, PATH2_STATE },
 			{ OCEAN_STATE, OCEAN_STATE, OCEAN_STATE, NO_PLACE, PATH1_STATE },
@@ -188,7 +188,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			enemyShip = ImageIO.read(this.getClass().getResourceAsStream("EnemyShip.png"));
 			potion = ImageIO.read(this.getClass().getResourceAsStream("Potion.png"));
 			emptyPotion = ImageIO.read(this.getClass().getResourceAsStream("EmptyPotion.png"));
-			boots = ImageIO.read(this.getClass().getResourceAsStream("SpeedyBoots.png"));
+			boots = ImageIO.read(this.getClass().getResourceAsStream("speedyBoots.png"));
 			treasureMarker = ImageIO.read(this.getClass().getResourceAsStream("x-marks-the-spot.png"));
 			RepairKitImg = ImageIO.read(this.getClass().getResourceAsStream("repairKit.png"));
 			Map = ImageIO.read(this.getClass().getResourceAsStream("map.png"));
@@ -330,7 +330,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("3", 860, 450);
 		g.drawString("4", 860, 600);
 		g.setColor(Color.YELLOW);
-		g.drawString(Integer.toString(o.coins), 870, 50);
+		g.drawString(Integer.toString(o.coins) + " coins", 870, 50);
 		g.setFont(menuFont);
 		g.setColor(Color.white);
 		g.drawString("Forest", JourneyToTheLostTreasure.WIDTH / 3, 50);
@@ -356,7 +356,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("3", 860, 450);
 		g.drawString("4", 860, 600);
 		g.setColor(Color.YELLOW);
-		g.drawString(Integer.toString(o.coins), 870, 50);
+		g.drawString(Integer.toString(o.coins) + " coins", 870, 50);
 		g.setFont(menuFont);
 		g.setColor(Color.white);
 		g.drawString("Lagoon", JourneyToTheLostTreasure.WIDTH / 3, 50);
@@ -390,7 +390,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("3", 860, 450);
 		g.drawString("4", 860, 600);
 		g.setColor(Color.YELLOW);
-		g.drawString(Integer.toString(o.coins), 870, 50);
+		g.drawString(Integer.toString(o.coins) + " coins", 870, 50);
 		g.setFont(menuFont);
 		g.setColor(Color.white);
 		g.drawString("Cave", JourneyToTheLostTreasure.WIDTH / 3, 50);
@@ -427,7 +427,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("3", 860, 450);
 		g.drawString("4", 860, 600);
 		g.setColor(Color.YELLOW);
-		g.drawString(Integer.toString(o.coins), 870, 50);
+		g.drawString(Integer.toString(o.coins) + " coins", 870, 50);
 		g.setFont(menuFont);
 		g.setColor(Color.white);
 		g.drawString("Forest Edge", JourneyToTheLostTreasure.WIDTH / 4, 50);
@@ -533,7 +533,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("3", 860, 450);
 		g.drawString("4", 860, 600);
 		g.setColor(Color.YELLOW);
-		g.drawString(Integer.toString(o.coins), 870, 50);
+		g.drawString(Integer.toString(o.coins) + " coins", 870, 50);
 		g.setFont(menuFont);
 		g.setColor(Color.white);
 		g.drawString("Shack", JourneyToTheLostTreasure.WIDTH / 3, 50);
@@ -579,7 +579,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("3", 860, 450);
 		g.drawString("4", 860, 600);
 		g.setColor(Color.YELLOW);
-		g.drawString(Integer.toString(o.coins), 870, 50);
+		g.drawString(Integer.toString(o.coins) + " coins", 870, 50);
 		g.setFont(menuFont);
 		g.setColor(Color.white);
 		g.drawString("Path 2", JourneyToTheLostTreasure.WIDTH / 3, 50);
@@ -610,7 +610,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("3", 860, 450);
 		g.drawString("4", 860, 600);
 		g.setColor(Color.YELLOW);
-		g.drawString(Integer.toString(o.coins), 870, 50);
+		g.drawString(Integer.toString(o.coins) + " coins", 870, 50);
 		g.setFont(menuFont);
 		g.setColor(Color.white);
 		g.drawString("Path", JourneyToTheLostTreasure.WIDTH / 3, 50);
@@ -644,7 +644,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("3", 860, 450);
 		g.drawString("4", 860, 600);
 		g.setColor(Color.YELLOW);
-		g.drawString(Integer.toString(o.coins), 870, 50);
+		g.drawString(Integer.toString(o.coins) + " coins", 870, 50);
 		g.setFont(menuFont);
 		g.setColor(Color.white);
 		g.drawString("Island", JourneyToTheLostTreasure.WIDTH / 3, 50);
@@ -682,7 +682,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("3", 860, 450);
 		g.drawString("4", 860, 600);
 		g.setColor(Color.YELLOW);
-		g.drawString(Integer.toString(o.coins), 870, 50);
+		g.drawString(Integer.toString(o.coins) + " coins", 870, 50);
 		g.setFont(menuFont);
 		g.setColor(Color.white);
 		g.drawString("Bay", JourneyToTheLostTreasure.WIDTH / 3, 50);
@@ -868,7 +868,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("3", 860, 450);
 		g.drawString("4", 860, 600);
 		g.setColor(Color.YELLOW);
-		g.drawString(Integer.toString(o.coins), 870, 50);
+		g.drawString(Integer.toString(o.coins) + " coins", 870, 50);
 		g.setFont(menuFont);
 		g.setColor(Color.white);
 		g.drawString("Ocean", JourneyToTheLostTreasure.WIDTH / 3, 50);
@@ -930,9 +930,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				swordDown = false;
 				currentState = MENU_STATE;
 				Object_Manager.playerisSailing = false;
-				Object_Manager.currentMessage1 = "";
-				Object_Manager.currentMessage2 = "";
-				Object_Manager.currentMessage3 = "";
+				Object_Manager.currentMessage1 = "Welcome To Journey To The Lost Treasure!!";
+				Object_Manager.currentMessage2 = "To move use WASD or the arrow keys. Use space to attack";
+				Object_Manager.currentMessage3 = "and the corresponding number key to use items.";
 			}
 		}
 
@@ -1244,6 +1244,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 			}
 		}
+		if (b.cooldown > 0) {
+			b.cooldown -= 1;
+		}
+
+		else if (b.cooldown <= 0) {
+			b.cooldown = 100;
+			b.setReady(true);
+		}
+
 		o.moveEnemyShip();
 
 		b.setX(b.getX() - ((b.getX() - p.getX()) / 10));
@@ -1322,6 +1331,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			if (!o.getPlayerisSailing() && mapColumn > 0 && mapStates[mapRow][mapColumn - 1] == OCEAN_STATE) {
 				left = false;
 			}
+			if (!o.getPlayerisSailing() && mapColumn > 0 && s.inside) {
+				left = false;
+			}
 			if (left) {
 				if (!o.getPlayerisSailing()) {
 					p.setX(RIGHT);
@@ -1330,6 +1342,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 					ship.setX(RIGHT);
 				}
 				if (!s.inside) {
+
 					changePos(mapRow, mapColumn - 1);
 					if (Object_Manager.playerisSailing) {
 						ship.setX(600);
@@ -1416,7 +1429,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	void checkDown() {
 
-		if (p.collisionBox.y > BOTTOM || ship.collisionBox.y > BOTTOM) {
+		if (p.collisionBox.y > BOTTOM || ship.collisionBox.y > BOTTOM - 50) {
 			if (mapRow >= LAST_ROW) {
 				down = false;
 			}

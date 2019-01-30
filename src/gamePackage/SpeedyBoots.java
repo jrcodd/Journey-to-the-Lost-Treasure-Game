@@ -39,7 +39,7 @@ public class SpeedyBoots extends Game_Object {
 	}
 
 	void talk() {
-		Object_Manager.currentMessage1 = "These boots will allow the player ro move at a much faster speed.";
+		Object_Manager.currentMessage1 = "These boots will allow the player to move at a much faster speed.";
 		Object_Manager.currentMessage2 = "";
 		Object_Manager.currentMessage3 = "";
 

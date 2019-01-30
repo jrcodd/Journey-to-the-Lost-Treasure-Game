@@ -24,7 +24,7 @@ public class Object_Manager {
 	WeakBandit b1;
 	WeakBandit b2;
 	boolean strongBanditIsAttacking;
-	boolean takeDamage = false;
+	boolean cantakeDamage = true;
 	static HealthPotion pot;
 	static ShipRepairKit kit;
 	boolean bStart;
@@ -140,8 +140,10 @@ public class Object_Manager {
 				// }
 				if (p.collisionBox.intersects(b.collisionBox)) {
 					if (GamePanel.swordDown) {
-
-						b.setHealth(b.getHealth() - 30);
+						if (cantakeDamage) {
+							b.setHealth(b.getHealth() - 30);
+							cantakeDamage = false;
+						}
 
 					}
 

@@ -25,6 +25,7 @@ public class Object_Manager {
 	WeakBandit b2;
 	boolean strongBanditIsAttacking;
 	boolean cantakeDamage = true;
+	int playerAttackCooldown = 0;
 	static HealthPotion pot;
 	static ShipRepairKit kit;
 	boolean bStart;
@@ -122,7 +123,7 @@ public class Object_Manager {
 				if (p.collisionBox.intersects(b.collisionBox)) {
 					if (b.getReady()) {
 						strongBanditIsAttacking = true;
-						p.health -= 15;
+						p.health -= 30;
 						b.setReady(false);
 						strongBanditIsAttacking = false;
 					}
@@ -143,11 +144,11 @@ public class Object_Manager {
 						if (cantakeDamage) {
 							b.setHealth(b.getHealth() - 30);
 							cantakeDamage = false;
+
 						}
 
 					}
 
-					System.out.println("bandit health: " + b.health);
 				}
 			}
 
@@ -160,7 +161,6 @@ public class Object_Manager {
 			}
 		} else if (GamePanel.mapStates[GamePanel.mapRow][GamePanel.mapColumn] == GamePanel.PATH2_STATE) {
 
-			System.out.println("weak bandit2 is dead: " + b2.isDead);
 			if (!b1.isDead) {
 				processWeakBanditIsAlive(b1);
 			}
@@ -273,7 +273,7 @@ public class Object_Manager {
 			}
 			if (!enemyShipList.isEmpty()) {
 				for (int i = 0; i < enemyShipList.size(); i++) {
-					System.out.println(enemyShipList.get(i).health);
+
 					if (enemyShipList.get(i).health <= 0) {
 						enemyShipList.get(i).isAlive = false;
 
@@ -292,10 +292,10 @@ public class Object_Manager {
 							if (cannonballList.get(o).collisionBox.intersects(enemyShipList.get(i).collisionBox)) {
 
 								if (damageDelt == false) {
-									System.out.println("hit");
+
 									cannonballList.remove(cannonballList.size() - 1);
 									enemyShipList.get(i).health -= 30;
-									System.out.println("enemy Ship health: " + enemyShipList.get(i).health);
+
 									damageDelt = true;
 								}
 							}
@@ -310,10 +310,10 @@ public class Object_Manager {
 						for (int k = 0; k < EnemycannonballList.size(); k++) {
 							if (EnemycannonballList.get(k).collisionBox.intersects(ship.collisionBox)) {
 								if (enemyShipList.get(j).damageDelt == false) {
-									System.out.println("hit");
+
 									EnemycannonballList.remove(EnemycannonballList.size() - 1);
 									ship.health -= 30;
-									System.out.println("player Ship health: " + ship.health);
+
 									enemyShipList.get(j).damageDelt = true;
 								}
 							}
@@ -338,7 +338,7 @@ public class Object_Manager {
 			if (!GamePanel.swordDown) {
 				if (isDefending2 == false) {
 					p.health -= 8;
-					System.out.println("player health: " + p.health);
+
 					isDefending2 = true;
 				}
 			}
@@ -348,8 +348,6 @@ public class Object_Manager {
 				if (isDefending2 == true) {
 					wb.setHealth(wb.getHealth() - 20);
 					isDefending2 = false;
-					System.out.println("weak bandit1 health: " + b1.health);
-					System.out.println("weak bandit2 health: " + b2.health);
 				}
 			}
 		}
@@ -526,27 +524,29 @@ public class Object_Manager {
 		if (!b.isDead) {
 			if (p.getX() - b.getX() < 0) {
 				// strong bandit is facing left
-				if (strongBanditIsAttacking) {
+				if (b.cooldown > 0 || b.cooldown > 90) {
 					b.setWidth(320 / 2 + 50);
 					b.drawLeft(g);
+					System.out.println(b.getReady());
 					// not attacking and facing left
-				} else if (!strongBanditIsAttacking) {
+				} else if (b.cooldown <= 0 && b.cooldown <= 90) {
 					b.setWidth(320 / 2 + 50);
 					b.drawLeftAttack(g);
 					// strong bandit is attacking and facing left
 				}
 			} else if (p.getX() - b.getX() > 0) {
 				// strong bandit is facing right
-				if (strongBanditIsAttacking) {
+				if (b.cooldown > 0 && b.cooldown <= 90) {
 					b.setWidth(320 / 2 + 50);
 					b.drawRight(g);
 					// strong bandit is facing left and not attacking
-				} else if (!strongBanditIsAttacking) {
+				} else if (b.cooldown <= 0 || b.cooldown > 90) {
 					b.setWidth(320 / 2 + 50);
 					b.drawRightAttack(g);
 					// strong bandit is attacking and facing right
 				}
 			}
+			g.drawOval(b.getX() + b.getHeight() / 2, b.getY() + b.getHeight() + 10, b.cooldown * 2, 2);
 		}
 	}
 

@@ -718,7 +718,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 			if (p.health <= 0 || ship.health <= 0) {
 				// DeathListener.death();
-				System.out.println("Game Over");
+				
 				currentState = END_STATE;
 			}
 			if (mapStates[mapRow][mapColumn] == FOREST_STATE) {
@@ -968,7 +968,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				if (kit.positionInInv == INVENTORY_SLOT1) {
 					if (o.getPlayerisSailing()) {
 						if (e.getKeyCode() == KeyEvent.VK_1) {
-							System.out.println(kit.isUsed);
+							
 							if (kit.timeUntilNextUse <= 0) {
 								if (ship.health < ship.maxHealth) {
 									ship.health = ship.maxHealth;
@@ -979,7 +979,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 					}
 				} else if (kit.positionInInv == INVENTORY_SLOT2) {
 					if (e.getKeyCode() == KeyEvent.VK_2) {
-						System.out.println(kit.isUsed);
+						
 						if (kit.timeUntilNextUse <= 0) {
 							if (ship.health < ship.maxHealth) {
 								ship.health = ship.maxHealth;
@@ -1244,13 +1244,25 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 			}
 		}
+		if(o.playerAttackCooldown > 0) {
+			o.playerAttackCooldown -= 1;
+			o.cantakeDamage = false;
+		}
+		else if(o.playerAttackCooldown <= 0) {
+			o.cantakeDamage = true;
+			o.playerAttackCooldown = 5;
+		}
+		
+		
 		if (b.cooldown > 0) {
 			b.cooldown -= 1;
+			b.setReady(false);
 		}
 
 		else if (b.cooldown <= 0) {
-			b.cooldown = 100;
 			b.setReady(true);
+			b.cooldown = 100;
+			
 		}
 
 		o.moveEnemyShip();

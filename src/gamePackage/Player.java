@@ -14,7 +14,7 @@ public class Player extends Game_Object {
 	}
 	void update() {
 		super.update();
-		System.out.println(x+ " "+ y);
+		
 	}
 	void draw(Graphics g) {
 
